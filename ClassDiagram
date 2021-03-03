@@ -1,4 +1,4 @@
-<mxfile host="app.diagrams.net" modified="2021-03-03T15:09:35.836Z" agent="5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/88.0.4324.182 Safari/537.36" etag="Ru_Zvopqy8tk7oAINDsH" version="14.4.3" type="github">
+<mxfile host="app.diagrams.net" modified="2021-03-03T15:09:47.029Z" agent="5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/88.0.4324.182 Safari/537.36" etag="Hy29xvo7tM7NvwNSZHPi" version="14.4.3" type="github">
   <diagram id="C5RBs43oDa-KdzZeNtuy" name="Page-1">
     <mxGraphModel dx="1422" dy="738" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1169" pageHeight="827" math="0" shadow="0">
       <root>
@@ -148,7 +148,7 @@
           </mxGeometry>
         </mxCell>
         <mxCell id="i0l9CgU8-eGEiHrzTuOj-0" value="User" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=26;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;" parent="WIyWlLk6GJQsqaUBKTNV-1" vertex="1">
-          <mxGeometry x="230" y="280" width="160" height="230" as="geometry" />
+          <mxGeometry x="290" y="290" width="160" height="230" as="geometry" />
         </mxCell>
         <mxCell id="i0l9CgU8-eGEiHrzTuOj-1" value="- firstName: String&#xa;- secondName : String&#xa;- weight: int&#xa;- height: int&#xa;- BMI: int&#xa;- goals: List&lt;Goal&gt;&#xa;- groups: List&lt;Group&gt;&#xa;- days: List&lt;Day&gt;" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" parent="i0l9CgU8-eGEiHrzTuOj-0" vertex="1">
           <mxGeometry y="26" width="160" height="144" as="geometry" />

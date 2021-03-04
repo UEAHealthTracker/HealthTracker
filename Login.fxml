@@ -25,12 +25,12 @@
                   <MFXTextField layoutX="152.0" layoutY="159.0" lineColor="#65499c" lineStrokeWidth="2.0" prefHeight="21.0" prefWidth="240.0" promptText="Password" unfocusedLineColor="#ede7f6" />
                   <ImageView fitHeight="25.0" fitWidth="33.0" layoutX="109.0" layoutY="82.0" pickOnBounds="true" preserveRatio="true">
                      <image>
-                        <Image url="@../../../../Desktop/HeathTracker/baseline_face_black_18dp.png" />
+                        <Image url="@face_icon.png" />
                      </image>
                   </ImageView>
                   <ImageView fitHeight="25.0" fitWidth="25.0" layoutX="109.0" layoutY="159.0" pickOnBounds="true" preserveRatio="true">
                      <image>
-                        <Image url="@../../../../Desktop/HeathTracker/baseline_password_black_18dp.png" />
+                        <Image url="@password_icon.png" />
                      </image>
                   </ImageView>
                   <Text layoutX="233.0" layoutY="36.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Login" wrappingWidth="76.09765625">
@@ -42,7 +42,7 @@
                   <MFXButton buttonType="RAISED" depthLevel="LEVEL1" layoutX="221.0" layoutY="213.0" prefHeight="34.0" prefWidth="99.0" rippleColor="#65499c" style="-fx-background-color: #9575cd;" text="Login" />
                   <ImageView fitHeight="193.0" fitWidth="147.0" layoutX="400.0" layoutY="34.0" pickOnBounds="true" preserveRatio="true">
                      <image>
-                        <Image url="@../../../../Desktop/HeathTracker/heart_logo.png" />
+                        <Image url="@heart_logo.png" />
                      </image>
                   </ImageView>
                </children>

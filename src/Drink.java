@@ -6,6 +6,7 @@ public class Drink extends Diet {
         JUICE,
         SMOOTHIE,
         WATER,
+        SODA
     }
 
 

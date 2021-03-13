@@ -1,4 +1,4 @@
-public enum ExerciseType {
+public enum WorkoutType {
 
     //exercise types- MET value for each type based on information at https://golf.procon.org/met-values-for-800-activities/
 
@@ -34,7 +34,7 @@ public enum ExerciseType {
     public int MET;
 
     //default constructor for enum
-    ExerciseType(int MET){
+    WorkoutType(int MET){
         this.MET = MET;
     }
 }

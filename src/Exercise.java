@@ -45,7 +45,13 @@ public class Exercise {
     //testing
     public static void main(String[] args) {
         Exercise exercise1 = new Exercise(ExerciseType.YOGA);
+        System.out.println(exercise1.getExerciseType());
         System.out.println(exercise1.getDurationMinutes());
-        System.out.println();
+        System.out.println(exercise1.getCaloriesBurned());
+        exercise1.setDurationMinutes(30);
+        exercise1.calculateCaloriesBurned(50);
+        System.out.println(exercise1.getDurationMinutes());
+        System.out.println(exercise1.getCaloriesBurned());
+
     }
 }

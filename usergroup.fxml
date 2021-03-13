@@ -123,7 +123,7 @@
                         <Line endX="228.5" endY="80.0" layoutX="-228.0" layoutY="-80.0" startX="228.5" startY="118.5" stroke="#9575cd" strokeWidth="5.0" />
                         <Line endX="228.5" endY="70.0" layoutX="140.0" layoutY="-71.0" startX="228.5" startY="109.5" stroke="#9575cd" strokeWidth="5.0" />
                         <Line endX="603.0" endY="120.0" layoutX="-237.0" layoutY="-117.0" startX="240.0" startY="120.0" stroke="#9575cd" strokeWidth="5.0" />
-                        <ImageView fitHeight="31.0" fitWidth="34.0" layoutX="209.0" layoutY="6.0" pickOnBounds="true" preserveRatio="true">
+                        <ImageView fitHeight="28.0" fitWidth="32.0" layoutX="209.0" layoutY="6.0" pickOnBounds="true" preserveRatio="true">
                            <image>
                               <Image url="@group.png" />
                            </image>
@@ -131,7 +131,7 @@
                         <Pane layoutY="346.0" prefHeight="54.0" prefWidth="370.0" style="-fx-background-color: #c7a4ff;">
                            <children>
                               <MFXButton buttonType="RAISED" depthLevel="LEVEL1" layoutX="65.0" layoutY="10.0" onAction="#Windowswitch" prefHeight="25.0" prefWidth="97.0" style="-fx-background-color: #9575cd;" text="Admin" />
-                              <MFXButton buttonType="RAISED" depthLevel="LEVEL1" layoutX="253.0" layoutY="8.0" onAction="#Windowswitch" prefHeight="29.0" prefWidth="66.0" style="-fx-background-color: #65499c #65499c;" text="User" />
+                              <MFXButton buttonType="RAISED" depthLevel="LEVEL1" layoutX="203.0" layoutY="13.0" onAction="#Windowswitch" prefHeight="29.0" prefWidth="66.0" style="-fx-background-color: #65499c #65499c;" text="User" />
                               <ImageView fitHeight="34.0" fitWidth="36.0" layoutX="25.0" layoutY="6.0" pickOnBounds="true" preserveRatio="true">
                                  <image>
                                     <Image url="@admingroup.png" />

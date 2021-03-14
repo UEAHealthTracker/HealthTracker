@@ -2,7 +2,7 @@ public class Drink extends Diet {
 
     private final DrinkType drinkType;
 
-    public enum DrinkType{
+    public enum DrinkType {
         JUICE,
         SMOOTHIE,
         WATER,

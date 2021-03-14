@@ -1,0 +1,23 @@
+DeleteGoalpage;
+Select goalid from goal,user where username=?;
+Delete from goal where goalid=?
+
+dietpage;
+Select foodname from food,meal,day,user where food.foodid=meal.mealid and meal.mealid=day.mealid and user.dayid=day.dayid and user=? 
+Select mealname from meal,day,user where meal.mealid=day.mealid and user.dayid=day.dayid and user=? 
+Select drinname from drink,meal,day,user where drink.drinkid=meal.drinkid and meal.mealid=day.mealid and user.dayid=day.dayid and user=? 
+
+
+Editgoalpage;
+Select goalid from goal;
+Update Goal,User set goalname=IN(Select goalid from goal=?) where user.goalid=goal.goalid and username=?
+
+Goal page;
+Select * from Goal,User where user.goalid=goal.goalid and username=?
+
+Setgoalpage;
+Insert into goal (goalname,startdate,enddate,goaltype) values(?,?,?,?)
+
+Settings
+Update Users set realname=?,password=?,email=?,weight=?,height=?,age=? where username=?
+

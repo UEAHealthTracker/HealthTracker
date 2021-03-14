@@ -13,24 +13,23 @@ public class Meal {
         this.calorieCount = 0;
     }
 
-    public void addFood(Food food)
-     {
-         this.calorieCount += food.getCalorieAmount();
-         this.foodList.add(food);
-     }
+    public void addFood(Food food) {
+        this.calorieCount += food.getCalorieAmount();
+        this.foodList.add(food);
+    }
 
-     void addDrink(Drink drink){
+    void addDrink(Drink drink) {
         this.calorieCount += drink.getCalorieAmount();
         this.drinkList.add(drink);
-     }
-     void updateCalories(int calorieCount)
-     {
-         this.calorieCount += calorieCount;
-     }
+    }
 
-     int getCalorieCount(){
+    void updateCalories(int calorieCount) {
+        this.calorieCount += calorieCount;
+    }
+
+    int getCalorieCount() {
         return calorieCount;
-     }
+    }
 
     public ArrayList<Food> getFoodList() {
         return foodList;
@@ -44,7 +43,7 @@ public class Meal {
         return timeConsumed;
     }
 
-    public String toString(){
+    public String toString() {
 
         StringBuilder result = new StringBuilder();
 
@@ -76,10 +75,10 @@ public class Meal {
         meal.addFood(new Food(Food.FoodType.VEGAN, "Vegan Cake", 257));
 
         //Print all food and drinks in the meal
-        for(int i = 0; i < meal.getDrinkList().size(); i++){
+        for (int i = 0; i < meal.getDrinkList().size(); i++) {
             System.out.println("Drink : " + meal.getDrinkList().get(i).getName());
         }
-        for(int i = 0; i < meal.getFoodList().size(); i++){
+        for (int i = 0; i < meal.getFoodList().size(); i++) {
             System.out.println("Food : " + meal.getFoodList().get(i).getName());
         }
 

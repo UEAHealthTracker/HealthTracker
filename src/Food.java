@@ -9,7 +9,7 @@ public class Food extends Diet {
         this.setCalorieAmount(calories);
     }
 
-    enum FoodType{
+    enum FoodType {
         VEGAN,
         PESCATERIAN,
         VEGATARIAN,

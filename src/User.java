@@ -1,17 +1,17 @@
-
+import java.util.ArrayList;
 
 public class User {
     //Initialise variables
     private String firstName;
     private String secondName;
-    private float weight;
-    private float height;
-    private float BMI;
+    private double weight;
+    private double height;
+    private double BMI;
     private ArrayList<Goal> goals = new ArrayList<Goal>();
     private ArrayList<Group> groups = new ArrayList<Group>();
     private ArrayList<DailyActivity> activityLog = new ArrayList<DailyActivity>();
 
-    public float getBMI() {
+    public double getBMI() {
         return BMI;
     }
 
@@ -31,19 +31,19 @@ public class User {
         this.secondName = secondName;
     }
 
-    public float getWeight() {
+    public double getWeight() {
         return weight;
     }
 
-    public void setWeight(float weight) {
+    public void setWeight(double weight) {
         this.weight = weight;
     }
 
-    public float getHeight() {
+    public double getHeight() {
         return height;
     }
 
-    public void setHeight(float height) {
+    public void setHeight(double height) {
         this.height = height;
     }
 
@@ -56,12 +56,26 @@ public class User {
         this.BMI= this.weight/ (height*height);
     }
 
-    public User(String firstName, String secondName, float weight, float height) {
+    public User(String firstName, String secondName, double weight, double height) {
         this.firstName = firstName;
         this.secondName = secondName;
         this.weight = weight;
         this.height = height;
         this.calculateBMI();
+    }
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "firstName='" + firstName + '\'' +
+                ", secondName='" + secondName + '\'' +
+                ", weight=" + weight +
+                ", height=" + height +
+                ", BMI=" + BMI +
+                ", goals=" + goals +
+                ", groups=" + groups +
+                ", activityLog=" + activityLog +
+                '}';
     }
 
     public void addDailyActivity(DailyActivity day){
@@ -76,4 +90,19 @@ public class User {
         this.groups.add(group);
     }
 
-}
+    public static void main(String[] args) {
+        //Testing for the user class:
+        User testUser = new User("Daniella", "Ammo", 70, 1.73);
+        testUser.setHeight(1.76);
+        testUser.calculateBMI();
+        System.out.println(testUser.BMI);
+        System.out.println(testUser);
+    }
+
+    }
+
+
+
+
+
+

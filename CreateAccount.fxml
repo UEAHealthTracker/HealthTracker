@@ -1,11 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import io.github.palexdev.materialfx.controls.*?>
-<?import javafx.scene.effect.*?>
-<?import javafx.scene.image.*?>
-<?import javafx.scene.layout.*?>
+<?import io.github.palexdev.materialfx.controls.MFXButton?>
+<?import io.github.palexdev.materialfx.controls.MFXLabel?>
+<?import io.github.palexdev.materialfx.controls.MFXTextField?>
+<?import javafx.scene.effect.DropShadow?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
 
-<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
+<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/15.0.1" xmlns:fx="http://javafx.com/fxml/1">
     <children>
         <AnchorPane prefHeight="407.0" prefWidth="600.0" style="-fx-background-color: #e6e6e6;">
             <children>
@@ -25,11 +31,10 @@
                                 <Image url="@password_icon.png" />
                             </image>
                         </ImageView>
-                        <MFXButton fx:id="createaccbtn" buttonType="RAISED" depthLevel="LEVEL1" layoutX="205.0" layoutY="211.0" onAction="#CreateAccount" prefHeight="36.0" prefWidth="134.0" rippleColor="#9c91b2" style="-fx-background-color: #9575cd;" text="Create Account" />
+                        <MFXButton fx:id="createaccbtn" buttonType="RAISED" depthLevel="LEVEL1" layoutX="159.0" layoutY="195.0" onAction="#CreateAccount" prefHeight="36.0" prefWidth="134.0" rippleColor="#9c91b2" style="-fx-background-color: #9575cd;" text="Create Account" />
                         <MFXTextField fx:id="passwordtf" layoutX="59.0" layoutY="126.0" lineColor="#65499c" lineStrokeWidth="2.0" prefHeight="49.0" prefWidth="185.0" promptText="Password" unfocusedLineColor="#efe7f6" />
                         <MFXTextField fx:id="realnametf" layoutX="301.0" layoutY="77.0" lineColor="#65499c" lineStrokeWidth="2.0" prefHeight="49.0" prefWidth="185.0" promptText="Username" text="Real Name" unfocusedLineColor="#efe7f6" />
                         <MFXTextField fx:id="emailtf" layoutX="301.0" layoutY="126.0" lineColor="#65499c" lineStrokeWidth="2.0" prefHeight="49.0" prefWidth="185.0" promptText="Password" text="Email" unfocusedLineColor="#efe7f6" />
-                        <MFXButton buttonType="RAISED" depthLevel="LEVEL1" layoutX="205.0" layoutY="14.0" onAction="#BackToLogin" prefHeight="36.0" prefWidth="134.0" rippleColor="#6e4eae" style="-fx-background-color: #e6e6e6;" text="Login" />
                   <ImageView fitHeight="25.0" fitWidth="33.0" layoutX="260.0" layoutY="89.0" pickOnBounds="true" preserveRatio="true">
                      <image>
                         <Image url="@face_icon.png" />
@@ -40,6 +45,16 @@
                         <Image url="@envelope.png" />
                      </image>
                   </ImageView>
+                  <MFXButton buttonType="RAISED" depthLevel="LEVEL1" layoutX="298.0" layoutY="200.0" onAction="#OpenRegistrationwindow" prefHeight="27.0" prefWidth="192.0" rippleColor="#a1a1a1" style="-fx-background-color: transparent;" text="Already have an account? Login">
+                     <font>
+                        <Font size="10.0" />
+                     </font>
+                  </MFXButton>
+                  <MFXLabel minHeight="-Infinity" minWidth="-Infinity" prefHeight="73.0" prefWidth="543.0" promptText="Health Tracker" style="-fx-background-color: transaprent;" unfocusedLineColor="#ff000000">
+                     <font>
+                        <Font name="Arial" size="31.0" />
+                     </font>
+                  </MFXLabel>
                     </children>
                 </Pane>
             </children>

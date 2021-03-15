@@ -1,4 +1,4 @@
-public class Diet {
+public abstract class Diet {
 
     private String name;
     private int calorieAmount;

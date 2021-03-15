@@ -1,11 +1,11 @@
 import java.util.ArrayList;
-import java.util.Date;
+import java.time.LocalDateTime;
 
 public class Meal {
 
     private final ArrayList<Food> foodList = new ArrayList<>();
     private final ArrayList<Drink> drinkList = new ArrayList<>();
-    private final Date timeConsumed;
+    private final localDateTime timeConsumed;
     private int calorieCount;
 
     public Meal() {
@@ -39,7 +39,7 @@ public class Meal {
         return drinkList;
     }
 
-    public Date getTimeConsumed() {
+    public LocalDateTime getTimeConsumed() {
         return timeConsumed;
     }
 

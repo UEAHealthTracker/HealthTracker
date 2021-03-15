@@ -146,8 +146,10 @@
                         <MFXComboBox layoutX="14.0" layoutY="51.0" minHeight="-Infinity" minWidth="-Infinity" prefHeight="28.0" prefWidth="136.0" />
                         <TableView layoutX="8.0" layoutY="91.0" prefHeight="188.0" prefWidth="349.0">
                           <columns>
-                            <TableColumn prefWidth="75.0" text="C1" />
-                            <TableColumn prefWidth="75.0" text="C2" />
+                            <TableColumn prefWidth="164.0" text="Exercise" />
+                            <TableColumn prefWidth="57.0" text="Sets" />
+                              <TableColumn prefWidth="46.0" text="Reps" />
+                              <TableColumn prefWidth="77.0" text="Calories" />
                           </columns>
                         </TableView>
                             </children>

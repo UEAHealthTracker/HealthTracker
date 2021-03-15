@@ -9,7 +9,7 @@ public class User {
     private float BMI;
     private ArrayList<Goal> goals = new ArrayList<Goal>();
     private ArrayList<Group> groups = new ArrayList<Group>();
-    private ArrayList<Day> days = new ArrayList<Day>();
+    private ArrayList<DailyActivity> activityLog = new ArrayList<DailyActivity>();
 
     public float getBMI() {
         return BMI;
@@ -64,8 +64,8 @@ public class User {
         this.calculateBMI();
     }
 
-    public void addDay(Day day){
-        this.days.add(day);
+    public void addDailyActivity(DailyActivity day){
+        this.activityLog.add(day);
     }
 
     public void addGoal(Goal goal){

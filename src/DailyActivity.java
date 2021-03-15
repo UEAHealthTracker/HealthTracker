@@ -6,7 +6,7 @@ public class DailyActivity implements Serializable {
 
     private LocalDate date;
     private ArrayList<Meal> meals = new ArrayList<Meal>();
-    private ArrayList<Exercise> exercises = new ArrayList<Exercise>();
+    private ArrayList<Workout> workout = new ArrayList<Workout>();
 
     public DailyActivity(LocalDate date) {
         this.date = date;
@@ -20,16 +20,16 @@ public class DailyActivity implements Serializable {
         meals.add(newMeal);
     }
 
-    public void addExercise(Exercise newExercise){
-        exercise.add(newExercise);
+    public void addWorkout(Workout newWorkout){
+        workout.add(newWorkout);
     }
 
     public ArrayList<Meal> getMeals(){
         return this.meals;
     }
 
-    public ArrayList<Exercise> getExercise(){
-        return this.exercise;
+    public ArrayList<Workout> getWorkout(){
+        return this.workout;
     }
 
     private void saveData(){

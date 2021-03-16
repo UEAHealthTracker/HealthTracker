@@ -1,23 +1,44 @@
 DeleteGoalpage;
 Select goalid from goal,user where username=?;
-Delete from goal where goalid=?
+Delete from goal where goalid=? and username=?
 
 dietpage;
-Select foodname from food,meal,day,user where food.foodid=meal.mealid and meal.mealid=day.mealid and user.dayid=day.dayid and user=? 
+Select foodname from food,meal,day,user where food.foodid=meal.mealid and meal.mealid=day.mealid and user.dayid=day.dayid and username=?
 Select mealname from meal,day,user where meal.mealid=day.mealid and user.dayid=day.dayid and user=? 
-Select drinname from drink,meal,day,user where drink.drinkid=meal.drinkid and meal.mealid=day.mealid and user.dayid=day.dayid and user=? 
+Select drinname from drink,meal,day,user where drink.drinkid=meal.drinkid and meal.mealid=day.mealid and user.dayid=day.dayid and username=?
+Insert item todo
 
 
 Editgoalpage;
-Select goalid from goal;
-Update Goal,User set goalname=IN(Select goalid from goal=?) where user.goalid=goal.goalid and username=?
+Select goalid from goal,users where goal.goalid=user.goalid and username=?
+Update Goal, set goalname=IN(Select goalid from goal=?) where user.goalid=goal.goalid and username=?
 
-Goal page;
+Goalpage;
 Select * from Goal,User where user.goalid=goal.goalid and username=?
 
 Setgoalpage;
-Insert into goal (goalname,startdate,enddate,goaltype) values(?,?,?,?)
+Insert into goal (goalname,startdate,enddate,goaltype) values(?,?,?,?) where Goal.goalid=user.goalid and username=?
 
-Settings
+Settingspage;
 Update Users set realname=?,password=?,email=?,weight=?,height=?,age=? where username=?
 
+
+Workoutpage;
+Select exercisename from Workout;
+Select exersicename,sets,reps,caloriescount from workout,day,users where workout.workoutid=day.workoutid and day.dayid=users.dayid and day=? and username=?
+
+UpdateGoalpage;
+Select goalid from goal,users where goal.goalid=user.goalid and username=?
+Update Goal, set goalname=IN(Select goalid from goal=?) where user.goalid=goal.goalid and username=?
+
+AdminGrouppage;
+limituseramount todo //The group enity must be updated with a new integer field for grouplimit
+Delete todo //groupmembers must be in a seperete entity to perform a querie associating it with a groupid
+todo //otherwise an empty group will be created pointing to a groupmember interrupting the admin grouplist
+
+Analyticspage;
+todo //complex
+
+usergrouppage;
+Insert into groups (groupname,groupadmin) values(?,?);
+INSERT INTO groups ( groupmembers) values(?) where (Select groupadmin from Users,Groups Join users.groupid=groups.groupid and groupadmin=?);

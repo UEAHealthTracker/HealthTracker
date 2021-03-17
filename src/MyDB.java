@@ -29,3 +29,6 @@ public class MyDB {
 
 
 }
+//db - execute sql statements
+// INSERT INTO Users (userid,realname,username,password,email,weight,height,acitivty,age)VALUES('1','Jaejoon','Ja3oon','softEngineer','Jae@hotmail.com', '85','180','1','32')
+

@@ -15,7 +15,8 @@ public class MyDB {
 
            Statement myStmt = myConn.createStatement();
 
-           String sql =" UPDATE Users "+ "SET realname = David"+" WHERE realname = JaeJoon ";
+           String sql = " INSERT INTO Users (realname)" +"VALUES(JaeJoon)";
+           // sql =" UPDATE Users "+ "SET realname = David"+" WHERE realname = JaeJoon ";
 
            myStmt.executeUpdate(sql);
 

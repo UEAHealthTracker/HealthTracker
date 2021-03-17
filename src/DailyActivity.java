@@ -2,7 +2,7 @@ import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.ArrayList;
 
-public class DailyActivity implements Serializable {
+public class  DailyActivity implements Serializable {
 
     private LocalDate date;
     private ArrayList<Meal> meals = new ArrayList<Meal>();

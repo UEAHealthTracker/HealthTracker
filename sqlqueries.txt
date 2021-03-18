@@ -75,4 +75,39 @@ INSERT INTO food (foodid, caloriecount,quantity) VALUES ('7','282 calories','1 b
 INSERT INTO food (foodid, caloriecount,quantity) VALUES ('8','290 calories','1 serving')Fajitas
 INSERT INTO food (foodid, caloriecount,quantity) VALUES ('9','375 calories','1 cup')Pad Thai
 
+INSERT INTO food (foodid, caloriecount,quantity) VALUES ('5','125','1')
+INSERT INTO food (foodid, caloriecount,quantity) VALUES ('6','266','1')
+INSERT INTO food (foodid, caloriecount,quantity) VALUES ('7','282','1')
+INSERT INTO food (foodid, caloriecount,quantity) VALUES ('8','290','1')
+INSERT INTO food (foodid, caloriecount,quantity) VALUES ('9','375','1')
 
+
+drink table
+INSERT INTO drink (drinkid, caloriecount,quantity) VALUES ('1','110','240')Orange Juice
+INSERT INTO drink (drinkid, caloriecount,quantity) VALUES ('2','110 ','240')Apple Juice
+INSERT INTO drink (drinkid, caloriecount,quantity) VALUES ('3','46 ','240')Coconut water
+INSERT INTO drink (drinkid, caloriecount,quantity) VALUES ('4','149 ','1 ')Milk
+INSERT INTO drink (drinkid, caloriecount,quantity) VALUES ('5','0 ','29.6')water
+INSERT INTO drink (drinkid, caloriecount,quantity) VALUES ('6','20 ','1 ')Tea
+
+Meal table
+INSERT INTO meal (mealid, timeconsumed,foodid, drinkid) VALUES ('1','09-00-00','3','6')Tea & Banana
+INSERT INTO meal (mealid, timeconsumed,foodid, drinkid) VALUES ('2','18-00-00','6','5')Chilli con carne & water
+INSERT INTO meal (mealid, timeconsumed,foodid, drinkid) VALUES ('3','19-00-00','9','5') Pad Thai & water
+
+
+Workout table
+INSERT INTO workout (workoutid, sets, reps, calories, weekday) VALUES ('1','3','20','150 calories','Wednesday')abs
+INSERT INTO workout (workoutid, sets, reps, calories, weekday) VALUES ('2','3','12','170 calories','Thursday')squats
+INSERT INTO workout (workoutid, sets, reps, calories, weekday) VALUES ('3','4','15','120 calories','Friday')biceps
+
+Day table
+INSERT INTO day (dayid,date,mealid,workoutid) VALUES ('1','2021-05-09','2','2')Monday
+INSERT INTO day (dayid,date,mealid,workoutid) VALUES ('1','2021-05-10','1','3')Friday
+
+INSERT INTO Users (userid,realname,username,password,email,weight,height,activity,age,goalid,dayid,groupid) VALUES ('1','Mike','Mike','Ganttsucks123','Mike@hotmail.com','69lbs','6ft2','23',2,'1','1','1')
+INSERT INTO Users (userid,realname,username,password,email,weight,height,activity,age,goalid,dayid,groupid) VALUES ('2','Johnny','Johnny22','123sucks','Johnny@hotmail.com','70lbs','5ft9','2','22','1','1','1')
+INSERT INTO Users (userid,realname,username,password,email,weight,height,activity,age,goalid,dayid,groupid) VALUES ('3','Dan','23Dan','Ganttsucks123','Mike@hotmail.com','69lbs','5ft10','2,'23','1','1','1')Monday
+
+
+DELETE from Users WHERE userid=1

@@ -40,5 +40,39 @@ Analyticspage;
 todo //complex
 
 usergrouppage;
-Insert into groups (groupname,groupadmin) values(?,?);
+Insert into groups (groupname,groupadmin) values(?,?);5
 INSERT INTO groups ( groupmembers) values(?) where (Select groupadmin from Users,Groups Join users.groupid=groups.groupid and groupadmin=?);
+
+populate database
+Goal table
+INSERT INTO Goal (goalid, goalname, startdate, endate, goaltype) VALUES ('1','Complete first workouts','09/05/2021','10/05/2021','Simple')
+INSERT INTO Goal (goalid, goalname, startdate, endate, goaltype) VALUES ('2','Complete three workouts','12/05/2021','15/05/2021','Simple')
+INSERT INTO Goal (goalid, goalname, startdate, endate, goaltype) VALUES ('3','Complete May's Ab Crusher','01/05/2021','31/05/2021','Complex')
+INSERT INTO Goal (goalid, goalname, startdate, endate, goaltype) VALUES ('4','Bums & Tums June','01/06/2021','30/06/2021','Complex')
+INSERT INTO Goal (goalid, goalname, startdate, endate, goaltype) VALUES ('5','Gain 10lbs','01/06/2021','30/06/2021','Complex')
+INSERT INTO Goal (goalid, goalname, startdate, endate, goaltype) VALUES ('6','Monthly Spin Class Challenge','01/06/2021','30/06/2021','Complex')
+
+Group Goal table
+INSERT INTO groupgoal (groupgoalid, goalid) VALUES ('1','5')
+INSERT INTO groupgoal (groupgoalid, goalid) VALUES ('2','6')
+INSERT INTO groupgoal (groupgoalid, goalid) VALUES ('3','1')
+INSERT INTO groupgoal (groupgoalid, goalid) VALUES ('4','3')
+
+Group table
+INSERT INTO groups (groupid, groupname, groupmembers, groupadmin, groupgoalid) VALUES ('1','Lads Holiday','Mike, Johnny, Dan','Mike','1')
+INSERT INTO groups (groupid, groupname, groupmembers, groupadmin, groupgoalid) VALUES ('2','Tuesday & Thursday Spin Class','Mike, Debby, Karen, Lily, Steven, Jordan','Karen','2')
+INSERT INTO groups (groupid, groupname, groupmembers, groupadmin, groupgoalid) VALUES ('3','Gym beginners','Tolu, Gabby, Karina, Sandeep, Jordan, Larry','Larry','3')
+INSERT INTO groups (groupid, groupname, groupmembers, groupadmin, groupgoalid) VALUES ('4','Ab Killers!','Tina, Gina, Diana, JJ , Mark, Pheobe','Pheobe','4')
+
+food table
+INSERT INTO food (foodid, caloriecount,quantity) VALUES ('1','95 calories','1')apple
+INSERT INTO food (foodid, caloriecount,quantity) VALUES ('2','320 calories','1')avocado
+INSERT INTO food (foodid, caloriecount,quantity) VALUES ('3','111 calories','1')Banana
+INSERT INTO food (foodid, caloriecount,quantity) VALUES ('4','62 calories','1 cup')Blueberries
+INSERT INTO food (foodid, caloriecount,quantity) VALUES ('5','125 calories','1 cup')Fruit salad
+INSERT INTO food (foodid, caloriecount,quantity) VALUES ('6','266 calories','1 cup')Chilli con Carne
+INSERT INTO food (foodid, caloriecount,quantity) VALUES ('7','282 calories','1 breast')Baked Chicken
+INSERT INTO food (foodid, caloriecount,quantity) VALUES ('8','290 calories','1 serving')Fajitas
+INSERT INTO food (foodid, caloriecount,quantity) VALUES ('9','375 calories','1 cup')Pad Thai
+
+

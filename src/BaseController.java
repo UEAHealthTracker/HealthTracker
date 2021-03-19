@@ -7,9 +7,9 @@ import javafx.stage.Stage;
 import java.io.IOException;
 
 public class BaseController {
-    private Parent root;
-    private Stage stage;
-    private Scene scene;
+    Parent root;
+    Stage stage;
+    Scene scene;
 
     public void openHomePage(javafx.event.ActionEvent actionEvent) throws IOException {
         root = FXMLLoader.load(getClass().getResource("HomePage.fxml"));

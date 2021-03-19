@@ -45,12 +45,12 @@ INSERT INTO groups ( groupmembers) values(?) where (Select groupadmin from Users
 
 populate database
 Goal table
-INSERT INTO Goal (goalid, goalname, startdate, endate, goaltype) VALUES ('1','Complete first workouts','09/05/2021','10/05/2021','Simple')
-INSERT INTO Goal (goalid, goalname, startdate, endate, goaltype) VALUES ('2','Complete three workouts','12/05/2021','15/05/2021','Simple')
-INSERT INTO Goal (goalid, goalname, startdate, endate, goaltype) VALUES ('3','Complete May's Ab Crusher','01/05/2021','31/05/2021','Complex')
-INSERT INTO Goal (goalid, goalname, startdate, endate, goaltype) VALUES ('4','Bums & Tums June','01/06/2021','30/06/2021','Complex')
-INSERT INTO Goal (goalid, goalname, startdate, endate, goaltype) VALUES ('5','Gain 10lbs','01/06/2021','30/06/2021','Complex')
-INSERT INTO Goal (goalid, goalname, startdate, endate, goaltype) VALUES ('6','Monthly Spin Class Challenge','01/06/2021','30/06/2021','Complex')
+INSERT INTO Goal (goalid, goalname, startdate, enddate, goaltype) VALUES ('1','Complete1stWorkouts','2021/05/09','2021/05/10','Simple')
+INSERT INTO Goal (goalid, goalname, startdate, enddate, goaltype) VALUES ('2','Complete 3 workouts','2021/05/12','2021/05/15','Simple')
+INSERT INTO Goal (goalid, goalname, startdate, enddate, goaltype) VALUES ('3','Complete May's Ab Crusher','2021/05/01','2021/05/31','Complex')
+INSERT INTO Goal (goalid, goalname, startdate, enddate, goaltype) VALUES ('4','Bums&Tums June','2021/06/01','2021/06/30','Complex')
+INSERT INTO Goal (goalid, goalname, startdate, enddate, goaltype) VALUES ('5','Gain 10lbs','2021/06/01','2021/06/30','Complex')
+INSERT INTO Goal (goalid, goalname, startdate, enddate, goaltype) VALUES ('6','MonthlySpinChallenge','2021/06/01','2021/06/30','Complex')
 
 Group Goal table
 INSERT INTO groupgoal (groupgoalid, goalid) VALUES ('1','5')
@@ -75,6 +75,10 @@ INSERT INTO food (foodid, caloriecount,quantity) VALUES ('7','282 calories','1 b
 INSERT INTO food (foodid, caloriecount,quantity) VALUES ('8','290 calories','1 serving')Fajitas
 INSERT INTO food (foodid, caloriecount,quantity) VALUES ('9','375 calories','1 cup')Pad Thai
 
+INSERT INTO food (foodid, caloriecount,quantity) VALUES ('1','95 ','1')
+INSERT INTO food (foodid, caloriecount,quantity) VALUES ('2','320 ','1')
+INSERT INTO food (foodid, caloriecount,quantity) VALUES ('3','111 ','1')
+INSERT INTO food (foodid, caloriecount,quantity) VALUES ('4','62 ','1 cup')
 INSERT INTO food (foodid, caloriecount,quantity) VALUES ('5','125','1')
 INSERT INTO food (foodid, caloriecount,quantity) VALUES ('6','266','1')
 INSERT INTO food (foodid, caloriecount,quantity) VALUES ('7','282','1')
@@ -90,10 +94,19 @@ INSERT INTO drink (drinkid, caloriecount,quantity) VALUES ('4','149 ','1 ')Milk
 INSERT INTO drink (drinkid, caloriecount,quantity) VALUES ('5','0 ','29.6')water
 INSERT INTO drink (drinkid, caloriecount,quantity) VALUES ('6','20 ','1 ')Tea
 
+INSERT INTO drink (drinkid, caloriecount,quanity) VALUES ('1','110','240')
+INSERT INTO drink (drinkid, caloriecount,quanity) VALUES ('2','110 ','240')
+INSERT INTO drink (drinkid, caloriecount,quanity) VALUES ('3','46 ','240')
+INSERT INTO drink (drinkid, caloriecount,quanity) VALUES ('4','149 ','1 ')
+INSERT INTO drink (drinkid, caloriecount,quanity) VALUES ('5','0 ','29.6')
+INSERT INTO drink (drinkid, caloriecount,quanity) VALUES ('6','20 ','1 ')
+
+
 Meal table
-INSERT INTO meal (mealid, timeconsumed,foodid, drinkid) VALUES ('1','09-00-00','3','6')Tea & Banana
-INSERT INTO meal (mealid, timeconsumed,foodid, drinkid) VALUES ('2','18-00-00','6','5')Chilli con carne & water
-INSERT INTO meal (mealid, timeconsumed,foodid, drinkid) VALUES ('3','19-00-00','9','5') Pad Thai & water
+INSERT INTO meal (mealid, timeconsumed,foodid, drinkid) VALUES ('1','2021/05/09 09-00-00','3','6')Tea & Banana
+INSERT INTO meal (mealid, timeconsumed,foodid, drinkid) VALUES ('2','2021/05/09 18-00-00','6','5')Chilli con carne & water
+INSERT INTO meal (mealid, timeconsumed,foodid, drinkid) VALUES ('3','2021/05/11 19-00-00','9','5') Pad Thai & water
+INSERT INTO meal (mealid, timeconsumed,foodid, drinkid) VALUES ('4','2021/05/12 19-00-00','8','2')Fajitas & Apple juice
 
 
 Workout table
@@ -101,13 +114,21 @@ INSERT INTO workout (workoutid, sets, reps, calories, weekday) VALUES ('1','3','
 INSERT INTO workout (workoutid, sets, reps, calories, weekday) VALUES ('2','3','12','170 calories','Thursday')squats
 INSERT INTO workout (workoutid, sets, reps, calories, weekday) VALUES ('3','4','15','120 calories','Friday')biceps
 
+INSERT INTO workout (workoutid, sets, reps, calories, weekday) VALUES ('1','3','20','150','Wednesday')
+INSERT INTO workout (workoutid, sets, reps, calories, weekday) VALUES ('2','3','12','170','Thursday')
+INSERT INTO workout (workoutid, sets, reps, calories, weekday) VALUES ('3','4','15','120','Friday')
+
 Day table
 INSERT INTO day (dayid,date,mealid,workoutid) VALUES ('1','2021-05-09','2','2')Monday
-INSERT INTO day (dayid,date,mealid,workoutid) VALUES ('1','2021-05-10','1','3')Friday
+INSERT INTO day (dayid,date,mealid,workoutid) VALUES ('2','2021-05-10','1','3')Friday
 
 INSERT INTO Users (userid,realname,username,password,email,weight,height,activity,age,goalid,dayid,groupid) VALUES ('1','Mike','Mike','Ganttsucks123','Mike@hotmail.com','69lbs','6ft2','23',2,'1','1','1')
 INSERT INTO Users (userid,realname,username,password,email,weight,height,activity,age,goalid,dayid,groupid) VALUES ('2','Johnny','Johnny22','123sucks','Johnny@hotmail.com','70lbs','5ft9','2','22','1','1','1')
 INSERT INTO Users (userid,realname,username,password,email,weight,height,activity,age,goalid,dayid,groupid) VALUES ('3','Dan','23Dan','Ganttsucks123','Mike@hotmail.com','69lbs','5ft10','2,'23','1','1','1')Monday
+
+INSERT INTO Users (userid,realname,username,password,email,weight,height,acitivty,age,goalid,dayid,groupid) VALUES ('1','Mike','Mike','Ganttsucks123','Mike@hotmail.com','69','62','23',2,'1','1','1')
+INSERT INTO Users (userid,realname,username,password,email,weight,height,acitivty,age,goalid,dayid,groupid) VALUES ('2','Johnny','Johnny22','123sucks','Johnny@hotmail.com','70','59','2','22','1','1','1')
+INSERT INTO Users (userid,realname,username,password,email,weight,height,acitivty,age,goalid,dayid,groupid) VALUES ('3','Dan','23Dan','Ganttsucks123','Mike@hotmail.com','69','510','2,'23','1','1','1')Monday
 
 
 DELETE from Users WHERE userid=1

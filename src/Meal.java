@@ -5,11 +5,11 @@ public class Meal {
 
     private final ArrayList<Food> foodList = new ArrayList<>();
     private final ArrayList<Drink> drinkList = new ArrayList<>();
-    private final localDateTime timeConsumed;
+    private final LocalDateTime timeConsumed;
     private int calorieCount;
 
     public Meal() {
-        this.timeConsumed = new Date();
+        this.timeConsumed = null;
         this.calorieCount = 0;
     }
 

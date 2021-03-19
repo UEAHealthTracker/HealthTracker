@@ -36,11 +36,11 @@
          </Label>
          <TextField layoutX="123.0" layoutY="100.0" promptText="Username" style="-fx-background-color: #ffffff;" />
          <ImageView fitHeight="25.0" fitWidth="25.0" layoutX="95.0" layoutY="100.0" pickOnBounds="true" preserveRatio="true">
-            <Image url="@img/face_icon.png" />
+            <Image url="@img/face.png" />
          </ImageView>
          <PasswordField layoutX="123.0" layoutY="150.0" promptText="Password" style="-fx-background-color: #ffffff;" />
          <ImageView fitHeight="25.0" fitWidth="25.0" layoutX="95.0" layoutY="150.0" pickOnBounds="true" preserveRatio="true">
-            <Image url="@img/password_icon.png" />
+            <Image url="@img/password.png" />
          </ImageView>
          <TextField layoutX="123.0" layoutY="200.0" promptText="Height" style="-fx-background-color: #ffffff;" />
          <Label layoutX="275.0" layoutY="205.0" text="cm" textFill="#aa80ff" />

@@ -1,2 +1,2 @@
-public class GroupsPageController {
+public class GroupsPageController extends BaseController {
 }

@@ -7,11 +7,12 @@ public class MyDB {
 
     public static void main(String[] args){
         String url = "jdbc:mysql://freedb.tech:3306/freedbtech_htrackdb?useSSL=false" ;
-       String user = "freedbtech_htrack";
-       String password = "ganttsucks123";
+       // String url = "jdbc:mysql://freedb.tech:3306/freedbtech_htrackdb?useSSL=false";
+        String username = "freedbtech_htrack";
+        String password = "ganttsucks123";
 
        try{
-           Connection myConn = DriverManager.getConnection(url,user,password);
+           Connection myConn = DriverManager.getConnection(url,username,password);
 
            Statement myStmt = myConn.createStatement();
 
@@ -20,7 +21,7 @@ public class MyDB {
 
            myStmt.executeUpdate(sql);
 
-           System.out.println("Update Complete");
+           System.out.println("Query Complete");
 
        } catch (SQLException throwables) {
            throwables.printStackTrace();

@@ -1,2 +1,2 @@
-public class WorkoutPageController {
+public class WorkoutPageController extends BaseController {
 }

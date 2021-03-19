@@ -1,2 +1,2 @@
-public class HomePageController {
+public class HomePageController extends BaseController {
 }

@@ -1,2 +1,2 @@
-public class DietPageController {
+public class DietPageController extends BaseController {
 }

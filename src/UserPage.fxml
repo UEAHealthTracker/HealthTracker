@@ -62,7 +62,7 @@
             </Label>
             <ImageView fitHeight="30.0" fitWidth="30.0" layoutX="280.0" layoutY="13.0" pickOnBounds="true" preserveRatio="true">
                <image>
-                  <Image url="@src/img/face_icon.png" />
+                  <Image url="img/face_icon.png" />
                </image>
             </ImageView>
             <Label layoutX="100.0" layoutY="60.0" text="&lt;name&gt;" textFill="#aa80ff">

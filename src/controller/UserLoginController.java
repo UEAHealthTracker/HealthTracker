@@ -1,11 +1,30 @@
 package controller;
 
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
+import java.awt.event.ActionEvent;
+import java.io.IOException;
+
 public class UserLoginController {
+    private Parent root;
     private Stage stage;
     private Scene scene;
-    private Parent root;
+
+    public void openSignUpPage(javafx.event.ActionEvent actionEvent) throws IOException {
+        root = FXMLLoader.load(getClass().getClassLoader().getResource("SignUpPage.fxml"));
+        stage = (Stage)((Node)actionEvent.getSource()).getScene().getWindow();
+        stage.setScene(scene);
+        stage.show();
+    }
+
+    public void openLoginPage(javafx.event.ActionEvent actionEvent) throws IOException {
+        root = FXMLLoader.load(getClass().getClassLoader().getResource("LoginPage.fxml"));
+        stage = (Stage)((Node)actionEvent.getSource()).getScene().getWindow();
+        stage.setScene(scene);
+        stage.show();
+    }
 }

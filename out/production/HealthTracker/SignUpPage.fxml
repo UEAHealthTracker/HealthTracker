@@ -11,7 +11,7 @@
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/15.0.1" xmlns:fx="http://javafx.com/fxml/1">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/15.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.UserLoginController">
    <left>
       <AnchorPane prefHeight="400.0" prefWidth="200.0" style="-fx-background-color: #c7a4ff;" BorderPane.alignment="CENTER">
          <children>
@@ -55,7 +55,7 @@
             <Label layoutX="275.0" layoutY="255.0" text="kg" textFill="#aa80ff" />
             <Button layoutX="123.0" layoutY="300.0" mnemonicParsing="false" prefWidth="150.0" style="-fx-background-color: #aa80ff;" text="Sign up" textFill="WHITE" />
             <Label layoutX="110.0" layoutY="350.0" text="Already have an account? Log in" textFill="#aa80ff" />
-            <Button layoutX="98.0" layoutY="350.0" mnemonicParsing="false" opacity="0.0" prefWidth="200.0" style="-fx-background-color: #aa80ff;" text="Log in" textFill="WHITE" />
+            <Button layoutX="98.0" layoutY="350.0" mnemonicParsing="false" onAction="#openLoginPage" opacity="0.0" prefWidth="200.0" style="-fx-background-color: #aa80ff;" text="Log in" textFill="WHITE" />
          </children>
       </AnchorPane>
    </right>

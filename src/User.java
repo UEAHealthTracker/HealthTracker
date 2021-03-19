@@ -7,8 +7,8 @@ public class User {
     private double weight;
     private double height;
     private double BMI;
-    private ArrayList<Goal> goals = new ArrayList<Goal>();
-    private ArrayList<Group> groups = new ArrayList<Group>();
+   // private ArrayList<Goal> goals = new ArrayList<Goal>();
+  //  private ArrayList<Group> groups = new ArrayList<Group>();
     private ArrayList<DailyActivity> activityLog = new ArrayList<DailyActivity>();
 
     public double getBMI() {
@@ -64,31 +64,31 @@ public class User {
         this.calculateBMI();
     }
 
-    @Override
-    public String toString() {
-        return "User{" +
-                "firstName='" + firstName + '\'' +
-                ", secondName='" + secondName + '\'' +
-                ", weight=" + weight +
-                ", height=" + height +
-                ", BMI=" + BMI +
-                ", goals=" + goals +
-                ", groups=" + groups +
-                ", activityLog=" + activityLog +
-                '}';
-    }
+//    @Override
+//    public String toString() {
+//        return "User{" +
+//                "firstName='" + firstName + '\'' +
+//                ", secondName='" + secondName + '\'' +
+//                ", weight=" + weight +
+//                ", height=" + height +
+//                ", BMI=" + BMI +
+//                ", goals=" + goals +
+//                ", groups=" + groups +
+//                ", activityLog=" + activityLog +
+//                '}';
+//    }
 
     public void addDailyActivity(DailyActivity day){
         this.activityLog.add(day);
     }
 
-    public void addGoal(Goal goal){
-        this.goals.add(goal);
-    }
-
-    public void addGroup(Group group){
-        this.groups.add(group);
-    }
+//    public void addGoal(Goal goal){
+//        this.goals.add(goal);
+//    }
+//
+//    public void addGroup(Group group){
+//        this.groups.add(group);
+//    }
 
     public static void main(String[] args) {
         //Testing for the user class:

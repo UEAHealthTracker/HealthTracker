@@ -71,7 +71,7 @@
                   <Rectangle2D />
                </viewport>
             </ImageView>
-            <TableView layoutX="15.0" layoutY="60.0" prefHeight="280.0" prefWidth="360.0" style="-fx-background-color: #ffffff;">
+            <TableView fx:id="dietTable" layoutX="15.0" layoutY="60.0" prefHeight="280.0" prefWidth="360.0" style="-fx-background-color: #ffffff;">
               <columns>
                 <TableColumn prefWidth="60.0" text="Time" />
                 <TableColumn prefWidth="75.0" text="Meal type" />
@@ -86,24 +86,18 @@
    <bottom>
       <AnchorPane prefHeight="50.0" prefWidth="600.0" style="-fx-background-color: #c7a4ff;" BorderPane.alignment="CENTER">
          <children>
-            <Button graphicTextGap="0.0" layoutX="380.0" layoutY="10.0" mnemonicParsing="false" onAction="#openAddDietItemPage" opacity="0.0" prefHeight="30.0" prefWidth="30.0" />
             <ImageView fitHeight="30.0" fitWidth="30.0" layoutX="380.0" layoutY="10.0" pickOnBounds="true" preserveRatio="true">
                <image>
                   <Image url="@img/addbutton.png" />
                </image>
             </ImageView>
-            <Button graphicTextGap="0.0" layoutX="300.0" layoutY="10.0" mnemonicParsing="false" opacity="0.0" prefHeight="30.0" prefWidth="30.0" />
-            <ImageView fitHeight="30.0" fitWidth="30.0" layoutX="300.0" layoutY="10.0" pickOnBounds="true" preserveRatio="true">
-               <image>
-                  <Image url="@img/update.png" />
-               </image>
-            </ImageView>
-            <Button graphicTextGap="0.0" layoutX="460.0" layoutY="10.0" mnemonicParsing="false" opacity="0.0" prefHeight="30.0" prefWidth="30.0" />
+            <Button graphicTextGap="0.0" layoutX="380.0" layoutY="10.0" mnemonicParsing="false" onAction="#openAddDietItemPage" opacity="0.0" prefHeight="30.0" prefWidth="30.0" />
             <ImageView fitHeight="30.0" fitWidth="30.0" layoutX="460.0" layoutY="10.0" pickOnBounds="true" preserveRatio="true">
                <image>
                   <Image url="@img/delete.png" />
                </image>
             </ImageView>
+            <Button fx:id="deleteButton" graphicTextGap="0.0" layoutX="460.0" layoutY="10.0" mnemonicParsing="false" opacity="0.0" prefHeight="30.0" prefWidth="30.0" />
          </children>
       </AnchorPane>
    </bottom>

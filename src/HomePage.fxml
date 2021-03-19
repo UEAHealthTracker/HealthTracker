@@ -86,19 +86,19 @@
          <children>
             <ImageView fitHeight="30.0" fitWidth="30.0" layoutX="380.0" layoutY="10.0" pickOnBounds="true" preserveRatio="true">
                <image>
-                  <Image url="img/addbutton.png" />
+                  <Image url="@img/addbutton.png" />
                </image>
             </ImageView>
             <Button graphicTextGap="0.0" layoutX="380.0" layoutY="10.0" mnemonicParsing="false" opacity="0.0" prefHeight="30.0" prefWidth="30.0" />
             <ImageView fitHeight="30.0" fitWidth="30.0" layoutX="300.0" layoutY="10.0" pickOnBounds="true" preserveRatio="true">
                <image>
-                  <Image url="img/update.png" />
+                  <Image url="@img/update.png" />
                </image>
             </ImageView>
             <Button graphicTextGap="0.0" layoutX="300.0" layoutY="10.0" mnemonicParsing="false" opacity="0.0" prefHeight="30.0" prefWidth="30.0" />
             <ImageView fitHeight="30.0" fitWidth="30.0" layoutX="460.0" layoutY="10.0" pickOnBounds="true" preserveRatio="true">
                <image>
-                  <Image url="img/delete.png" />
+                  <Image url="@img/delete.png" />
                </image>
             </ImageView>
             <Button graphicTextGap="0.0" layoutX="460.0" layoutY="10.0" mnemonicParsing="false" opacity="0.0" prefHeight="30.0" prefWidth="30.0" />

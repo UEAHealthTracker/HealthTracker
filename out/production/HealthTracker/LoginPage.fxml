@@ -11,55 +11,55 @@
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/15.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.UserLoginController">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/15.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="UserLoginController">
    <left>
-      <AnchorPane prefHeight="400.0" prefWidth="200.0" style="-fx-background-color: #c7a4ff;" BorderPane.alignment="CENTER">
-         <children>
-            <Label alignment="TOP_CENTER" contentDisplay="CENTER" text="Health Tracker" textAlignment="CENTER" textFill="WHITE">
-               <font>
-                  <Font name="Segoe UI Semilight" size="24.0" />
-               </font>
-               <padding>
-                  <Insets bottom="10.0" left="25.0" right="25.0" top="10.0" />
-               </padding>
-            </Label>
-         </children>
+      <AnchorPane prefHeight="400.0" prefWidth="200.0" style="-fx-background-color: #c7a4ff;"
+                  BorderPane.alignment="CENTER">
+         <Label alignment="TOP_CENTER" contentDisplay="CENTER" text="Health Tracker" textAlignment="CENTER"
+                textFill="WHITE">
+            <font>
+               <Font name="Segoe UI Semilight" size="24.0"/>
+            </font>
+            <padding>
+               <Insets bottom="10.0" left="25.0" right="25.0" top="10.0"/>
+            </padding>
+         </Label>
       </AnchorPane>
    </left>
    <right>
       <AnchorPane prefHeight="400.0" prefWidth="394.0" BorderPane.alignment="CENTER">
-         <children>
-            <Label alignment="TOP_CENTER" contentDisplay="CENTER" layoutX="151.0" text="Login" textAlignment="CENTER" textFill="#aa80ff">
-               <font>
-                  <Font name="Segoe UI Semilight" size="24.0" />
-               </font>
-               <padding>
-                  <Insets bottom="10.0" left="10.0" right="25.0" top="10.0" />
-               </padding>
-            </Label>
-            <TextField layoutX="123.0" layoutY="100.0" promptText="Username" style="-fx-background-color: #ffffff;" />
-            <ImageView fitHeight="25.0" fitWidth="25.0" layoutX="95.0" layoutY="100.0" pickOnBounds="true" preserveRatio="true">
-               <image>
-                  <Image url="@img/face_icon.png" />
-               </image>
-            </ImageView>
-            <PasswordField layoutX="123.0" layoutY="150.0" promptText="Password" style="-fx-background-color: #ffffff;" />
-            <ImageView fitHeight="25.0" fitWidth="25.0" layoutX="95.0" layoutY="150.0" pickOnBounds="true" preserveRatio="true">
-               <image>
-                  <Image url="@img/password_icon.png" />
-               </image>
-            </ImageView>
-            <Label layoutX="275.0" layoutY="155.0" text="&lt;status&gt;" textFill="RED">
-               <font>
-                  <Font name="Segoe UI Semilight" size="12.0" />
-               </font>
-            </Label>
-            <Button layoutX="123.0" layoutY="250.0" mnemonicParsing="false" onAction="#login" prefWidth="150.0" style="-fx-background-color: #aa80ff;" text="Log in" textFill="WHITE" />
-            <Label layoutX="110.0" layoutY="300.0" text="Don't have an account? Sign up" textFill="#aa80ff" />
-            <Button layoutX="98.0" layoutY="300.0" mnemonicParsing="false" onAction="#openSignUpPage" opacity="0.0" prefWidth="200.0" style="-fx-background-color: #aa80ff;" text="Sign up" textFill="WHITE" />
-            <Label layoutX="150.0" layoutY="200.0" text="Forgot password?" textFill="#aa80ff" />
-            <Button layoutX="98.0" layoutY="200.0" mnemonicParsing="false" opacity="0.0" prefWidth="200.0" style="-fx-background-color: #aa80ff;" text="Forgot password" textFill="WHITE" />
-         </children>
+         <Label alignment="TOP_CENTER" contentDisplay="CENTER" layoutX="151.0" text="Login" textAlignment="CENTER"
+                textFill="#aa80ff">
+            <font>
+               <Font name="Segoe UI Semilight" size="24.0"/>
+            </font>
+            <padding>
+               <Insets bottom="10.0" left="10.0" right="25.0" top="10.0"/>
+            </padding>
+         </Label>
+         <TextField layoutX="123.0" layoutY="100.0" promptText="Username" style="-fx-background-color: #ffffff;"/>
+         <ImageView fitHeight="25.0" fitWidth="25.0" layoutX="95.0" layoutY="100.0" pickOnBounds="true"
+                    preserveRatio="true">
+            <Image url="@img/face_icon.png"/>
+         </ImageView>
+         <PasswordField layoutX="123.0" layoutY="150.0" promptText="Password" style="-fx-background-color: #ffffff;"/>
+         <ImageView fitHeight="25.0" fitWidth="25.0" layoutX="95.0" layoutY="150.0" pickOnBounds="true"
+                    preserveRatio="true">
+            <Image url="@img/password_icon.png"/>
+         </ImageView>
+         <Label layoutX="275.0" layoutY="155.0" text="&lt;status&gt;" textFill="RED">
+            <font>
+               <Font name="Segoe UI Semilight" size="12.0"/>
+            </font>
+         </Label>
+         <Button layoutX="123.0" layoutY="250.0" mnemonicParsing="false" onAction="#login" prefWidth="150.0"
+                 style="-fx-background-color: #aa80ff;" text="Log in" textFill="WHITE"/>
+         <Label layoutX="110.0" layoutY="300.0" text="Don't have an account? Sign up" textFill="#aa80ff"/>
+         <Button layoutX="98.0" layoutY="300.0" mnemonicParsing="false" onAction="#openSignUpPage" opacity="0.0"
+                 prefWidth="200.0" style="-fx-background-color: #aa80ff;" text="Sign up" textFill="WHITE"/>
+         <Label layoutX="150.0" layoutY="200.0" text="Forgot password?" textFill="#aa80ff"/>
+         <Button layoutX="98.0" layoutY="200.0" mnemonicParsing="false" opacity="0.0" prefWidth="200.0"
+                 style="-fx-background-color: #aa80ff;" text="Forgot password" textFill="WHITE"/>
       </AnchorPane>
    </right>
 </BorderPane>

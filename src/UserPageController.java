@@ -1,2 +1,2 @@
-public class UserPageController {
+public class UserPageController extends BaseController{
 }

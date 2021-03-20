@@ -2,6 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
+      <module fileurl="file://$PROJECT_DIR$/HealthTrack/HealthTrack.iml" filepath="$PROJECT_DIR$/HealthTrack/HealthTrack.iml" />
       <module fileurl="file://$PROJECT_DIR$/HealthTracker.iml" filepath="$PROJECT_DIR$/HealthTracker.iml" />
     </modules>
   </component>

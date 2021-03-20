@@ -34,11 +34,11 @@
                <Insets bottom="10.0" left="10.0" right="25.0" top="10.0" />
             </padding>
          </Label>
-         <TextField layoutX="123.0" layoutY="100.0" promptText="Username" style="-fx-background-color: #ffffff;" />
+         <TextField fx:id="usernameTextField" layoutX="123.0" layoutY="100.0" promptText="Username" style="-fx-background-color: #ffffff;" />
          <ImageView fitHeight="25.0" fitWidth="25.0" layoutX="95.0" layoutY="100.0" pickOnBounds="true" preserveRatio="true">
             <Image url="@img/face.png" />
          </ImageView>
-         <PasswordField layoutX="123.0" layoutY="150.0" promptText="Password" style="-fx-background-color: #ffffff;" />
+         <PasswordField fx:id="passwordTextField" layoutX="123.0" layoutY="150.0" promptText="Password" style="-fx-background-color: #ffffff;" />
          <ImageView fitHeight="25.0" fitWidth="25.0" layoutX="95.0" layoutY="150.0" pickOnBounds="true" preserveRatio="true">
             <Image url="@img/password.png" />
          </ImageView>

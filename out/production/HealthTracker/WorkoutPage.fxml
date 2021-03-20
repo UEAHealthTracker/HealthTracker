@@ -1,17 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.geometry.Insets?>
-<?import javafx.scene.control.Button?>
-<?import javafx.scene.control.Label?>
-<?import javafx.scene.control.TableColumn?>
-<?import javafx.scene.control.TableView?>
-<?import javafx.scene.image.Image?>
-<?import javafx.scene.image.ImageView?>
-<?import javafx.scene.layout.AnchorPane?>
-<?import javafx.scene.layout.BorderPane?>
-<?import javafx.scene.text.Font?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/15.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="WorkoutPageController">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="WorkoutPageController">
    <left>
       <AnchorPane prefHeight="400.0" prefWidth="200.0" style="-fx-background-color: #c7a4ff;" BorderPane.alignment="CENTER">
          <children>
@@ -23,27 +18,27 @@
                   <Insets bottom="10.0" left="25.0" right="25.0" top="10.0" />
                </padding>
             </Label>
-            <Button layoutY="60.0" mnemonicParsing="false" onAction="#openHomePage" prefHeight="50.0" prefWidth="200.0" style="-fx-background-color: #aa80ff;" text="Home" textFill="WHITE">
+            <Button layoutY="60.0" mnemonicParsing="false" onAction="#MenuSwitch" prefHeight="50.0" prefWidth="200.0" style="-fx-background-color: #aa80ff;" text="Home" textFill="WHITE">
                <font>
                   <Font size="14.0" />
                </font>
             </Button>
-            <Button layoutY="120.0" mnemonicParsing="false" onAction="#openDietPage" prefHeight="50.0" prefWidth="200.0" style="-fx-background-color: #aa80ff;" text="Diet" textFill="WHITE">
+            <Button layoutY="120.0" mnemonicParsing="false" onAction="#MenuSwitch" prefHeight="50.0" prefWidth="200.0" style="-fx-background-color: #aa80ff;" text="Diet" textFill="WHITE">
                <font>
                   <Font size="14.0" />
                </font>
             </Button>
-            <Button layoutY="180.0" mnemonicParsing="false" onAction="#openWorkoutPage" prefHeight="50.0" prefWidth="200.0" style="-fx-background-color: #aa80ff;" text="Workout" textFill="WHITE">
+            <Button layoutY="180.0" mnemonicParsing="false" onAction="#MenuSwitch" prefHeight="50.0" prefWidth="200.0" style="-fx-background-color: #aa80ff;" text="Workout" textFill="WHITE">
                <font>
                   <Font size="14.0" />
                </font>
             </Button>
-            <Button layoutY="240.0" mnemonicParsing="false" onAction="#openGroupsPage" prefHeight="50.0" prefWidth="200.0" style="-fx-background-color: #aa80ff;" text="Groups" textFill="WHITE">
+            <Button layoutY="240.0" mnemonicParsing="false" onAction="#MenuSwitch" prefHeight="50.0" prefWidth="200.0" style="-fx-background-color: #aa80ff;" text="Groups" textFill="WHITE">
                <font>
                   <Font size="14.0" />
                </font>
             </Button>
-            <Button layoutY="300.0" mnemonicParsing="false" onAction="#openUserPage" prefHeight="50.0" prefWidth="200.0" style="-fx-background-color: #aa80ff;" text="User Information" textFill="WHITE">
+            <Button layoutY="300.0" mnemonicParsing="false" onAction="#MenuSwitch" prefHeight="50.0" prefWidth="200.0" style="-fx-background-color: #aa80ff;" text="User Information" textFill="WHITE">
                <font>
                   <Font size="14.0" />
                </font>
@@ -75,24 +70,24 @@
    <bottom>
       <AnchorPane prefHeight="50.0" prefWidth="600.0" style="-fx-background-color: #c7a4ff;" BorderPane.alignment="CENTER">
          <children>
-            <Button graphicTextGap="0.0" layoutX="380.0" layoutY="10.0" mnemonicParsing="false" opacity="0.0" prefHeight="30.0" prefWidth="30.0" />
             <ImageView fitHeight="30.0" fitWidth="30.0" layoutX="380.0" layoutY="10.0" pickOnBounds="true" preserveRatio="true">
                <image>
                   <Image url="@img/addbutton.png" />
                </image>
             </ImageView>
-            <Button graphicTextGap="0.0" layoutX="300.0" layoutY="10.0" mnemonicParsing="false" opacity="0.0" prefHeight="30.0" prefWidth="30.0" />
+            <Button graphicTextGap="0.0" layoutX="380.0" layoutY="10.0" mnemonicParsing="false" onAction="#openAddWorkoutPage" opacity="0.0" prefHeight="30.0" prefWidth="30.0" />
             <ImageView fitHeight="30.0" fitWidth="30.0" layoutX="300.0" layoutY="10.0" pickOnBounds="true" preserveRatio="true">
                <image>
                   <Image url="@img/update.png" />
                </image>
             </ImageView>
-            <Button graphicTextGap="0.0" layoutX="460.0" layoutY="10.0" mnemonicParsing="false" opacity="0.0" prefHeight="30.0" prefWidth="30.0" />
+            <Button graphicTextGap="0.0" layoutX="300.0" layoutY="10.0" mnemonicParsing="false" onAction="#openEditWorkoutPage" opacity="0.0" prefHeight="30.0" prefWidth="30.0" />
             <ImageView fitHeight="30.0" fitWidth="30.0" layoutX="460.0" layoutY="10.0" pickOnBounds="true" preserveRatio="true">
                <image>
                   <Image url="@img/delete.png" />
                </image>
             </ImageView>
+            <Button graphicTextGap="0.0" layoutX="460.0" layoutY="10.0" mnemonicParsing="false" onAction="#removeTableItem" opacity="0.0" prefHeight="30.0" prefWidth="30.0" />
          </children>
       </AnchorPane>
    </bottom>

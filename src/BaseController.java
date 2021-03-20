@@ -82,36 +82,25 @@ public class BaseController {
         String filename="";
         switch(text){
             case "Home":
-                filename="HomePage.fxml";
-                break;
+                filename="HomePage.fxml";break;
             case "Diet":
-                filename="DietPage.fxml";
-                break;
+                filename="DietPage.fxml";break;
             case "Workout":
-                filename="WorkoutPage.fxml";
-                break;
+                filename="WorkoutPage.fxml";break;
             case "Groups":
-                filename="GroupsPage.fxml";
-                break;
+                filename="GroupsPage.fxml";break;
             case "User Information":
-                filename="UserPage.fxml";
-                break;
+                filename="UserPage.fxml";break;
             case "Edit group":
-                filename="EditGroupPage.fxml";
-                break;
+                filename="EditGroupPage.fxml"; break;
             case "Create group":
-                filename="CreateGroupPage.fxml";
-                break;
+                filename="CreateGroupPage.fxml";break;
             case "Add Diet Item":
-                filename="AddDietItemPage.fxml";
-                break;
+                filename="AddDietItemPage.fxml"; break;
             case "EditWorkoutPage":
-                filename="EditWorkoutPage.fxml";
-                break;
+                filename="EditWorkoutPage.fxml";break;
             case "AddWorkoutPage":
-                filename="AddWorkoutPage.fxml";
-                break;
-
+                filename="AddWorkoutPage.fxml";break;
         }
         root = FXMLLoader.load(getClass().getResource(filename));
         stage = (Stage)((Node)actionEvent.getSource()).getScene().getWindow();

@@ -79,33 +79,35 @@ public class BaseController {
 
     public void MenuSwitch(javafx.event.ActionEvent actionEvent) throws IOException{
         String text = ((Button)actionEvent.getSource()).getText();
+        String filename="";
         switch(text){
             case "Home":
-                root = FXMLLoader.load(getClass().getResource("HomePage.fxml"));
+                filename="HomePage.fxml";
                 break;
             case "Diet":
-                root = FXMLLoader.load(getClass().getResource("DietPage.fxml"));
+                filename="DietPage.fxml";
                 break;
             case "Workout":
-                root = FXMLLoader.load(getClass().getResource("WorkoutPage.fxml"));
+                filename="WorkoutPage.fxml";
                 break;
             case "Groups":
-                root = FXMLLoader.load(getClass().getResource("GroupsPage.fxml"));
+                filename="GroupsPage.fxml";
                 break;
             case "User Information":
-                root = FXMLLoader.load(getClass().getResource("UserPage.fxml"));
+                filename="UserPage.fxml";
                 break;
             case "Edit group":
-                root = FXMLLoader.load(getClass().getResource("EditGroupPage.fxml"));
+                filename="EditGroupPage.fxml";
                 break;
             case "Create group":
-                root = FXMLLoader.load(getClass().getResource("CreateGroupPage.fxml"));
+                filename="CreateGroupPage.fxml";
                 break;
             case "Add Diet Item":
-                root = FXMLLoader.load(getClass().getResource("AddDietItemPage.fxml"));
+                filename="AddDietItemPage.fxml";
                 break;
 
         }
+        root = FXMLLoader.load(getClass().getResource(filename));
         stage = (Stage)((Node)actionEvent.getSource()).getScene().getWindow();
         scene = new Scene(root);
         stage.setScene(scene);

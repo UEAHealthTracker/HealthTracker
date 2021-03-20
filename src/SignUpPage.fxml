@@ -36,16 +36,16 @@
          </Label>
          <TextField fx:id="usernameTextField" layoutX="123.0" layoutY="60.0" promptText="Username" style="-fx-background-color: #ffffff;" />
          <ImageView fitHeight="25.0" fitWidth="25.0" layoutX="95.0" layoutY="60.0" pickOnBounds="true" preserveRatio="true">
-            <Image url="@img/face_icon.png" />
+            <Image url="@img/face.png" />
          </ImageView>
          <PasswordField fx:id="passwordTextField" layoutX="123.0" layoutY="100.0" promptText="Password" style="-fx-background-color: #ffffff;" />
          <ImageView fitHeight="25.0" fitWidth="25.0" layoutX="95.0" layoutY="100.0" pickOnBounds="true" preserveRatio="true">
-            <Image url="@img/password_icon.png" />
+            <Image url="@img/password.png" />
          </ImageView>
          <TextField fx:id="emailTextField" layoutX="123.0" layoutY="150.0" promptText="Email" style="-fx-background-color: #ffffff;" />
          <ImageView fitHeight="25.0" fitWidth="25.0" layoutX="95.0" layoutY="150.0" pickOnBounds="true" preserveRatio="true">
             <image>
-               <Image url="@img/envelope.png" />
+               <Image url="@img/email.png" />
             </image>
          </ImageView>
          <TextField fx:id="heightTextField" layoutX="123.0" layoutY="200.0" promptText="Height" style="-fx-background-color: #ffffff;" />

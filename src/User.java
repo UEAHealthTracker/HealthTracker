@@ -1,12 +1,16 @@
 import java.util.ArrayList;
 
 public class User {
+    public final static User INSTANCE = new User();
     //Initialise variables
-    private String firstName;
-    private String secondName;
-    private double weight;
-    private double height;
-    private double BMI;
+     String username;
+     String password;
+     String email;
+     int age;
+     String RealName;
+     double weight;
+     double height;
+     double BMI;
    // private ArrayList<Goal> goals = new ArrayList<Goal>();
   //  private ArrayList<Group> groups = new ArrayList<Group>();
     private ArrayList<DailyActivity> activityLog = new ArrayList<DailyActivity>();
@@ -15,21 +19,37 @@ public class User {
         return BMI;
     }
 
-    public String getFirstName() {
-        return firstName;
+    public String getRealName() {
+        return RealName;
+    }
+    public void setRealName(String name) {
+        this.RealName = RealName;
+    }
+    public String getUsername() {
+        return username;
+    }
+    public void setUsername(String username) {
+        this.username = username;
+    }
+    public String getPassword() {
+        return password;
+    }
+    public void setPassword(String password) {
+        this.password = password;
+    }
+    public String getEmail() {
+        return email;
+    }
+    public void setEmail(String email) {
+        this.email = email;
+    }
+    public Integer getAge() {
+        return age;
+    }
+    public void setAge(Integer age) {
+        this.age = age;
     }
 
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
-    }
-
-    public String getSecondName() {
-        return secondName;
-    }
-
-    public void setSecondName(String secondName) {
-        this.secondName = secondName;
-    }
 
     public double getWeight() {
         return weight;
@@ -56,14 +76,19 @@ public class User {
         this.BMI= this.weight/ (height*height);
     }
 
-    public User(String firstName, String secondName, double weight, double height) {
-        this.firstName = firstName;
-        this.secondName = secondName;
+    public User(String Realname,String username,String password,String email, Integer age, double weight, double height) {
+        this.RealName = Realname;
+        this.username=username;
+        this.password=password;
+        this.email=email;
+        this.age=age;
         this.weight = weight;
         this.height = height;
         this.calculateBMI();
     }
+    public User() {
 
+    }
 //    @Override
 //    public String toString() {
 //        return "User{" +
@@ -90,14 +115,14 @@ public class User {
 //        this.groups.add(group);
 //    }
 
-    public static void main(String[] args) {
-        //Testing for the user class:
-        User testUser = new User("Daniella", "Ammo", 70, 1.73);
-        testUser.setHeight(1.76);
-        testUser.calculateBMI();
-        System.out.println(testUser.BMI);
-        System.out.println(testUser);
-    }
+//    public static void main(String[] args) {
+//        //Testing for the user class:
+//        User testUser = new User("Daniella", "Ammo", 70, 1.73);
+//        testUser.setHeight(1.76);
+//        testUser.calculateBMI();
+//        System.out.println(testUser.BMI);
+//        System.out.println(testUser);
+//    }
 
     }
 

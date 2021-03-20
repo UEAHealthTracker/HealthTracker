@@ -79,7 +79,7 @@
          <children>
             <ImageView fitHeight="30.0" fitWidth="30.0" layoutX="380.0" layoutY="10.0" pickOnBounds="true" preserveRatio="true">
                <image>
-                  <Image url="@img/addbutton.png" />
+                  <Image url="@img/add_box.png" />
                </image>
             </ImageView>
             <Button graphicTextGap="0.0" layoutX="380.0" layoutY="10.0" mnemonicParsing="false" onAction="#MenuSwitch" opacity="0.0" prefHeight="30.0" prefWidth="30.0" text="Create group">
@@ -88,7 +88,7 @@
                </font></Button>
             <ImageView fitHeight="30.0" fitWidth="30.0" layoutX="300.0" layoutY="10.0" pickOnBounds="true" preserveRatio="true">
                <image>
-                  <Image url="@img/update.png" />
+                  <Image url="@img/mode_edit.png" />
                </image>
             </ImageView>
             <Button graphicTextGap="0.0" layoutX="300.0" layoutY="10.0" mnemonicParsing="false" onAction="#MenuSwitch" opacity="0.0" prefHeight="30.0" prefWidth="30.0" text="Edit group">

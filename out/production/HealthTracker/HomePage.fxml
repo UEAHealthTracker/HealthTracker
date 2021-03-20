@@ -65,12 +65,12 @@
                   <Insets bottom="10.0" left="10.0" right="25.0" top="10.0" />
                </padding>
             </Label>
-            <TableView layoutX="14.0" layoutY="102.0" prefHeight="200.0" prefWidth="360.0" style="-fx-background-color: #ffffff;">
+            <TableView fx:id="goalview" layoutX="14.0" layoutY="102.0" prefHeight="200.0" prefWidth="360.0" style="-fx-background-color: #ffffff;">
               <columns>
-                <TableColumn prefWidth="160.0" text="Name" />
-                  <TableColumn prefWidth="50.0" text="Date" />
-                  <TableColumn prefWidth="75.0" text="Status" />
-                  <TableColumn prefWidth="75.0" text="Groups" />
+                <TableColumn fx:id="goalname" prefWidth="160.0" text="Name" />
+                  <TableColumn fx:id="goaldate" prefWidth="50.0" text="Date" />
+                  <TableColumn fx:id="goalstatus" prefWidth="75.0" text="Status" />
+                  <TableColumn fx:id="goalgroups" prefWidth="75.0" text="Groups" />
               </columns>
             </TableView>
          </children>
@@ -81,16 +81,16 @@
          <children>
             <ImageView fitHeight="30.0" fitWidth="30.0" layoutX="380.0" layoutY="10.0" pickOnBounds="true" preserveRatio="true">
                <image>
-                  <Image url="@img/addbutton.png" />
+                  <Image url="@img/add_box.png" />
                </image>
             </ImageView>
             <Button graphicTextGap="0.0" layoutX="380.0" layoutY="10.0" mnemonicParsing="false" onAction="#openSelectGoalTypePage" opacity="0.0" prefHeight="30.0" prefWidth="30.0" />
             <ImageView fitHeight="30.0" fitWidth="30.0" layoutX="300.0" layoutY="10.0" pickOnBounds="true" preserveRatio="true">
                <image>
-                  <Image url="@img/update.png" />
+                  <Image url="@img/mode_edit.png" />
                </image>
             </ImageView>
-            <Button graphicTextGap="0.0" layoutX="300.0" layoutY="10.0" mnemonicParsing="false" onAction="#openEditGoalPage" opacity="0.0" prefHeight="30.0" prefWidth="30.0" />
+            <Button graphicTextGap="0.0" layoutX="300.0" layoutY="10.0" mnemonicParsing="false" onAction="#onEdit" opacity="0.0" prefHeight="30.0" prefWidth="30.0" />
             <ImageView fitHeight="30.0" fitWidth="30.0" layoutX="460.0" layoutY="10.0" pickOnBounds="true" preserveRatio="true">
                <image>
                   <Image url="@img/delete.png" />

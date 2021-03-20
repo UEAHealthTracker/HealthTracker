@@ -34,25 +34,25 @@
                <Insets bottom="10.0" left="10.0" right="25.0" top="10.0" />
             </padding>
          </Label>
-         <TextField fx:id="usernameTextField" layoutX="123.0" layoutY="60.0" promptText="Username" style="-fx-background-color: #ffffff;" />
+         <TextField fx:id="usernameTF" layoutX="123.0" layoutY="60.0" promptText="Username" style="-fx-background-color: #ffffff;" />
          <ImageView fitHeight="25.0" fitWidth="25.0" layoutX="95.0" layoutY="60.0" pickOnBounds="true" preserveRatio="true">
-            <Image url="@img/face_icon.png" />
+            <Image url="@img/face.png" />
          </ImageView>
-         <PasswordField fx:id="passwordTextField" layoutX="123.0" layoutY="100.0" promptText="Password" style="-fx-background-color: #ffffff;" />
+         <PasswordField fx:id="passwordTF" layoutX="123.0" layoutY="100.0" promptText="Password" style="-fx-background-color: #ffffff;" />
          <ImageView fitHeight="25.0" fitWidth="25.0" layoutX="95.0" layoutY="100.0" pickOnBounds="true" preserveRatio="true">
-            <Image url="@img/password_icon.png" />
+            <Image url="@img/password.png" />
          </ImageView>
-         <TextField fx:id="emailTextField" layoutX="123.0" layoutY="150.0" promptText="Email" style="-fx-background-color: #ffffff;" />
+         <TextField fx:id="emailTF" layoutX="123.0" layoutY="150.0" promptText="Email" style="-fx-background-color: #ffffff;" />
          <ImageView fitHeight="25.0" fitWidth="25.0" layoutX="95.0" layoutY="150.0" pickOnBounds="true" preserveRatio="true">
             <image>
-               <Image url="@img/envelope.png" />
+               <Image url="@img/email.png" />
             </image>
          </ImageView>
-         <TextField fx:id="heightTextField" layoutX="123.0" layoutY="200.0" promptText="Height" style="-fx-background-color: #ffffff;" />
+         <TextField fx:id="heightTF" layoutX="123.0" layoutY="200.0" promptText="Height" style="-fx-background-color: #ffffff;" />
          <Label layoutX="275.0" layoutY="205.0" text="cm" textFill="#aa80ff" />
-         <TextField fx:id="weightTextField" layoutX="123.0" layoutY="250.0" promptText="Weight" style="-fx-background-color: #ffffff;" />
+         <TextField fx:id="weightTF" layoutX="123.0" layoutY="250.0" promptText="Weight" style="-fx-background-color: #ffffff;" />
          <Label layoutX="275.0" layoutY="255.0" text="kg" textFill="#aa80ff" />
-         <Button layoutX="123.0" layoutY="300.0" mnemonicParsing="false" prefWidth="150.0" style="-fx-background-color: #aa80ff;" text="Sign up" textFill="WHITE" />
+         <Button fx:id="signupbtn" layoutX="123.0" layoutY="300.0" mnemonicParsing="false" prefWidth="150.0" style="-fx-background-color: #aa80ff;" text="Sign up" textFill="WHITE" />
          <Label layoutX="110.0" layoutY="350.0" text="Already have an account? Log in" textFill="#aa80ff" />
          <Button layoutX="98.0" layoutY="350.0" mnemonicParsing="false" onAction="#openLoginPage" opacity="0.0" prefWidth="200.0" style="-fx-background-color: #aa80ff;" text="Log in" textFill="WHITE" />
       </AnchorPane>

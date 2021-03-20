@@ -105,6 +105,12 @@ public class BaseController {
             case "Add Diet Item":
                 filename="AddDietItemPage.fxml";
                 break;
+            case "EditWorkoutPage":
+                filename="EditWorkoutPage.fxml";
+                break;
+            case "AddWorkoutPage":
+                filename="AddWorkoutPage.fxml";
+                break;
 
         }
         root = FXMLLoader.load(getClass().getResource(filename));

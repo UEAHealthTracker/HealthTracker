@@ -101,6 +101,8 @@ public class BaseController {
                 filename="EditWorkoutPage.fxml";break;
             case "AddWorkoutPage":
                 filename="AddWorkoutPage.fxml";break;
+            case "EditUserPage":
+                filename="EditUserPage.fxml";
         }
         root = FXMLLoader.load(getClass().getResource(filename));
         stage = (Stage)((Node)actionEvent.getSource()).getScene().getWindow();

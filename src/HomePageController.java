@@ -23,6 +23,7 @@ public class HomePageController extends BaseController {
     private ObservableList<Goal> data;
 
     private TableView goalsTable;
+    @FXML Label userLabel;
     @FXML  TableView <Goal>  goalview;
     @FXML TableColumn<Goal, String> goalname;
     @FXML TableColumn<Goal, Date> goaldate;
@@ -32,6 +33,7 @@ public class HomePageController extends BaseController {
     @FXML DatePicker editgoaldate;
     @FXML ComboBox editgoalgroup;
     public void initialize() {
+        userLabel.setText("Hello "+User.INSTANCE.getUsername());
         SimpleDateFormat sdate = new SimpleDateFormat("yyyy-MM-dd");
         SimpleDateFormat edate = new SimpleDateFormat("yyyy-MM-dd");
         data = FXCollections.observableArrayList();

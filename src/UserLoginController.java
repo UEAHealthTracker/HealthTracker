@@ -25,7 +25,7 @@ public class UserLoginController {
     private TextField weightTextField;
 
     public void openSignUpPage(javafx.event.ActionEvent actionEvent) throws IOException {
-        root = FXMLLoader.load(getClass().getResource("SignUpPage.fxml"));
+        root = FXMLLoader.load(getClass().getResource("CreateAccountPage.fxml"));
         stage = (Stage)((Node)actionEvent.getSource()).getScene().getWindow();
         scene = new Scene(root);
         stage.setScene(scene);

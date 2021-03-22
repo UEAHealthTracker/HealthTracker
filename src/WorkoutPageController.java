@@ -1,3 +1,4 @@
+
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Scene;
@@ -6,6 +7,7 @@ import javafx.scene.control.TableView;
 import javafx.stage.Stage;
 
 import java.io.IOException;
+import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.sql.Statement;
 
@@ -18,9 +20,11 @@ public class WorkoutPageController extends BaseController {
 
     //add data to workout table
     public void populateWorkoutTable(){
-        Statement statement = conn.createStatement();
+      // Statement statement = conn.createStatement();
         try {
-            statement.executeUpdate(SQL_Insert);
+            PreparedStatement pst = DBsession.INSTANCE.OpenConnection().prepareStatement(SQL_Insert);
+           // statement.executeUpdate(SQL_Insert);
+
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         }
@@ -34,3 +38,4 @@ public class WorkoutPageController extends BaseController {
 
 
 }
+

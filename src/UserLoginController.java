@@ -37,12 +37,13 @@ public class UserLoginController {
     @FXML  TextField weightTF;
     @FXML Button loginbtn;
     @FXML Button signupbtn;
+    @FXML Button sign;
     public void initialize() {
 
         user=usernameTextField;
         pass=passwordTextField;
         logbtn=loginbtn;
-        createacc=signupbtn;
+        //createacc=signup;
         logbtn.setStyle("-fx-background-color:#FA526C");
 
     }
@@ -69,7 +70,7 @@ public void login(javafx.event.ActionEvent actionEvent) throws IOException {
     String passdb=null;
     User.INSTANCE.setUsername(usernameTextField.getText());
     User.INSTANCE.setPassword(passwordTextField.getText());
-    String SQL_QUERY="select username,password from Users where username=? and password=?";
+    String SQL_QUERY="select username,password,realname,weight,height,age,email from Users where username=? and password=?";
     try{
         PreparedStatement pst = DBsession.INSTANCE.OpenConnection().prepareStatement(SQL_QUERY);
         pst.setString(1, usernameTextField.getText());
@@ -80,6 +81,11 @@ public void login(javafx.event.ActionEvent actionEvent) throws IOException {
                 passdb=rs.getString("password");
 
                 if (userdb.equals(User.INSTANCE.getUsername())&&passdb.equals(User.INSTANCE.getPassword()) ) {
+                    User.INSTANCE.setRealName(rs.getString("realname"));
+                    User.INSTANCE.setEmail(rs.getString("email"));
+                    User.INSTANCE.setHeight(Double.parseDouble(rs.getString("height")));
+                    User.INSTANCE.setWeight(Integer.parseInt(rs.getString("weight")));
+                    User.INSTANCE.setAge(Integer.parseInt(rs.getString("age")));
                     root = FXMLLoader.load(getClass().getResource("HomePage.fxml"));
                     stage = (Stage)((Node)actionEvent.getSource()).getScene().getWindow();
                     scene = new Scene(root);
@@ -139,8 +145,8 @@ public void login(javafx.event.ActionEvent actionEvent) throws IOException {
                 pst.setInt(4,ht);
                 pst.setInt(5,wt);
                 if (CheckCredentials() > 0) {
-                    createacc.setStyle("-fx-background-color:transparent;-fx-text-fill: red");
-                    createacc.setText("Username/Password already exists");
+                    loginbtn.setStyle("-fx-background-color:transparent;-fx-text-fill: red");
+                    loginbtn.setText("Username/Password already exists");
                     thread.start();
                     DBsession.INSTANCE.OpenConnection().close();
                 } else {

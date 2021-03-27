@@ -131,4 +131,9 @@ INSERT INTO Users (userid,realname,username,password,email,weight,height,acitivt
 INSERT INTO Users (userid,realname,username,password,email,weight,height,acitivty,age,goalid,dayid,groupid) VALUES ('3','Dan','23Dan','Ganttsucks123','Mike@hotmail.com','69','510','2,'23','1','1','1')Monday
 
 
-DELETE from Users WHERE userid=1
+DELETE from Users WHERE userid=
+
+Create TABLE Users(
+	userid int(10),
+    realname varchar(30),username varchar(20),password varchar(20),email varchar(20),weight int(10),height int(10),activity int(2),age int(5)
+)

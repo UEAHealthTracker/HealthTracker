@@ -63,29 +63,33 @@ public class UserLoginController {
     }
 
 
-public void login(javafx.event.ActionEvent actionEvent) throws IOException {
-    passwordTextField.setStyle("-fx-text-fill:white");
-    String userdb=null;
-    String passdb=null;
-    User.INSTANCE.setUsername(usernameTextField.getText());
-    User.INSTANCE.setPassword(passwordTextField.getText());
-    String SQL_QUERY="select username,password from Users where username=? and password=?";
-    try{
-        PreparedStatement pst = DBsession.INSTANCE.OpenConnection().prepareStatement(SQL_QUERY);
-        pst.setString(1, usernameTextField.getText());
-        pst.setString(2, passwordTextField.getText());
-        ResultSet rs=pst.executeQuery();
+    public void login(javafx.event.ActionEvent actionEvent) throws IOException {
+        passwordTextField.setStyle("-fx-text-fill:white");
+        String userdb=null;
+        String passdb=null;
+        User.INSTANCE.setUsername(usernameTextField.getText());
+        User.INSTANCE.setPassword(passwordTextField.getText());
+        String SQL_QUERY="select userid,username,password,realname,weight,height,age,email from Users where username=? and password=?";
+        try{
+            PreparedStatement pst = DBsession.INSTANCE.OpenConnection().prepareStatement(SQL_QUERY);
+            pst.setString(1, usernameTextField.getText());
+            pst.setString(2, passwordTextField.getText());
+            ResultSet rs=pst.executeQuery();
             while(rs.next()) {
                 userdb=rs.getString("username");
                 passdb=rs.getString("password");
-
                 if (userdb.equals(User.INSTANCE.getUsername())&&passdb.equals(User.INSTANCE.getPassword()) ) {
+                    User.INSTANCE.setUserid(rs.getInt("userid"));
+                    User.INSTANCE.setRealName(rs.getString("realname"));
+                    User.INSTANCE.setEmail(rs.getString("email"));
+                    User.INSTANCE.setHeight(Double.parseDouble(rs.getString("height")));
+                    User.INSTANCE.setWeight(Integer.parseInt(rs.getString("weight")));
+                    User.INSTANCE.setAge(Integer.parseInt(rs.getString("age")));
                     root = FXMLLoader.load(getClass().getResource("HomePage.fxml"));
                     stage = (Stage)((Node)actionEvent.getSource()).getScene().getWindow();
                     scene = new Scene(root);
                     stage.setScene(scene);
                     stage.show();
-
                 } else {
                     String s=null;
                     logbtn.setStyle("-fx-background-color:rgba(0,0,0,0);-fx-text-fill: #ff0000");
@@ -93,10 +97,9 @@ public void login(javafx.event.ActionEvent actionEvent) throws IOException {
                     thread.start();
                 }
             }
-        DBsession.INSTANCE.OpenConnection().close();
-    }catch(Exception e){ System.out.println(e);}
-}
-
+            DBsession.INSTANCE.OpenConnection().close();
+        }catch(Exception e){ System.out.println(e);}
+    }
     //https://riptutorial.com/javafx/example/7291/updating-the-ui-using-platform-runlater
     Thread thread = new Thread(new Runnable() {
         @Override

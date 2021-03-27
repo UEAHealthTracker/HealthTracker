@@ -92,13 +92,13 @@ public class WorkoutPageController extends BaseController{
                 }
             pst.setInt(3,cal* Integer.parseInt(durationTF.getText()));
             pst.executeUpdate();
-            DateSet();
+
             DBsession.INSTANCE.OpenConnection().close();
 
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         }
-
+        DateSet();
     }
     public void DateSet(){
         LocalDate date=LocalDate.now();
@@ -106,9 +106,8 @@ public class WorkoutPageController extends BaseController{
        // String SQL_Insert="INSERT INTO day(date,mealid,workoutid,userid) values";
         //String SQL_Insert="INSERT INTO day(date,workoutid,userid) values(?,(Select workoutid from workout where workouttype=? AND duration=?),?)";
         String SQL_Select="Select workoutid from workout where workouttype=? AND duration=?";
-        String SQL_Insert="INSERT INTO day(date,workoutid,userid) values(?,?,?)";
+
         try {
-            PreparedStatement pst = DBsession.INSTANCE.OpenConnection().prepareStatement(SQL_Insert);
             PreparedStatement sel = DBsession.INSTANCE.OpenConnection().prepareStatement(SQL_Select);
             sel.setString(1,WorkoutTypeSelector.getSelectionModel().getSelectedItem().toString());
             sel.setInt(2, Integer.parseInt(durationTF.getText()));
@@ -116,10 +115,26 @@ public class WorkoutPageController extends BaseController{
             while(wid.next()) {
              Workout.Instance.setWorkoutid(Integer.parseInt(wid.getString("workoutid")));
             }
+
+            DBsession.INSTANCE.OpenConnection().close();
+
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+        DateSet2();
+    }
+    public void DateSet2(){
+        LocalDate date=LocalDate.now();
+//        String SQL_Insert="INSERT INTO day( date, workoutid, calories) Select workoutid,username from Users ON day.dayid=Users.dayid Join workout ON workout.workoutid=day.dayid Where username=? and workoutid=?";   ";
+        // String SQL_Insert="INSERT INTO day(date,mealid,workoutid,userid) values";
+        //String SQL_Insert="INSERT INTO day(date,workoutid,userid) values(?,(Select workoutid from workout where workouttype=? AND duration=?),?)";
+        String SQL_Insert="INSERT INTO day(date,workoutid,userid) values(?,?,?)";
+        try {
+            PreparedStatement pst = DBsession.INSTANCE.OpenConnection().prepareStatement(SQL_Insert);
             pst.setString(1,date.toString());
             pst.setInt(2, Workout.Instance.getWorkoutid());
-            pst.setString(3, User.INSTANCE.getUsername());
-             pst.executeUpdate();
+            pst.setInt(3, User.INSTANCE.getUserid());
+            pst.executeUpdate();
 
             DBsession.INSTANCE.OpenConnection().close();
 
@@ -127,7 +142,6 @@ public class WorkoutPageController extends BaseController{
             throwables.printStackTrace();
         }
     }
-
 
     //allow user to select a table item/row and delete it using the delete button
     public void removeTableItem(){

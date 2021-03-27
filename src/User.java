@@ -2,6 +2,16 @@ import java.util.ArrayList;
 
 public class User {
     public final static User INSTANCE = new User();
+
+    public int getUserid() {
+        return userid;
+    }
+
+    public void setUserid(int userid) {
+        this.userid = userid;
+    }
+
+    int userid;
     //Initialise variables
      String username;
      String password;

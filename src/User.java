@@ -3,16 +3,16 @@ import java.util.ArrayList;
 public class User {
     public final static User INSTANCE = new User();
 
-    public Integer getUserid() {
+    public int getUserid() {
         return userid;
     }
 
-    public void setUserid(Integer userid) {
+    public void setUserid(int userid) {
         this.userid = userid;
     }
 
+    int userid;
     //Initialise variables
-    Integer userid;
      String username;
      String password;
      String email;
@@ -21,14 +21,9 @@ public class User {
      double weight;
      double height;
      double BMI;
-
-//    public ArrayList<Group> getGroups() {
-//        return groups;
-//    }
-//
-//    // private ArrayList<Goal> goals = new ArrayList<Goal>();
-//    private ArrayList<Group> groups = new ArrayList<Group>();
-//    private ArrayList<DailyActivity> activityLog = new ArrayList<DailyActivity>();
+   // private ArrayList<Goal> goals = new ArrayList<Goal>();
+  //  private ArrayList<Group> groups = new ArrayList<Group>();
+    private ArrayList<DailyActivity> activityLog = new ArrayList<DailyActivity>();
 
     public double getBMI() {
         return BMI;
@@ -64,6 +59,7 @@ public class User {
     public void setAge(Integer age) {
         this.age = age;
     }
+
 
     public double getWeight() {
         return weight;
@@ -117,9 +113,9 @@ public class User {
 //                '}';
 //    }
 
-//    public void addDailyActivity(DailyActivity day){
-//        this.activityLog.add(day);
-//    }
+    public void addDailyActivity(DailyActivity day){
+        this.activityLog.add(day);
+    }
 
 //    public void addGoal(Goal goal){
 //        this.goals.add(goal);

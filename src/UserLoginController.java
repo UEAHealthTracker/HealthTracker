@@ -15,8 +15,7 @@ import java.io.IOException;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 
-public class UserLoginController extends BaseController {
-    public static final UserLoginController Instance= new UserLoginController();
+public class UserLoginController {
     private static Button logbtn,createacc;
     private static TextField pass,user;
     private Parent root;
@@ -38,18 +37,17 @@ public class UserLoginController extends BaseController {
     @FXML  TextField weightTF;
     @FXML Button loginbtn;
     @FXML Button signupbtn;
-    @FXML Button sign;
     public void initialize() {
 
         user=usernameTextField;
         pass=passwordTextField;
         logbtn=loginbtn;
-        //createacc=signup;
+        createacc=signupbtn;
         logbtn.setStyle("-fx-background-color:#FA526C");
 
     }
     public void openSignUpPage(javafx.event.ActionEvent actionEvent) throws IOException {
-        root = FXMLLoader.load(getClass().getResource("CreateAccountPage.fxml"));
+        root = FXMLLoader.load(getClass().getResource("SignUpPage.fxml"));
         stage = (Stage)((Node)actionEvent.getSource()).getScene().getWindow();
         scene = new Scene(root);
         stage.setScene(scene);
@@ -65,30 +63,33 @@ public class UserLoginController extends BaseController {
     }
 
 
-public void login(javafx.event.ActionEvent actionEvent) throws IOException {
-    passwordTextField.setStyle("-fx-text-fill:white");
-    String userdb=null;
-    String passdb=null;
-    User.INSTANCE.setUsername(usernameTextField.getText());
-    User.INSTANCE.setPassword(passwordTextField.getText());
-    String SQL_QUERY="select userid,username,password,realname,weight,height,age,email from Users where username=? and password=?";
-    try{
-        PreparedStatement pst = DBsession.INSTANCE.OpenConnection().prepareStatement(SQL_QUERY);
-        pst.setString(1, usernameTextField.getText());
-        pst.setString(2, passwordTextField.getText());
-        ResultSet rs=pst.executeQuery();
+    public void login(javafx.event.ActionEvent actionEvent) throws IOException {
+        passwordTextField.setStyle("-fx-text-fill:white");
+        String userdb=null;
+        String passdb=null;
+        User.INSTANCE.setUsername(usernameTextField.getText());
+        User.INSTANCE.setPassword(passwordTextField.getText());
+        String SQL_QUERY="select userid,username,password,realname,weight,height,age,email from Users where username=? and password=?";
+        try{
+            PreparedStatement pst = DBsession.INSTANCE.OpenConnection().prepareStatement(SQL_QUERY);
+            pst.setString(1, usernameTextField.getText());
+            pst.setString(2, passwordTextField.getText());
+            ResultSet rs=pst.executeQuery();
             while(rs.next()) {
                 userdb=rs.getString("username");
                 passdb=rs.getString("password");
-
                 if (userdb.equals(User.INSTANCE.getUsername())&&passdb.equals(User.INSTANCE.getPassword()) ) {
-                    User.INSTANCE.setUserid(Integer.parseInt(rs.getString("userid")));
+                    User.INSTANCE.setUserid(rs.getInt("userid"));
                     User.INSTANCE.setRealName(rs.getString("realname"));
                     User.INSTANCE.setEmail(rs.getString("email"));
                     User.INSTANCE.setHeight(Double.parseDouble(rs.getString("height")));
-                    User.INSTANCE.setWeight(Double.parseDouble(rs.getString("weight")));
-                    BaseController.Instance.Switch(actionEvent,"HomePage.fxml");
-
+                    User.INSTANCE.setWeight(Integer.parseInt(rs.getString("weight")));
+                    User.INSTANCE.setAge(Integer.parseInt(rs.getString("age")));
+                    root = FXMLLoader.load(getClass().getResource("HomePage.fxml"));
+                    stage = (Stage)((Node)actionEvent.getSource()).getScene().getWindow();
+                    scene = new Scene(root);
+                    stage.setScene(scene);
+                    stage.show();
                 } else {
                     String s=null;
                     logbtn.setStyle("-fx-background-color:rgba(0,0,0,0);-fx-text-fill: #ff0000");
@@ -96,10 +97,9 @@ public void login(javafx.event.ActionEvent actionEvent) throws IOException {
                     thread.start();
                 }
             }
-        DBsession.INSTANCE.OpenConnection().close();
-    }catch(Exception e){ System.out.println(e);}
-}
-
+            DBsession.INSTANCE.OpenConnection().close();
+        }catch(Exception e){ System.out.println(e);}
+    }
     //https://riptutorial.com/javafx/example/7291/updating-the-ui-using-platform-runlater
     Thread thread = new Thread(new Runnable() {
         @Override
@@ -142,20 +142,22 @@ public void login(javafx.event.ActionEvent actionEvent) throws IOException {
                 pst.setInt(4,ht);
                 pst.setInt(5,wt);
                 if (CheckCredentials() > 0) {
-                    loginbtn.setStyle("-fx-background-color:transparent;-fx-text-fill: red");
-                    loginbtn.setText("Username/Password already exists");
+                    createacc.setStyle("-fx-background-color:transparent;-fx-text-fill: red");
+                    createacc.setText("Username/Password already exists");
                     thread.start();
                     DBsession.INSTANCE.OpenConnection().close();
                 } else {
                     thread.start();
+                    pst.executeUpdate();
                     User.INSTANCE.setUsername(usernameTF.getText());
                     User.INSTANCE.setPassword(passwordTF.getText());
-                    User.INSTANCE.setHeight(Double.parseDouble(heightTF.getText()));
-                    User.INSTANCE.setWeight(Double.parseDouble(weightTF.getText()));
-                    pst.executeUpdate();
+                    root = FXMLLoader.load(getClass().getResource("HomePage.fxml"));
+                    stage = (Stage)((Node)event.getSource()).getScene().getWindow();
+                    scene = new Scene(root);
+                    stage.setScene(scene);
+                    stage.show();
+
                 }
-                userid();
-                BaseController.Instance.Switch(event,"HomePage.fxml");
 
                 DBsession.INSTANCE.OpenConnection().close();
             } catch (Exception e) {
@@ -169,24 +171,6 @@ public void login(javafx.event.ActionEvent actionEvent) throws IOException {
         }
     }
 
-    public void userid(){
-
-    String SQL="select userid,realname,age,email from Users where username=? and password=?";
-                try{
-        PreparedStatement pst1 = DBsession.INSTANCE.OpenConnection().prepareStatement(SQL);
-        pst1.setString(1, User.INSTANCE.getUsername());
-        pst1.setString(2, User.INSTANCE.getPassword());
-        ResultSet rs=pst1.executeQuery();
-        while(rs.next()) {
-            User.INSTANCE.setUserid(Integer.parseInt(rs.getString("userid")));
-            User.INSTANCE.setRealName(rs.getString("realname"));
-            User.INSTANCE.setAge(Integer.parseInt(rs.getString("age")));
-            User.INSTANCE.setEmail(rs.getString("email"));
-        }
-        DBsession.INSTANCE.OpenConnection().close();
-    }catch(Exception e){ System.out.println(e);}
-
-    }
 
     public Integer CheckCredentials(){
         int counter=0;

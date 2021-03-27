@@ -57,13 +57,13 @@
                   <Insets bottom="10.0" left="10.0" right="25.0" top="10.0" />
                </padding>
             </Label>
-            <ComboBox layoutX="123.0" layoutY="100.0" prefWidth="150.0" promptText="Workout type" style="-fx-background-color: #ffffff;" />
-            <TextField layoutX="123.0" layoutY="150.0" promptText="Duration" style="-fx-background-color: #ffffff;" />
+            <TextField fx:id="durationTF" layoutX="123.0" layoutY="150.0" promptText="Duration" style="-fx-background-color: #ffffff;" />
             <Label layoutX="275.0" layoutY="155.0" prefHeight="20.0" prefWidth="33.0" text="mins" textFill="#aa80ff">
                <font>
                   <Font size="14.0" />
                </font>
             </Label>
+            <ComboBox fx:id="WorkoutTypeSelector" layoutX="122.0" layoutY="98.0" onMouseClicked="#init" prefWidth="150.0" promptText="Workout type" style="-fx-background-color: white;" />
          </children>
       </AnchorPane>
    </right>
@@ -75,7 +75,7 @@
                   <Image url="@img/addbutton.png" />
                </image>
             </ImageView>
-            <Button graphicTextGap="0.0" layoutX="380.0" layoutY="10.0" mnemonicParsing="false" opacity="0.0" prefHeight="30.0" prefWidth="30.0" />
+            <Button  graphicTextGap="0.0" layoutX="380.0" layoutY="10.0" mnemonicParsing="false" onAction="#populateWorkoutTable" opacity="0.0" prefHeight="30.0" prefWidth="30.0" />
          </children>
       </AnchorPane>
    </bottom>

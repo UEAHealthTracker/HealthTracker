@@ -1,7 +1,16 @@
 public class Workout {
 
     private WorkoutType workoutType;
+    public final static Workout Instance= new Workout();
+    public int getWorkoutid() {
+        return workoutid;
+    }
 
+    public void setWorkoutid(int workoutid) {
+        this.workoutid = workoutid;
+    }
+
+    public int workoutid;
     //duration for individual exercise
     private int durationMinutes;
 
@@ -15,7 +24,7 @@ public class Workout {
         this.durationMinutes = 0;
         this.caloriesBurned = 0;
     }
-
+    public Workout(){};
     public void setExerciseType(WorkoutType workoutType){
         this.workoutType = workoutType;
     }

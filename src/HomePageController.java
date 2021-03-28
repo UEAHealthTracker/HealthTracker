@@ -37,15 +37,16 @@ public class HomePageController extends BaseController {
         SimpleDateFormat sdate = new SimpleDateFormat("yyyy-MM-dd");
         SimpleDateFormat edate = new SimpleDateFormat("yyyy-MM-dd");
         data = FXCollections.observableArrayList();
-        String SQL_QUERY="select goalname,startdate,enddate,Users.goalid from Users JOIN Goal ON Users.goalid=Goal.goalid and username=?;";
+        String SQL_QUERY="select goalname,startdate,enddate,goalid from Goal JOIN Users ON Users.userid=Goal.userid where Users.userid=?;";
         try{
             PreparedStatement pst = DBsession.INSTANCE.OpenConnection().prepareStatement(SQL_QUERY);
-            pst.setString(1, User.INSTANCE.getUsername().toString());
+            pst.setString(1, User.INSTANCE.getUserid().toString());
             ResultSet rs=pst.executeQuery();
             String status=null;
             while(rs.next()) {
                LocalDate sd=LocalDate.parse(rs.getString("startdate"));
                 LocalDate ed=LocalDate.parse(rs.getString("enddate"));
+                Goal.Instance.setGoalid(Integer.parseInt(rs.getString("goalid")));
 //               long days = ed.getTime() - sd.getTime();
                 long days = ChronoUnit.DAYS.between(sd, ed);
                 if(days>0) {

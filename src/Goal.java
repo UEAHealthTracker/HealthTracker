@@ -1,6 +1,7 @@
 import java.util.Date;
 
 public class Goal {
+    public static final Goal Instance=new Goal();
     public String getGoalname() {
         return goalname;
     }
@@ -41,7 +42,17 @@ public class Goal {
         this.goalstatus = goalstatus;
         this.goalgroups = goalgroups;
     }
+    public Goal() { }
 
+    public Integer getGoalid() {
+        return goalid;
+    }
+
+    public void setGoalid(Integer goalid) {
+        this.goalid = goalid;
+    }
+
+    Integer goalid;
     String goalname;
     String goaldate;
     String goalstatus;

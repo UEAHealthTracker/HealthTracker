@@ -12,11 +12,12 @@ import java.net.URL;
 import java.util.ResourceBundle;
 
 public class BaseController {
+    public static final BaseController Instance= new BaseController();
     Parent root;
     Stage stage;
     Scene scene;
     Label userLabel;
-
+    public String filename="";
     //default constructor
     public BaseController(){
 
@@ -79,7 +80,7 @@ public class BaseController {
 
     public void MenuSwitch(javafx.event.ActionEvent actionEvent) throws IOException{
         String text = ((Button)actionEvent.getSource()).getText();
-        String filename="";
+
         switch(text){
             case "Home":
                 filename="HomePage.fxml";break;

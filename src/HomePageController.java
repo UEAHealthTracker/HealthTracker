@@ -102,33 +102,31 @@ public class HomePageController extends BaseController {
     }
 
     public void openAddGoalPage(javafx.event.ActionEvent actionEvent) throws IOException {
-        //if user selects weight goal then open AddWeightGoal page
-        //else if user selects workout goal then open AddWorkoutGoal page
-        root = FXMLLoader.load(getClass().getResource("AddWeightGoal.fxml"));
-        stage = (Stage)((Node)actionEvent.getSource()).getScene().getWindow();
-        scene = new Scene(root);
-        stage.setScene(scene);
-        stage.show();
+        BaseController.Instance.Switch(actionEvent,"AddWeightGoal.fxml");
     }
     @FXML
     public void openEditGoalPage(javafx.event.ActionEvent actionEvent) throws IOException {
-        root = FXMLLoader.load(getClass().getResource("EditGoal.fxml"));
-        stage = (Stage)((Node)actionEvent.getSource()).getScene().getWindow();
-        scene = new Scene(root);
-        stage.setScene(scene);
-        stage.show();
-
+        BaseController.Instance.Switch(actionEvent,"EditGoal.fxml");
+        String SQL_QUERY="select goalname,enddate,groupgoal.groupgoalid from Goal JOIN  groupgoal on Goal.goalid=groupgoal.goalid where Goal.goalid=?";
+        try{
+            PreparedStatement pst = DBsession.INSTANCE.OpenConnection().prepareStatement(SQL_QUERY);
+            pst.setInt(1, Goal.Instance.getGoalid());
+            ResultSet rs=pst.executeQuery();
+            while(rs.next()) {
+                editgoalname.setText(rs.getString("goalname"));
+                editgoaldate.setValue(LocalDate.parse(rs.getString("enddate")));
+            }
+            DBsession.INSTANCE.OpenConnection().close();
+        }catch(Exception e){ System.out.println(e);}
     }
 
-    public void onEdit(javafx.event.ActionEvent actionEvent) throws IOException, InterruptedException {
+    public void onEdit(javafx.event.ActionEvent actionEvent) throws IOException {
 
         if (goalview.getSelectionModel().getSelectedItem() != null) {
             Goal selectedGoal = goalview.getSelectionModel().getSelectedItem();
-            Goal.Instance.setGoalname(selectedGoal.getGoalname());
-            Goal.Instance.setGoaldate(selectedGoal.getGoaldate());
+            Goal.Instance.setGoalid(selectedGoal.getGoalid());
             openEditGoalPage(actionEvent);
 
-//            System.out.println("goalname:"+selectedGoal.getGoalname()+"goaldate"+selectedGoal.getGoaldate());
         }
     }
 

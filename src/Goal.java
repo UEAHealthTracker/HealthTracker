@@ -36,7 +36,8 @@ public class Goal {
         this.goalgroups = goalgroups;
     }
 
-    public Goal(String goalname, String goaldate, String goalstatus, Integer goalgroups) {
+    public Goal(Integer goalid,String goalname, String goaldate, String goalstatus, Integer goalgroups) {
+        this.goalid = goalid;
         this.goalname = goalname;
         this.goaldate = goaldate;
         this.goalstatus = goalstatus;

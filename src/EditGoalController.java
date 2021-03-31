@@ -23,7 +23,9 @@ public class EditGoalController extends BaseController{
         userLabel.setText("Hello " + User.INSTANCE.getUsername());
 
 
-        String SQL_QUERY="select goalname,enddate,groupgoal.groupgoalid from Goal JOIN  groupgoal on Goal.goalid=groupgoal.goalid where Goal.goalid=?";
+        //String SQL_QUERY="select goalname,enddate,groupgoal.groupgoalid from Goal JOIN  groupgoal on Goal.goalid=groupgoal.goalid where Goal.goalid=?";
+        //String SQL_QUERY="select goalname,enddate,groupgoal.groupgoalid, groupsmember.groupid ,groups.groupname from Goal JOIN groupgoal on Goal.goalid=groupgoal.goalid Join Users on Users.userid=Goal.userid  LEFT JOIN groupsmember on groupsmember.userid=Users.userid LEFT JOIN groups on groups.groupid=groupsmember.groupmemberid where Goal.goalid=?";
+       String SQL_QUERY="select goalname,enddate from Goal JOIN where Goal.goalid=?";
         try{
             PreparedStatement pst = DBsession.INSTANCE.OpenConnection().prepareStatement(SQL_QUERY);
             pst.setInt(1, Goal.Instance.getGoalid());

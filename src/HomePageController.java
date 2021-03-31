@@ -51,7 +51,7 @@ public class HomePageController extends BaseController {
         SimpleDateFormat sdate = new SimpleDateFormat("yyyy-MM-dd");
         SimpleDateFormat edate = new SimpleDateFormat("yyyy-MM-dd");
         data = FXCollections.observableArrayList();
-        String SQL_QUERY = "select goalname,startdate,enddate,Goal.goalid,groupgoalid from Goal JOIN Users ON Users.userid=Goal.userid JOIN groupgoal on Goal.goalid = groupgoal.goalid where Users.userid=?;";
+        String SQL_QUERY = "select goalname,startdate,enddate,Goal.goalid as goalid,COUNT(groupgoal.groupgoalid) as total from Goal JOIN Users ON Users.userid=Goal.userid left JOIN groupgoal on Goal.goalid = groupgoal.goalid where Users.userid=? GROUP BY Goal.goalid";
         try {
             PreparedStatement pst = DBsession.INSTANCE.OpenConnection().prepareStatement(SQL_QUERY);
             pst.setString(1, User.INSTANCE.getUserid().toString());
@@ -76,10 +76,10 @@ public class HomePageController extends BaseController {
                 long days = ChronoUnit.DAYS.between(now, ed);
                 if (days > 0) {
                     status = "Active";
-                    data.add(new Goal(Integer.parseInt(rs.getString("goalid")), rs.getString("goalname"), ed.toString(), status, Integer.parseInt(rs.getString("groupgoalid"))));
+                    data.add(new Goal(Integer.parseInt(rs.getString("goalid")), rs.getString("goalname"), ed.toString(), status, Integer.parseInt(rs.getString("total"))));
                 } else {
                     status = "Expired";
-                    data.add(new Goal(Integer.parseInt(rs.getString("goalid")), rs.getString("goalname"), ed.toString(), status, Integer.parseInt(rs.getString("groupgoalid"))));
+                    data.add(new Goal(Integer.parseInt(rs.getString("goalid")), rs.getString("goalname"), ed.toString(), status, Integer.parseInt(rs.getString("total"))));
                 }
             }
             goalid.setCellValueFactory(new PropertyValueFactory<>("goalid"));

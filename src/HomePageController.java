@@ -36,18 +36,20 @@ public class HomePageController extends BaseController {
     @FXML TableColumn<Goal, Date> goaldate;
     @FXML TableColumn<Goal,String> goalstatus;
     @FXML TableColumn<Goal, Integer> goalgroups;
-
+    int items=0;
     TextField en;
 
     public void initialize() {
 
         userLabel.setText("Hello "+User.INSTANCE.getUsername());
+        Check();
         populateGoalsTable();
 
 
     }
     //add data to goal table
     public void populateGoalsTable(){
+
         SimpleDateFormat sdate = new SimpleDateFormat("yyyy-MM-dd");
         SimpleDateFormat edate = new SimpleDateFormat("yyyy-MM-dd");
         data = FXCollections.observableArrayList();
@@ -60,26 +62,15 @@ public class HomePageController extends BaseController {
             while (rs.next()) {
                 LocalDate sd = LocalDate.parse(rs.getString("startdate"));
                 LocalDate ed = LocalDate.parse(rs.getString("enddate"));
-                // Goal.Instance.setGoalid(Integer.parseInt(rs.getString("goalid")));
-//               long days = ed.getTime() - sd.getTime();
-//                long days = ChronoUnit.DAYS.between(sd, ed);
-//                if(days>0) {
-//                    String d=Long.toString(days);
-//                    status="Incomplete";
-//                    data.add(new Goal(rs.getString("goalname"),d,status ,Integer.parseInt(rs.getString("goalid"))));
-//                }else{
-//                    String d=Long.toString(days);
-//                    status="Complete";
-//                    data.add(new Goal(rs.getString("goalname"),d,status ,Integer.parseInt(rs.getString("goalid"))));
-//                }
                 LocalDate now = LocalDate.now();
+
                 long days = ChronoUnit.DAYS.between(now, ed);
                 if (days > 0) {
                     status = "Active";
-                    data.add(new Goal(Integer.parseInt(rs.getString("goalid")), rs.getString("goalname"), ed.toString(), status, Integer.parseInt(rs.getString("total"))));
+                    data.add(new Goal(Integer.parseInt(rs.getString("goalid")), rs.getString("goalname"), ed.toString(), status, rs.getString("total")+"/"+items));
                 } else {
                     status = "Expired";
-                    data.add(new Goal(Integer.parseInt(rs.getString("goalid")), rs.getString("goalname"), ed.toString(), status, Integer.parseInt(rs.getString("total"))));
+                    data.add(new Goal(Integer.parseInt(rs.getString("goalid")), rs.getString("goalname"), ed.toString(), status, rs.getString("total")+"/"+items));
                 }
             }
             goalid.setCellValueFactory(new PropertyValueFactory<>("goalid"));
@@ -92,6 +83,21 @@ public class HomePageController extends BaseController {
         } catch (Exception e) {
             System.out.println(e);
         }
+    }
+
+    public void Check(){
+
+        String SQL_query="select groups.groupname as gn from groups JOIN groupsmember on groups.groupid=groupsmember.groupid JOIN Users on Users.userid=groupsmember.userid where Users.userid=?";
+        try{
+            PreparedStatement pst = DBsession.INSTANCE.OpenConnection().prepareStatement(SQL_query);
+            pst.setInt(1, User.INSTANCE.getUserid());
+            ResultSet rs=pst.executeQuery();
+            while(rs.next()) {
+                items++;
+
+            }
+            DBsession.INSTANCE.OpenConnection().close();
+        }catch(Exception e){System.out.println(e);}
     }
 
     //allow user to select a table item/row and delete it using the delete button

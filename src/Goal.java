@@ -1,6 +1,7 @@
 import java.util.Date;
 
 public class Goal {
+    public static final Goal Instance=new Goal();
     public String getGoalname() {
         return goalname;
     }
@@ -27,23 +28,34 @@ public class Goal {
         this.goalstatus = goalstatus;
     }
 
-    public Integer getGoalgroups() {
+    public String getGoalgroups() {
         return goalgroups;
     }
 
-    public void setGoalgroups(Integer goalgroups) {
+    public void setGoalgroups(String goalgroups) {
         this.goalgroups = goalgroups;
     }
 
-    public Goal(String goalname, String goaldate, String goalstatus, Integer goalgroups) {
+    public Goal(Integer goalid,String goalname, String goaldate, String goalstatus, String goalgroups) {
+        this.goalid = goalid;
         this.goalname = goalname;
         this.goaldate = goaldate;
         this.goalstatus = goalstatus;
         this.goalgroups = goalgroups;
     }
+    public Goal() { }
 
+    public Integer getGoalid() {
+        return goalid;
+    }
+
+    public void setGoalid(Integer goalid) {
+        this.goalid = goalid;
+    }
+
+    Integer goalid;
     String goalname;
     String goaldate;
     String goalstatus;
-    Integer goalgroups;
+    String goalgroups;
 }

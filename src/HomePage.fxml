@@ -67,10 +67,11 @@
             </Label>
             <TableView fx:id="goalview" layoutX="14.0" layoutY="102.0" prefHeight="200.0" prefWidth="360.0" style="-fx-background-color: #ffffff;">
               <columns>
-                <TableColumn fx:id="goalname" prefWidth="160.0" text="Name" />
-                  <TableColumn fx:id="goaldate" prefWidth="50.0" text="Date" />
-                  <TableColumn fx:id="goalstatus" prefWidth="75.0" text="Status" />
-                  <TableColumn fx:id="goalgroups" prefWidth="75.0" text="Groups" />
+                  <TableColumn fx:id="goalid" minWidth="0.0" prefWidth="0.0" text="ID" />
+                <TableColumn fx:id="goalname" prefWidth="115.0" text="Name" />
+                  <TableColumn fx:id="goaldate" prefWidth="112.0" text="Date" />
+                  <TableColumn fx:id="goalstatus" minWidth="0.0" prefWidth="74.0" text="Status" />
+                  <TableColumn fx:id="goalgroups" prefWidth="57.0" text="Groups" />
               </columns>
             </TableView>
          </children>

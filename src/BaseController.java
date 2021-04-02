@@ -12,11 +12,12 @@ import java.net.URL;
 import java.util.ResourceBundle;
 
 public class BaseController {
+    public static final BaseController Instance= new BaseController();
     Parent root;
     Stage stage;
     Scene scene;
     Label userLabel;
-
+    public String filename="";
     //default constructor
     public BaseController(){
 
@@ -79,7 +80,7 @@ public class BaseController {
 
     public void MenuSwitch(javafx.event.ActionEvent actionEvent) throws IOException{
         String text = ((Button)actionEvent.getSource()).getText();
-        String filename="";
+
         switch(text){
             case "Home":
                 filename="HomePage.fxml";break;
@@ -104,6 +105,15 @@ public class BaseController {
             case "EditUserPage":
                 filename="EditUserPage.fxml";break;
         }
+        root = FXMLLoader.load(getClass().getResource(filename));
+        stage = (Stage)((Node)actionEvent.getSource()).getScene().getWindow();
+        scene = new Scene(root);
+        stage.setScene(scene);
+        stage.show();
+
+    }
+
+    public void Switch(javafx.event.ActionEvent actionEvent,String filename) throws IOException{
         root = FXMLLoader.load(getClass().getResource(filename));
         stage = (Stage)((Node)actionEvent.getSource()).getScene().getWindow();
         scene = new Scene(root);

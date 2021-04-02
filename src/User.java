@@ -2,7 +2,17 @@ import java.util.ArrayList;
 
 public class User {
     public final static User INSTANCE = new User();
+
+    public Integer getUserid() {
+        return userid;
+    }
+
+    public void setUserid(Integer userid) {
+        this.userid = userid;
+    }
+
     //Initialise variables
+    Integer userid;
      String username;
      String password;
      String email;
@@ -11,8 +21,13 @@ public class User {
      double weight;
      double height;
      double BMI;
-   // private ArrayList<Goal> goals = new ArrayList<Goal>();
-  //  private ArrayList<Group> groups = new ArrayList<Group>();
+
+    public ArrayList<Group> getGroups() {
+        return groups;
+    }
+
+    // private ArrayList<Goal> goals = new ArrayList<Goal>();
+    private ArrayList<Group> groups = new ArrayList<Group>();
     private ArrayList<DailyActivity> activityLog = new ArrayList<DailyActivity>();
 
     public double getBMI() {
@@ -49,7 +64,6 @@ public class User {
     public void setAge(Integer age) {
         this.age = age;
     }
-
 
     public double getWeight() {
         return weight;

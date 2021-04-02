@@ -6,7 +6,7 @@ draft ui - Abena & Hirsto
 database - Ben, Hristo, me
 
 
-signup page,login,selectgoaltype,editgoal,addweightgoal,homepage -hristo
+selectgoaltype,editgoal,addweightgoal/ -hristo
 Edituserpage,Userpage-abena&ben
 Groupspage,Creategroups,Editgroups-ben&abena
 Workoutpage,addworkout,editworkout-josh

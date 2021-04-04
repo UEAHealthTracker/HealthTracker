@@ -69,15 +69,15 @@ public class EditGoalController extends BaseController{
         try{
             PreparedStatement pst = DBsession.INSTANCE.OpenConnection().prepareStatement(SQL_QUERY);
             pst.setString(1, editgoalname.getText());
-            pst.setString(2, String.valueOf(editgoaldate));
+            pst.setString(2, String.valueOf(editgoaldate.getValue()));
             pst.setInt(3, Goal.Instance.getGoalid());
-            pst.executeQuery();
+            pst.executeUpdate();
             if(!editgoalgroup.getSelectionModel().isEmpty()){
                 String SQL_query="Insert into groupgoal (goalid,groupid) values(?,(Select groupid from groups where groupname=?))";
                 PreparedStatement ps = DBsession.INSTANCE.OpenConnection().prepareStatement(SQL_query);
                 ps.setInt(1, Goal.Instance.getGoalid());
                 ps.setString(2,editgoalgroup.getSelectionModel().getSelectedItem().toString());
-                ps.executeQuery();
+                ps.executeUpdate();
             }
             DBsession.INSTANCE.OpenConnection().close();
         }catch(Exception e){System.out.println(e);}

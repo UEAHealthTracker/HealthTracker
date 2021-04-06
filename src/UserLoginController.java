@@ -79,7 +79,6 @@ public void login(javafx.event.ActionEvent actionEvent) throws IOException {
             while(rs.next()) {
                 userdb=rs.getString("username");
                 passdb=rs.getString("password");
-
                 if (userdb.equals(User.INSTANCE.getUsername())&&passdb.equals(User.INSTANCE.getPassword()) ) {
                     User.INSTANCE.setUserid(Integer.parseInt(rs.getString("userid")));
                     User.INSTANCE.setRealName(rs.getString("realname"));
@@ -92,7 +91,6 @@ public void login(javafx.event.ActionEvent actionEvent) throws IOException {
                     scene = new Scene(root);
                     stage.setScene(scene);
                     stage.show();
-
                 } else {
                     String s=null;
                     logbtn.setStyle("-fx-background-color:rgba(0,0,0,0);-fx-text-fill: #ff0000");
@@ -100,10 +98,9 @@ public void login(javafx.event.ActionEvent actionEvent) throws IOException {
                     thread.start();
                 }
             }
-        DBsession.INSTANCE.OpenConnection().close();
-    }catch(Exception e){ System.out.println(e);}
-}
-
+            DBsession.INSTANCE.OpenConnection().close();
+        }catch(Exception e){ System.out.println(e);}
+    }
     //https://riptutorial.com/javafx/example/7291/updating-the-ui-using-platform-runlater
     Thread thread = new Thread(new Runnable() {
         @Override

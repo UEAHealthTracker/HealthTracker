@@ -18,7 +18,7 @@ public class Main extends Application {
     public int height=600;
     @Override
     public void start(Stage primaryStage) throws Exception{
-        Parent root = FXMLLoader.load(getClass().getResource("Login.fxml"));
+        Parent root = FXMLLoader.load(getClass().getResource("LoginPage.fxml"));
         primaryStage.setTitle("Login");
         primaryStage.setScene(new Scene(root, 300, 275));
         primaryStage.show();

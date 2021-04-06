@@ -131,4 +131,25 @@ INSERT INTO Users (userid,realname,username,password,email,weight,height,acitivt
 INSERT INTO Users (userid,realname,username,password,email,weight,height,acitivty,age,goalid,dayid,groupid) VALUES ('3','Dan','23Dan','Ganttsucks123','Mike@hotmail.com','69','510','2,'23','1','1','1')Monday
 
 
-DELETE from Users WHERE userid=1
+DELETE from Users WHERE userid=
+
+ca
+Create table workout(
+workoutid int(10),calories int(5),duration int(10),workouttype varchar(20),
+    PRIMARY key (workoutid)
+
+)
+Create table day(
+dayid int(10),date date,mealid int(10),workoutid int(10),userid int(10),
+    PRIMARY key (dayid),
+    FOREIGN key (mealid) REFERENCES meal(mealid) ON DELETE CASCADE ON UPDATE CASCADE,
+     FOREIGN key (workoutid) REFERENCES workout(workoutid) ON DELETE CASCADE ON UPDATE CASCADE,
+     FOREIGN key (userid )REFERENCES Users(userid)
+
+)
+
+1.make a cloumn for ids in table
+2.make a combobox for ids in edit
+3.make a select query for getting the ids from the workout table Select workoutid from workout join day on day.workoutid=workout.workoutid join User on day.userid=user.userid and username=?
+4.make a select query for getting the workoutype and duration Select workouttype,duration from workout where workoutid=?
+5.make a update query to update a specif workout Update workout set workouttype=? and duration=? where workouttype=? (workottypecombobox.selectedmodel) and duration=? duraitontextfield.gettext;

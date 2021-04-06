@@ -38,7 +38,6 @@ public class HomePageController extends BaseController {
     @FXML TableColumn<Goal, Integer> goalgroups;
     int items=0;
     TextField en;
-
     public void initialize() {
 
         userLabel.setText("Hello "+User.INSTANCE.getUsername());
@@ -100,10 +99,7 @@ public class HomePageController extends BaseController {
         }catch(Exception e){System.out.println(e);}
     }
 
-    //allow user to select a table item/row and delete it using the delete button
-    public void removeTableItem(){
 
-    }
 
     public void openSelectGoalTypePage(javafx.event.ActionEvent actionEvent) throws IOException {
         root = FXMLLoader.load(getClass().getResource("SelectGoalType.fxml"));
@@ -131,6 +127,23 @@ public class HomePageController extends BaseController {
                 openEditGoalPage(actionEvent);
 
             }
+    }
+    //allow user to select a table item/row and delete it using the delete button
+    public void onDelete(javafx.event.ActionEvent actionEvent) throws IOException{
+        if (goalview.getSelectionModel().getSelectedItem() != null) {
+            Goal selectedGoal = goalview.getSelectionModel().getSelectedItem();
+            Goal.Instance.setGoalid(selectedGoal.getGoalid());
+            String SQL_query="DELETE FROM Goal WHERE goalid=?;";
+            try{
+                PreparedStatement pst = DBsession.INSTANCE.OpenConnection().prepareStatement(SQL_query);
+                pst.setInt(1, Goal.Instance.getGoalid());
+                pst.executeUpdate();
+                DBsession.INSTANCE.OpenConnection().close();
+            }catch(Exception e){System.out.println(e);}
+
+            BaseController.Instance.filename="HomePage.fxml";
+        }
+
     }
 
 }

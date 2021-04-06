@@ -62,7 +62,7 @@
                   <Image url="@img/face.png" />
                </image>
             </ImageView>
-            <Label layoutX="100.0" layoutY="60.0" text="&lt;name&gt;" textFill="#aa80ff">
+            <Label layoutX="100.0" layoutY="60.0" textFill="#aa80ff">
                <font>
                   <Font name="Segoe UI Semilight" size="18.0" />
                </font>
@@ -74,48 +74,48 @@
                   </Label>
                </graphic>
             </Label>
-            <Label layoutX="100.0" layoutY="110.0" text="&lt;email&gt;" textFill="#aa80ff">
+            <Label layoutX="100.0" layoutY="110.0" textFill="#aa80ff">
                <font>
                   <Font name="Segoe UI Semilight" size="18.0" />
                </font>
                <graphic>
-                  <Label fx:id="email"  alignment="CENTER_RIGHT" text="Email:" textFill="#aa80ff">
+                  <Label fx:id="email" alignment="CENTER_RIGHT" text="Email:" textFill="#aa80ff">
                      <font>
                         <Font name="Segoe UI Semilight" size="18.0" />
                      </font>
                   </Label>
                </graphic>
             </Label>
-            <Label layoutX="100.0" layoutY="160.0" text="&lt;height&gt;" textFill="#aa80ff">
+            <Label layoutX="100.0" layoutY="160.0" textFill="#aa80ff">
                <font>
                   <Font name="Segoe UI Semilight" size="18.0" />
                </font>
                <graphic>
-                  <Label fx:id="height"  alignment="CENTER_RIGHT" text="Height:" textFill="#aa80ff">
+                  <Label fx:id="height" alignment="CENTER_RIGHT" text="Height:" textFill="#aa80ff">
                      <font>
                         <Font name="Segoe UI Semilight" size="18.0" />
                      </font>
                   </Label>
                </graphic>
             </Label>
-            <Label layoutX="100.0" layoutY="210.0" text="&lt;weight&gt;" textFill="#aa80ff">
+            <Label layoutX="100.0" layoutY="210.0" textFill="#aa80ff">
                <font>
                   <Font name="Segoe UI Semilight" size="18.0" />
                </font>
                <graphic>
-                  <Label fx:id="weight"  alignment="CENTER_RIGHT" text="Weight:" textFill="#aa80ff">
+                  <Label fx:id="weight" alignment="CENTER_RIGHT" text="Weight:" textFill="#aa80ff">
                      <font>
                         <Font name="Segoe UI Semilight" size="18.0" />
                      </font>
                   </Label>
                </graphic>
             </Label>
-            <Label layoutX="100.0" layoutY="260.0" text="&lt;BMI&gt;" textFill="#aa80ff">
+            <Label fx:id="bmilabel" layoutX="100.0" layoutY="260.0"  textFill="#aa80ff">
                <font>
                   <Font name="Segoe UI Semilight" size="18.0" />
                </font>
                <graphic>
-                  <Label fx:id="bmi"  alignment="CENTER_RIGHT" text="BMI:" textFill="#aa80ff">
+                  <Label fx:id="bmi" alignment="CENTER_RIGHT" text="BMI:" textFill="#aa80ff">
                      <font>
                         <Font name="Segoe UI Semilight" size="18.0" />
                      </font>

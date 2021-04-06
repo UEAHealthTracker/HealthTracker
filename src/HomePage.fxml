@@ -85,7 +85,7 @@
                   <Image url="@img/add_box.png" />
                </image>
             </ImageView>
-            <Button graphicTextGap="0.0" layoutX="380.0" layoutY="10.0" mnemonicParsing="false" onAction="#openSelectGoalTypePage" opacity="0.0" prefHeight="30.0" prefWidth="30.0" />
+            <Button graphicTextGap="0.0" layoutX="380.0" layoutY="10.0" mnemonicParsing="false" onAction="#openAddGoalPage" opacity="0.0" prefHeight="30.0" prefWidth="30.0" />
             <ImageView fitHeight="30.0" fitWidth="30.0" layoutX="300.0" layoutY="10.0" pickOnBounds="true" preserveRatio="true">
                <image>
                   <Image url="@img/mode_edit.png" />
@@ -97,7 +97,7 @@
                   <Image url="@img/delete.png" />
                </image>
             </ImageView>
-            <Button graphicTextGap="0.0" layoutX="460.0" layoutY="10.0" mnemonicParsing="false" onAction="#removeTableItem" opacity="0.0" prefHeight="30.0" prefWidth="30.0" />
+            <Button graphicTextGap="0.0" layoutX="460.0" layoutY="10.0" mnemonicParsing="false" onAction="#onDelete" opacity="0.0" prefHeight="30.0" prefWidth="30.0" />
          </children>
       </AnchorPane>
    </bottom>

@@ -6,80 +6,28 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.stage.Stage;
+import sun.awt.windows.WPrinterJob;
 
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
 public class BaseController {
+    public static final BaseController Instance= new BaseController();
     Parent root;
     Stage stage;
     Scene scene;
     Label userLabel;
-
+    public String filename="";
     //default constructor
     public BaseController(){
 
     }
 
-    //connect to current user once logged in
-    /*
-    public BaseController(User user){
-        displayUsername(User);
-    }*/
-
-    //display current logged in user's first name
-    /*
-    private void displayUsername(User user){
-        userLabel.setText(user.firstName);
-    }*/
-
-    /**
-     * Menu Functions just in case
-     */
-//    public void openHomePage(javafx.event.ActionEvent actionEvent) throws IOException {
-//        root = FXMLLoader.load(getClass().getResource("HomePage.fxml"));
-//        stage = (Stage)((Node)actionEvent.getSource()).getScene().getWindow();
-//        scene = new Scene(root);
-//        stage.setScene(scene);
-//        stage.show();
-//    }
-//
-//    public void openDietPage(javafx.event.ActionEvent actionEvent) throws IOException {
-//        root = FXMLLoader.load(getClass().getResource("DietPage.fxml"));
-//        stage = (Stage)((Node)actionEvent.getSource()).getScene().getWindow();
-//        scene = new Scene(root);
-//        stage.setScene(scene);
-//        stage.show();
-//    }
-//
-//    public void openWorkoutPage(javafx.event.ActionEvent actionEvent) throws IOException {
-//        root = FXMLLoader.load(getClass().getResource("WorkoutPage.fxml"));
-//        stage = (Stage)((Node)actionEvent.getSource()).getScene().getWindow();
-//        scene = new Scene(root);
-//        stage.setScene(scene);
-//        stage.show();
-//    }
-//
-//    public void openGroupsPage(javafx.event.ActionEvent actionEvent) throws IOException {
-//        root = FXMLLoader.load(getClass().getResource("GroupsPage.fxml"));
-//        stage = (Stage)((Node)actionEvent.getSource()).getScene().getWindow();
-//        scene = new Scene(root);
-//        stage.setScene(scene);
-//        stage.show();
-//    }
-//
-//    public void openUserPage(javafx.event.ActionEvent actionEvent) throws IOException {
-//        root = FXMLLoader.load(getClass().getResource("UserPage.fxml"));
-//        stage = (Stage)((Node)actionEvent.getSource()).getScene().getWindow();
-//        scene = new Scene(root);
-//        stage.setScene(scene);
-//        stage.show();
-//    }
 
     public void MenuSwitch(javafx.event.ActionEvent actionEvent) throws IOException{
         String text = ((Button)actionEvent.getSource()).getText();
-        String filename="";
+
         switch(text){
             case "Home":
                 filename="HomePage.fxml";break;
@@ -100,10 +48,20 @@ public class BaseController {
             case "EditWorkoutPage":
                 filename="EditWorkoutPage.fxml";break;
             case "AddWorkoutPage":
-                filename="AddWorkoutPage.fxml";break;
+                filename="AddWorkoutPage.fxml";
+                break;
             case "EditUserPage":
                 filename="EditUserPage.fxml";break;
         }
+        root = FXMLLoader.load(getClass().getResource(filename));
+        stage = (Stage)((Node)actionEvent.getSource()).getScene().getWindow();
+        scene = new Scene(root);
+        stage.setScene(scene);
+        stage.show();
+        fname=filename;
+    }
+
+    public void Switch(javafx.event.ActionEvent actionEvent,String filename) throws IOException{
         root = FXMLLoader.load(getClass().getResource(filename));
         stage = (Stage)((Node)actionEvent.getSource()).getScene().getWindow();
         scene = new Scene(root);

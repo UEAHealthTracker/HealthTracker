@@ -59,7 +59,7 @@
             </Label>
             <ImageView fitHeight="30.0" fitWidth="30.0" layoutX="280.0" layoutY="13.0" pickOnBounds="true" preserveRatio="true">
                <image>
-                  <Image url="@img/face_icon.png" />
+                  <Image url="@img/face.png" />
                </image>
             </ImageView>
             <Label layoutX="100.0" layoutY="60.0" text="&lt;name&gt;" textFill="#aa80ff">
@@ -67,7 +67,7 @@
                   <Font name="Segoe UI Semilight" size="18.0" />
                </font>
                <graphic>
-                  <Label alignment="CENTER_RIGHT" text="Name:" textFill="#aa80ff">
+                  <Label fx:id="name" alignment="CENTER_RIGHT" text="Name:" textFill="#aa80ff">
                      <font>
                         <Font name="Segoe UI Semilight" size="18.0" />
                      </font>
@@ -79,7 +79,7 @@
                   <Font name="Segoe UI Semilight" size="18.0" />
                </font>
                <graphic>
-                  <Label alignment="CENTER_RIGHT" text="Email:" textFill="#aa80ff">
+                  <Label fx:id="email"  alignment="CENTER_RIGHT" text="Email:" textFill="#aa80ff">
                      <font>
                         <Font name="Segoe UI Semilight" size="18.0" />
                      </font>
@@ -91,7 +91,7 @@
                   <Font name="Segoe UI Semilight" size="18.0" />
                </font>
                <graphic>
-                  <Label alignment="CENTER_RIGHT" text="Height:" textFill="#aa80ff">
+                  <Label fx:id="height"  alignment="CENTER_RIGHT" text="Height:" textFill="#aa80ff">
                      <font>
                         <Font name="Segoe UI Semilight" size="18.0" />
                      </font>
@@ -103,7 +103,7 @@
                   <Font name="Segoe UI Semilight" size="18.0" />
                </font>
                <graphic>
-                  <Label alignment="CENTER_RIGHT" text="Weight:" textFill="#aa80ff">
+                  <Label fx:id="weight"  alignment="CENTER_RIGHT" text="Weight:" textFill="#aa80ff">
                      <font>
                         <Font name="Segoe UI Semilight" size="18.0" />
                      </font>
@@ -115,7 +115,7 @@
                   <Font name="Segoe UI Semilight" size="18.0" />
                </font>
                <graphic>
-                  <Label alignment="CENTER_RIGHT" text="BMI:" textFill="#aa80ff">
+                  <Label fx:id="bmi"  alignment="CENTER_RIGHT" text="BMI:" textFill="#aa80ff">
                      <font>
                         <Font name="Segoe UI Semilight" size="18.0" />
                      </font>
@@ -131,7 +131,7 @@
          <children>
             <ImageView fitHeight="30.0" fitWidth="30.0" layoutX="380.0" layoutY="10.0" pickOnBounds="true" preserveRatio="true">
                <image>
-                  <Image url="@img/update.png" />
+                  <Image url="@img/mode_edit.png" />
                </image>
             </ImageView>
             <Button graphicTextGap="0.0" layoutX="380.0" layoutY="10.0" mnemonicParsing="false" onAction="#MenuSwitch" opacity="0.0" prefHeight="30.0" prefWidth="30.0" text="EditUserPage" />

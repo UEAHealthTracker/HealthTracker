@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="DataSourceManagerImpl" format="xml" multifile-model="true">
-    <data-source source="LOCAL" name="freedbtech_htrackdb@freedb.tech" uuid="d4390e8d-440d-4d5f-8ba6-171c854503b6">
+    <data-source source="LOCAL" name="freedbtech_htrackdb" uuid="d4390e8d-440d-4d5f-8ba6-171c854503b6">
       <driver-ref>mysql.8</driver-ref>
       <synchronize>true</synchronize>
       <jdbc-driver>com.mysql.cj.jdbc.Driver</jdbc-driver>
-      <jdbc-url>jdbc:mysql://freedb.tech/freedbtech_htrackdb</jdbc-url>
+      <jdbc-url>jdbc:mysql://freedb.tech:3306/freedbtech_htrackdb</jdbc-url>
       <working-dir>$ProjectFileDir$</working-dir>
     </data-source>
   </component>

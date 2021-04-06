@@ -22,12 +22,12 @@ public class User {
      double height;
      double BMI;
 
-//    public ArrayList<Group> getGroups() {
-//        return groups;
-//    }
-//
-//    // private ArrayList<Goal> goals = new ArrayList<Goal>();
-//    private ArrayList<Group> groups = new ArrayList<Group>();
+    public ArrayList<Group> getGroups() {
+        return groups;
+    }
+
+    private ArrayList<Goal> goals = new ArrayList<Goal>();
+    private ArrayList<Group> groups = new ArrayList<Group>();
 //    private ArrayList<DailyActivity> activityLog = new ArrayList<DailyActivity>();
 
     public double getBMI() {

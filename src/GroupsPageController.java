@@ -104,8 +104,9 @@ public class GroupsPageController extends BaseController {
         } else {
             try {
                 String username, password;
-                int adminUserId, memberUserId;
-                adminUserId = User.INSTANCE.getUserid();
+                String adminUserId;
+                int memberUserId;
+                adminUserId = Integer.toString(User.INSTANCE.getUserid());
                 System.out.println(adminUserId);
                 //Invite Member to the group
                 SendMail.sendMail(groupMail, groupName.getText());
@@ -140,9 +141,9 @@ public class GroupsPageController extends BaseController {
 
     public void AddGroupMembers(ActionEvent actionEvent) throws SQLException {
         String email;
-        int adminUserId;
+        String adminUserId;
         email = groupMembersEmail.getText();
-        adminUserId = User.INSTANCE.getUserid();
+        adminUserId = Integer.toString(User.INSTANCE.getUserid());
         //System.out.println("AddGroup Member userId:" +adminUserId);
         //If user exists
         if (email.matches(EMAIL_PATTERN)) {

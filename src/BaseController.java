@@ -6,7 +6,6 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.stage.Stage;
-import sun.awt.windows.WPrinterJob;
 
 import java.io.IOException;
 import java.net.URL;
@@ -58,7 +57,6 @@ public class BaseController {
         scene = new Scene(root);
         stage.setScene(scene);
         stage.show();
-        fname=filename;
     }
 
     public void Switch(javafx.event.ActionEvent actionEvent,String filename) throws IOException{

@@ -11,26 +11,24 @@ import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 
-import java.sql.SQLException;
-import java.util.Timer;
 import java.io.IOException;
+import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 
+public class UserLoginController extends BaseController{
 
+    private static Button loginButton, createAccountButton;
 
-
-
-public class UserLoginController {
-    private static Button logbtn,createacc;
-    private static TextField pass,user;
     private Parent root;
     private Stage stage;
     private Scene scene;
-    private static final String SQL_INSERT="INSERT INTO Users(userid,username, password, email, height, weight) VALUES (?,?,?,?,?,?)";
+
+
     private static final String EMAIL_PATTERN =
             "^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@"
                     + "[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$";
+
     //text fields for user input- email, height and weight are only used on sign up page
     @FXML  TextField usernameTextField;
     @FXML  PasswordField passwordTextField;
@@ -44,13 +42,12 @@ public class UserLoginController {
     @FXML Button loginbtn;
     @FXML Button signupbtn;
     @FXML Button sign;
+
     public void initialize() {
 
-        user=usernameTextField;
-        pass=passwordTextField;
-        logbtn=loginbtn;
+        loginButton = loginbtn;
         //createacc=signup;
-        logbtn.setStyle("-fx-background-color:#FA526C");
+        loginButton.setStyle("-fx-background-color:#FA526C");
 
     }
     public void openSignUpPage(javafx.event.ActionEvent actionEvent) throws IOException {
@@ -69,109 +66,140 @@ public class UserLoginController {
         stage.show();
     }
 
+    //Run the first time login
+    public void login(javafx.event.ActionEvent actionEvent) throws IOException {
 
-public void login(javafx.event.ActionEvent actionEvent) throws IOException {
-    passwordTextField.setStyle("-fx-text-fill:white");
-    String userdb=null;
-    String passdb=null;
-    User.INSTANCE.setUsername(usernameTextField.getText());
-    User.INSTANCE.setPassword(passwordTextField.getText());
-    String SQL_QUERY="select userid,username,password,realname,weight,height,age,email from Users where username=? and password=?";
+        //Get the entered input details for the user
+        String username = usernameTextField.getText();
+        String password = passwordTextField.getText();
 
-    try{
-        PreparedStatement pst = DBsession.INSTANCE.OpenConnection().prepareStatement(SQL_QUERY);
-        pst.setString(1, usernameTextField.getText());
-        pst.setString(2, passwordTextField.getText());
-        ResultSet rs=pst.executeQuery();
+        //Create a temporary user object for checking their details
+        User checkUser = new User(username, password);
+
+        //Query to get information from db
+        String SQL_QUERY="SELECT username, password, userObject FROM users where username=? and password=?";
+
+        try{
+
+            //Create a new db connection
+            Connection connection = DatabaseConnect.connect();
+            PreparedStatement pst = connection.prepareStatement(SQL_QUERY);
+
+            pst.setString(1, username);
+            pst.setString(2, password);
+
+            ResultSet rs=pst.executeQuery();
+
+            //Loop through db results
             while(rs.next()) {
-                userdb=rs.getString("username");
-                passdb=rs.getString("password");
-                if (userdb.equals(User.INSTANCE.getUsername())&&passdb.equals(User.INSTANCE.getPassword()) ) {
-                    User.INSTANCE.setUserid(rs.getInt("userid"));
-                    User.INSTANCE.setRealName(rs.getString("realname"));
-                    User.INSTANCE.setEmail(rs.getString("email"));
-                    User.INSTANCE.setHeight(rs.getDouble("height"));
-                    User.INSTANCE.setWeight(rs.getDouble("weight"));
-                    User.INSTANCE.setAge(rs.getInt("age"));
-                    //User.INSTANCE.setHeight(Double.parseDouble(rs.getString("height")));
-                    //User.INSTANCE.setWeight(Integer.parseInt(rs.getString("weight")));
-                    //User.INSTANCE.setAge(Integer.parseInt(rs.getString("age")));
-                    root = FXMLLoader.load(getClass().getResource("HomePage.fxml"));
+
+                //Set username and password variables
+                username=rs.getString("username");
+                password=rs.getString("password");
+
+                //Check the username/email matches a user in the db
+                if (username.equals(checkUser.getUsername()) && password.equals(checkUser.getPassword())) {
+
+                    //If the user exists, retrieve their object from the db
+                    User newUser = (User) User.fromDatabaseString(rs.getString("userObject"));
+
+                    //Load the home page for the selected user
+                    FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("HomePage.fxml"));
+
+                    Parent root = (Parent) fxmlLoader.load();
+
+                    HomePageController controller = fxmlLoader.getController();
+
+                    //TODO remove testing data method
+                    //Use the method in the user class to add any test data
+                    //This will be run after every login
+                    User.addTestData(newUser);
+
+                    //Pass the user object to the new controller and set the label
+                    controller.setUser(newUser);
+
+                    controller.setUserLabel();
+
                     stage = (Stage)((Node)actionEvent.getSource()).getScene().getWindow();
                     scene = new Scene(root);
                     stage.setScene(scene);
                     stage.show();
+
                 } else {
-                    String s=null;
-                    logbtn.setStyle("-fx-background-color:rgba(0,0,0,0);-fx-text-fill: #ff0000");
-                    logbtn.setText("Wrong Username/Password");
-                    thread.start();
+
+                    //Case for if the user does not exist in the db
+                    //TODO maybe redirect to sign up page
+                    loginButton.setStyle("-fx-background-color:rgba(0,0,0,0);-fx-text-fill: #ff0000");
+                    loginButton.setText("Wrong Username/Password");
                 }
+
+                //Close the db connection
+                connection.close();
             }
-            DBsession.INSTANCE.OpenConnection().close();
-        }catch(Exception e){ System.out.println(e);}
+
+        }catch(Exception e) {
+            System.out.println(e);
+        }
     }
-    //https://riptutorial.com/javafx/example/7291/updating-the-ui-using-platform-runlater
-    Thread thread = new Thread(new Runnable() {
-        @Override
-        public void run() {
-            Runnable updater = new Runnable() {
-                @Override
-                public void run() {
-                    logbtn.setStyle("-fx-background-color:#FA526C;-fx-text-fill: white");
-                    logbtn.setText("Login");
-                }
-            };
-            while (true) {
-                try {
-                    Thread.sleep(3000);
-                } catch (InterruptedException ex) {
-                }
-                // UI update is run on the Application thread
-                Platform.runLater(updater);
-            }
-        }
 
-    });
+    //Method for a new user to create an account
+    public void CreateAccount(ActionEvent event){
 
-    public void CreateAccount(ActionEvent event) throws SQLException {
-        String usnm,pass,email;
-        int ht;
-        int wt;
-        int userId=0;
-        usnm=usernameTF.getText();
-        pass=passwordTF.getText();
-        email=emailTF.getText();
-        ht=Integer.parseInt(heightTF.getText());
-        wt=Integer.parseInt(weightTF.getText());
-        //Get the last userid:
-        ResultSet userIdSet=DBsession.INSTANCE.Stmt().executeQuery("select userid from Users ");
-        while(userIdSet.next()){
-            userId= userIdSet.getInt("userid");
-            //System.out.println(userId);
-        }
-        userId+=1;
-        //System.out.println(userId);
+        //Variable initilizations to store new user info
+        String username, password, email;
+        double height, weight;
+
+        //Get the user's desired details
+        username = usernameTF.getText();
+        password = passwordTF.getText();
+        email = emailTF.getText();
+        height = Double.parseDouble(heightTF.getText());
+        weight = Double.parseDouble(weightTF.getText());
+
+        //Store the details in a new user object
+        User newUser = new User(username, password, email, height, weight);
+
+        //Chech the email is valid for sign-up
         if (email.matches(EMAIL_PATTERN)) {
+
             try {
-                PreparedStatement pst = DBsession.INSTANCE.OpenConnection().prepareStatement(SQL_INSERT);
-                pst.setInt(1,userId);
-                pst.setString(2, usnm);
-                pst.setString(3, pass);
-                pst.setString(4, email);
-                pst.setInt(5,ht);
-                pst.setInt(6,wt);
+                //Create a new db connection
+                Connection connection = DatabaseConnect.connect();
+
+                //SQL query to add user information to db
+                String SQL_INSERT="INSERT INTO users(username, password, userObject) VALUES (?,?,?)";
+
+
+                PreparedStatement pst = connection.prepareStatement(SQL_INSERT);
+
+                pst.setString(1, username);
+                pst.setString(2, password);
+                pst.setString(3, User.toDatabaseString(newUser));
+
+                //Check the the username/password is unique
                 if (CheckCredentials() > 0) {
                     loginbtn.setStyle("-fx-background-color:transparent;-fx-text-fill: red");
                     loginbtn.setText("Username/Password already exists");
-                    thread.start();
-                    DBsession.INSTANCE.OpenConnection().close();
+
+                    connection.close();
                 } else {
-                    thread.start();
                     pst.executeUpdate();
-                    User.INSTANCE.setUsername(usernameTF.getText());
-                    User.INSTANCE.setPassword(passwordTF.getText());
-                    root = FXMLLoader.load(getClass().getResource("HomePage.fxml"));
+
+                    connection.close();
+                    newUser.setUsername(username);
+                    newUser.setPassword(password);
+
+                    FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("HomePage.fxml"));
+
+                    Parent root = (Parent) fxmlLoader.load();
+
+                    HomePageController controller = fxmlLoader.getController();
+
+                    //Pass the new user to the home page with their new object
+                    controller.setUser(newUser);
+
+                    controller.setUserLabel();
+
                     stage = (Stage)((Node)event.getSource()).getScene().getWindow();
                     scene = new Scene(root);
                     stage.setScene(scene);
@@ -179,30 +207,31 @@ public void login(javafx.event.ActionEvent actionEvent) throws IOException {
 
                 }
 
-                DBsession.INSTANCE.OpenConnection().close();
             } catch (Exception e) {
                 System.out.println(e);
             }
         }else{
-            createacc.setStyle("-fx-background-color:transparent;-fx-text-fill: red");
-            createacc.setText("Wrong Email address");
-            thread.start();
+            createAccountButton.setStyle("-fx-background-color:transparent;-fx-text-fill: red");
+            createAccountButton.setText("Wrong Email address");
 
         }
     }
 
 
-    public int CheckCredentials(){
+    public Integer CheckCredentials(){
         int counter=0;
-        String userdb,emaildb;
+        String username;
         try{
-            ResultSet rs=DBsession.INSTANCE.Stmt().executeQuery("select username,email from Users ");
+            Connection connection = DatabaseConnect.connect();
+
+            PreparedStatement preparedStatement = connection.prepareStatement("SELECT username FROM users");
+            ResultSet rs = preparedStatement.executeQuery();
             while(rs.next()) {
-                userdb=rs.getString("username");
-                emaildb=rs.getString("email");
-                if (userdb.equals(usernameTF.getText())||emaildb.equals(emailTF.getText())) {
+                username=rs.getString("username");
+
+                if (username.equals(usernameTF.getText())) {
                     counter++;
-                }else{}
+                }
             }
         }catch(Exception e){ System.out.println(e);}
         return counter;

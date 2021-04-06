@@ -1,135 +1,105 @@
+import javafx.application.Platform;
+import javafx.beans.InvalidationListener;
+import javafx.beans.Observable;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
-import javafx.scene.control.Label;
+import javafx.fxml.FXMLLoader;
+import javafx.fxml.Initializable;
+import javafx.scene.Node;
+import javafx.scene.Scene;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
-import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.stage.Stage;
 
 import java.io.IOException;
+import java.net.URL;
 import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.text.SimpleDateFormat;
-import java.time.LocalDate;
-import java.time.temporal.ChronoUnit;
-import java.util.Date;
+import java.util.ResourceBundle;
 
-public class HomePageController extends BaseController {
-    private ObservableList<Goal> data;
+public class HomePageController extends BaseController implements Initializable {
 
-    public boolean hm=false;
-    @FXML Label userLabel;
-    @FXML  TableView <Goal>  goalview;
-    @FXML TableColumn<Goal, String> goalid;
-    @FXML TableColumn<Goal, String> goalname;
-    @FXML TableColumn<Goal, Date> goaldate;
-    @FXML TableColumn<Goal,String> goalstatus;
-    @FXML TableColumn<Goal, Integer> goalgroups;
-    int items=0;
-    TextField en;
-    public void initialize() {
+    @FXML
+    private TableView<Goal> tbData = new TableView<>();
 
-        userLabel.setText("Hello "+User.INSTANCE.getUsername());
-        Check();
-        populateGoalsTable();
+    @FXML
+    public TableColumn<Goal, String> goalName;
 
+    @FXML
+    public TableColumn<Goal, String> goalDate;
 
-    }
-    //add data to goal table
-    public void populateGoalsTable(){
+    @FXML
+    public TableColumn<Goal, String> goalStatus;
 
-        SimpleDateFormat sdate = new SimpleDateFormat("yyyy-MM-dd");
-        SimpleDateFormat edate = new SimpleDateFormat("yyyy-MM-dd");
-        data = FXCollections.observableArrayList();
-        String SQL_QUERY = "select goalname,startdate,enddate,Goal.goalid as goalid,COUNT(groupgoal.groupgoalid) as total from Goal JOIN Users ON Users.userid=Goal.userid left JOIN groupgoal on Goal.goalid = groupgoal.goalid where Users.userid=? GROUP BY Goal.goalid";
-        try {
-            PreparedStatement pst = DBsession.INSTANCE.OpenConnection().prepareStatement(SQL_QUERY);
-            pst.setString(1, Integer.toString(User.INSTANCE.getUserid()));
-            ResultSet rs = pst.executeQuery();
-            String status = null;
-            while (rs.next()) {
-                LocalDate sd = LocalDate.parse(rs.getString("startdate"));
-                LocalDate ed = LocalDate.parse(rs.getString("enddate"));
-                LocalDate now = LocalDate.now();
+    @FXML
+    public TableColumn<Goal, String> goalGroups;
 
-                long days = ChronoUnit.DAYS.between(now, ed);
-                if (days > 0) {
-                    status = "Active";
-                    data.add(new Goal(Integer.parseInt(rs.getString("goalid")), rs.getString("goalname"), ed.toString(), status, rs.getString("total")+"/"+items));
-                } else {
-                    status = "Expired";
-                    data.add(new Goal(Integer.parseInt(rs.getString("goalid")), rs.getString("goalname"), ed.toString(), status, rs.getString("total")+"/"+items));
+    //allow user to select a table item/row and delete it using the delete button
+    public void removeTableItem(){
+        Goal data = tbData.getSelectionModel().getSelectedItem();
+        if (data != null) {
+            data = tbData.getSelectionModel().getSelectedItem();
+
+            for(int i = 0; i < user.getGoals().size(); i++){
+                if(user.getGoals().get(i) == data){
+                    user.removeGoal(user.getGoals().get(i));
                 }
             }
-            goalid.setCellValueFactory(new PropertyValueFactory<>("goalid"));
-            goalname.setCellValueFactory(new PropertyValueFactory<>("goalname"));
-            goaldate.setCellValueFactory(new PropertyValueFactory<>("goaldate"));
-            goalstatus.setCellValueFactory(new PropertyValueFactory<>("goalstatus"));
-            goalgroups.setCellValueFactory(new PropertyValueFactory<>("goalgroups"));
-            goalview.setItems(data);
-            DBsession.INSTANCE.OpenConnection().close();
-        } catch (Exception e) {
-            System.out.println(e);
         }
     }
 
-    public void Check(){
-
-        String SQL_query="select groups.groupname as gn from groups JOIN groupsmember on groups.groupid=groupsmember.groupid JOIN Users on Users.userid=groupsmember.userid where Users.userid=?";
-        try{
-            PreparedStatement pst = DBsession.INSTANCE.OpenConnection().prepareStatement(SQL_query);
-            pst.setInt(1, User.INSTANCE.getUserid());
-            ResultSet rs=pst.executeQuery();
-            while(rs.next()) {
-                items++;
-
-            }
-            DBsession.INSTANCE.OpenConnection().close();
-        }catch(Exception e){System.out.println(e);}
-    }
-
-
-
     public void openSelectGoalTypePage(javafx.event.ActionEvent actionEvent) throws IOException {
-        BaseController.Instance.Switch(actionEvent,"SelectGoalType.fxml");
+        root = FXMLLoader.load(getClass().getResource("SelectGoalType.fxml"));
+        stage = (Stage)((Node)actionEvent.getSource()).getScene().getWindow();
+        scene = new Scene(root);
+        stage.setScene(scene);
+        stage.show();
     }
 
     public void openAddGoalPage(javafx.event.ActionEvent actionEvent) throws IOException {
-        BaseController.Instance.Switch(actionEvent,"AddWeightGoal.fxml");
+        //if user selects weight goal then open AddWeightGoal page
+        //else if user selects workout goal then open AddWorkoutGoal page
+        root = FXMLLoader.load(getClass().getResource("AddWeightGoal.fxml"));
+        stage = (Stage)((Node)actionEvent.getSource()).getScene().getWindow();
+        scene = new Scene(root);
+        stage.setScene(scene);
+        stage.show();
     }
-    @FXML
+
     public void openEditGoalPage(javafx.event.ActionEvent actionEvent) throws IOException {
-        BaseController.Instance.Switch(actionEvent,"EditGoal.fxml");
+        root = FXMLLoader.load(getClass().getResource("EditGoal.fxml"));
+        stage = (Stage)((Node)actionEvent.getSource()).getScene().getWindow();
+        scene = new Scene(root);
+        stage.setScene(scene);
+        stage.show();
+    }
 
+    @Override
+    public void initialize(URL url, ResourceBundle resourceBundle) {
+
+        Platform.runLater(() -> {
+
+            populateGoalTable();
+
+        });
 
     }
 
-    public void onEdit(javafx.event.ActionEvent actionEvent) throws IOException {
+    //Method to populate the goal table for the page
+    public void populateGoalTable(){
+        goalName.setCellValueFactory(new PropertyValueFactory<>("goalName"));
+        goalDate.setCellValueFactory(new PropertyValueFactory<>("goalDate"));
+        goalDate.setCellValueFactory(new PropertyValueFactory<>("goalStatus"));
+        goalGroups.setCellValueFactory(new PropertyValueFactory<>("goalGroups"));
 
-            if (goalview.getSelectionModel().getSelectedItem() != null) {
-                Goal selectedGoal = goalview.getSelectionModel().getSelectedItem();
-                Goal.Instance.setGoalid(selectedGoal.getGoalid());
-                openEditGoalPage(actionEvent);
-
-            }
-    }
-    //allow user to select a table item/row and delete it using the delete button
-    public void onDelete(javafx.event.ActionEvent actionEvent) throws IOException{
-        if (goalview.getSelectionModel().getSelectedItem() != null) {
-            Goal selectedGoal = goalview.getSelectionModel().getSelectedItem();
-            Goal.Instance.setGoalid(selectedGoal.getGoalid());
-            String SQL_query="DELETE FROM Goal WHERE goalid=?;";
-            try{
-                PreparedStatement pst = DBsession.INSTANCE.OpenConnection().prepareStatement(SQL_query);
-                pst.setInt(1, Goal.Instance.getGoalid());
-                pst.executeUpdate();
-                DBsession.INSTANCE.OpenConnection().close();
-            }catch(Exception e){System.out.println(e);}
-
-            BaseController.Instance.filename="HomePage.fxml";
-        }
-
+        tbData.setItems(getGoals());
     }
 
+
+    private ObservableList<Goal> getGoals(){
+        ObservableList<Goal> goals = FXCollections.observableArrayList();
+        goals.addAll(user.getGoals());
+        return goals;
+    }
 }

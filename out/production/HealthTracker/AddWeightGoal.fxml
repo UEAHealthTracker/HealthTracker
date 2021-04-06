@@ -58,7 +58,7 @@
                </padding>
             </Label>
             <TextField fx:id="Weightgtf" layoutX="123.0" layoutY="150.0" promptText="Wight goal" style="-fx-background-color: #ffffff;" />
-            <DatePicker fx:id="enddate" layoutX="123.0" layoutY="200.0" promptText="Date" style="-fx-background-color: #ffffff;" />
+            <DatePicker fx:id="endDate" layoutX="123.0" layoutY="200.0" promptText="Date" style="-fx-background-color: #ffffff;" />
             <TextField fx:id="Nametf" layoutX="123.0" layoutY="91.0" promptText="Name" style="-fx-background-color: #ffffff;" />
             <Label fx:id="statuslbl" layoutX="184.0" layoutY="319.0" text="Status" />
             <ToggleButton fx:id="kgtb" layoutX="282.0" layoutY="150.0" mnemonicParsing="false" style="-fx-background-color: transparent; -fx-text-fill: #aa80ff;" text="Kg" />

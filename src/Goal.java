@@ -1,61 +1,48 @@
-import java.util.Date;
+import java.io.Serial;
+import java.io.Serializable;
+import java.time.LocalDate;
 
-public class Goal {
-    public static final Goal Instance=new Goal();
-    public String getGoalname() {
-        return goalname;
+//Implement serial class as the goal object needs to be stored as part of a list in the user object
+public class Goal implements Serializable {
+
+    @Serial
+    private static final long serialVersionUID = 1L;
+
+    String goalName;
+    LocalDate goalStartDate;
+    LocalDate goalEndDate;
+    String goalStatus;
+
+    //Constructor for the goal class
+    public Goal(String goalName, LocalDate goalStartDate, LocalDate goalEndDate, String goalStatus) {
+        this.goalName = goalName;
+        this.goalStartDate = goalStartDate;
+        this.goalEndDate = goalEndDate;
+        this.goalStatus = goalStatus;
     }
 
-    public void setGoalname(String goalname) {
-        this.goalname = goalname;
+    public String getGoalName() {
+        return goalName;
     }
 
-
-
-    public String getGoaldate() {
-        return goaldate;
+    public void setGoalName(String goalName) {
+        this.goalName = goalName;
     }
 
-    public void setGoaldate(String goaldate) {
-        this.goaldate = goaldate;
+    public LocalDate getGoalDate() {
+        return goalStartDate;
     }
 
-    public String getGoalstatus() {
-        return goalstatus;
+    public void setGoalDate(LocalDate goalDate) {
+        this.goalStartDate = goalDate;
     }
 
-    public void setGoalstatus(String goalstatus) {
-        this.goalstatus = goalstatus;
+    public String getGoalStatus() {
+        return goalStatus;
     }
 
-    public String getGoalgroups() {
-        return goalgroups;
+    public void setGoalStatus(String goalStatus) {
+        this.goalStatus = goalStatus;
     }
 
-    public void setGoalgroups(String goalgroups) {
-        this.goalgroups = goalgroups;
-    }
-
-    public Goal(Integer goalid,String goalname, String goaldate, String goalstatus, String goalgroups) {
-        this.goalid = goalid;
-        this.goalname = goalname;
-        this.goaldate = goaldate;
-        this.goalstatus = goalstatus;
-        this.goalgroups = goalgroups;
-    }
-    public Goal() { }
-
-    public Integer getGoalid() {
-        return goalid;
-    }
-
-    public void setGoalid(Integer goalid) {
-        this.goalid = goalid;
-    }
-
-    Integer goalid;
-    String goalname;
-    String goaldate;
-    String goalstatus;
-    String goalgroups;
 }

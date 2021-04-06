@@ -1,9 +1,7 @@
-import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 
 import java.io.IOException;
-import java.sql.PreparedStatement;
 import java.time.LocalDate;
 
 public class AddWeightController extends BaseController {
@@ -14,7 +12,7 @@ public class AddWeightController extends BaseController {
     @FXML
     TextField Nametf;
     @FXML
-    DatePicker enddate;
+    DatePicker endDate;
     @FXML Label statuslbl;
     Label label;
     @FXML
@@ -26,7 +24,7 @@ public class AddWeightController extends BaseController {
         lbtb.setToggleGroup(group);
         kgtb.setSelected(true);
         label=statuslbl;
-        userLabel.setText("Hello "+User.INSTANCE.getUsername());
+        userLabel.setText("Hello "+user.getUsername());
         label.setText("");
         label.setStyle("-fx-text-fill: white");
     }
@@ -35,41 +33,38 @@ public class AddWeightController extends BaseController {
     public void AddWeightGoal(javafx.event.ActionEvent actionEvent) throws IOException {
         LocalDate now = LocalDate.now();
         //TODO Complete query with group exending test
-        String SQL_QUERY="INSERT into Goal (goalname,enddate,userid,startdate,goaltype) values (?,?,?,?,?)";
-        try{
-            PreparedStatement pst = DBsession.INSTANCE.OpenConnection().prepareStatement(SQL_QUERY);
-        //    if(Check()==true) {
-                if (Nametf.getText() == "" && kgtb.isSelected()) {
-                    pst.setString(1, Weightgtf.getText() + "Kg");
-                }else  if (Nametf.getText() == "" && lbtb.isSelected()) {
-                    pst.setString(1, Weightgtf.getText() + "Lbs");
-                } else if (Weightgtf.getText() == "") {
-                    pst.setString(1, Nametf.getText());
-                } else {
-                    if( kgtb.isSelected()) {
-                        pst.setString(1, (Nametf.getText() + " " + Weightgtf.getText() + "Kg"));
-                    }else if(lbtb.isSelected()){
-                        pst.setString(1, (Nametf.getText() + " " + Weightgtf.getText() + "Lbs"));
-                    }
-                }
-                pst.setString(2, String.valueOf(enddate.getValue()));
-                pst.setInt(3, User.INSTANCE.getUserid());
-                pst.setString(4, String.valueOf(now));
-                pst.setString(5, "Simple");
-            ;
-                pst.executeUpdate();
-//            }else{ thread.start();
-//                label.setText("");
-//            }
-            DBsession.INSTANCE.OpenConnection().close();
-        }catch(Exception e){System.out.println(e);}
-//        if (Check() == true) {
-            BaseController.Instance.Switch(actionEvent,"HomePage.fxml");
-      //  }
+
+        String weight;
+        String name = null;
+        LocalDate date;
+        String status;
+
+        if (Nametf.getText().equals("") && kgtb.isSelected()) {
+            name = Weightgtf.getText() + "Kg";
+        }
+        else  if (Nametf.getText().equals("") && lbtb.isSelected()) {
+            name = Weightgtf.getText() + "Lbs";
+        }
+        else if (Weightgtf.getText().equals("")) {
+            name = Nametf.getText();
+        }
+        else {
+            if( kgtb.isSelected()) {
+                name = Nametf.getText() + " " + Weightgtf.getText() + "Kg";
+            }else if(lbtb.isSelected()){
+                name = Nametf.getText() + " " + Weightgtf.getText() + "Lbs";
+            }
+        }
+
+        date = endDate.getValue();
+
+        Goal newGoal = new Goal(name, date, now, "Simple");
+
+        user.addGoal(newGoal);
     }
 
     public Boolean Check(){
-        if(Nametf.getText()=="" && Weightgtf.getText()=="" || enddate.getValue().toString()==""){
+        if(Nametf.getText().equals("") && Weightgtf.getText().equals("") || endDate.getValue().toString().equals("")){
             return false;
         }
         return true;

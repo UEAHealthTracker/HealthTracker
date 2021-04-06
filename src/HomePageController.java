@@ -102,11 +102,7 @@ public class HomePageController extends BaseController {
 
 
     public void openSelectGoalTypePage(javafx.event.ActionEvent actionEvent) throws IOException {
-        root = FXMLLoader.load(getClass().getResource("SelectGoalType.fxml"));
-        stage = (Stage)((Node)actionEvent.getSource()).getScene().getWindow();
-        scene = new Scene(root);
-        stage.setScene(scene);
-        stage.show();
+        BaseController.Instance.Switch(actionEvent,"SelectGoalType.fxml");
     }
 
     public void openAddGoalPage(javafx.event.ActionEvent actionEvent) throws IOException {

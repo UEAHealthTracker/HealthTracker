@@ -57,12 +57,11 @@
                   <Insets bottom="10.0" left="10.0" right="25.0" top="10.0" />
                </padding>
             </Label>
-            <TableView layoutX="15.0" layoutY="60.0" prefHeight="280.0" prefWidth="360.0" style="-fx-background-color: #ffffff;">
+            <TableView fx:id="workoutTableView" layoutX="15.0" layoutY="60.0" prefHeight="280.0" prefWidth="360.0" style="-fx-background-color: #ffffff;">
               <columns>
-                  <TableColumn prefWidth="30.0" text="id" />
-                <TableColumn prefWidth="105.0" text="Workout type" />
-                <TableColumn prefWidth="115.0" text="Duration (minutes)" />
-                  <TableColumn prefWidth="110.0" text="Calories burned" />
+                <TableColumn fx:id="workoutType" prefWidth="105.0" text="Workout type" />
+                <TableColumn fx:id="workoutDuration" prefWidth="115.0" text="Duration (minutes)" />
+                  <TableColumn fx:id="caloriesBurned" prefWidth="110.0" text="Calories burned" />
               </columns>
             </TableView>
          </children>

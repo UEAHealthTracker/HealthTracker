@@ -65,13 +65,11 @@
                   <Insets bottom="10.0" left="10.0" right="25.0" top="10.0" />
                </padding>
             </Label>
-            <TableView fx:id="goalview" layoutX="14.0" layoutY="102.0" prefHeight="200.0" prefWidth="360.0" style="-fx-background-color: #ffffff;">
+            <TableView fx:id="goalTableView" layoutX="14.0" layoutY="102.0" prefHeight="200.0" prefWidth="360.0" style="-fx-background-color: #ffffff;">
               <columns>
-                  <TableColumn fx:id="goalid" minWidth="0.0" prefWidth="0.0" text="ID" />
-                <TableColumn fx:id="goalname" prefWidth="115.0" text="Name" />
-                  <TableColumn fx:id="goaldate" prefWidth="112.0" text="Date" />
-                  <TableColumn fx:id="goalstatus" minWidth="0.0" prefWidth="74.0" text="Status" />
-                  <TableColumn fx:id="goalgroups" prefWidth="57.0" text="Groups" />
+                <TableColumn fx:id="goalName" prefWidth="115.0" text="Name" />
+                  <TableColumn fx:id="goalDate" prefWidth="112.0" text="Date" />
+                  <TableColumn fx:id="goalStatus" minWidth="0.0" prefWidth="74.0" text="Status" />
               </columns>
             </TableView>
          </children>

@@ -1,18 +1,29 @@
 import java.io.Serializable;
-import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Date;
 
 public class  DailyActivity implements Serializable {
 
-    private LocalDate date;
-    private ArrayList<Meal> meals = new ArrayList<Meal>();
-    private ArrayList<Workout> workout = new ArrayList<Workout>();
+    private Date date;
 
-    public DailyActivity(LocalDate date) {
-        this.date = date;
+    @Override
+    public String toString() {
+        return "DailyActivity{" +
+                "date=" + date +
+                ", meals=" + meals +
+                ", workout=" + workouts +
+                '}';
     }
 
-    public LocalDate getDate(){
+    private ArrayList<Meal> meals = new ArrayList<>();
+    private ArrayList<Workout> workouts = new ArrayList<>();
+
+    public DailyActivity(Date date, Workout workout) {
+        this.date = date;
+        addWorkout(workout);
+    }
+
+    public Date getDate(){
         return this.date;
     }
 
@@ -21,7 +32,7 @@ public class  DailyActivity implements Serializable {
     }
 
     public void addWorkout(Workout newWorkout){
-        workout.add(newWorkout);
+        workouts.add(newWorkout);
     }
 
     public ArrayList<Meal> getMeals(){
@@ -29,10 +40,7 @@ public class  DailyActivity implements Serializable {
     }
 
     public ArrayList<Workout> getWorkout(){
-        return this.workout;
+        return this.workouts;
     }
 
-    private void saveData(){
-
-    }
 }

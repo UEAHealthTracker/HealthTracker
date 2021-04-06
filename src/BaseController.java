@@ -43,31 +43,20 @@ public class BaseController {
     //Switch to allow the user to change pages/controllers
     public void MenuSwitch(javafx.event.ActionEvent actionEvent) throws IOException{
         String text = ((Button)actionEvent.getSource()).getText();
-        String filename="";
-        switch(text){
-            case "Home":
-                filename="HomePage.fxml";break;
-            case "Diet":
-                filename="DietPage.fxml";break;
-            case "Workout":
-                filename="WorkoutPage.fxml";break;
-            case "Groups":
-                filename="GroupsPage.fxml";break;
-            case "User Information":
-                filename="UserPage.fxml";break;
-            case "Edit group":
-                filename="EditGroupPage.fxml"; break;
-            case "Create group":
-                filename="CreateGroupPage.fxml";break;
-            case "Add Diet Item":
-                filename="AddDietItemPage.fxml"; break;
-            case "EditWorkoutPage":
-                filename="EditWorkoutPage.fxml";break;
-            case "AddWorkoutPage":
-                filename="AddWorkoutPage.fxml";break;
-            case "EditUserPage":
-                filename="EditUserPage.fxml";break;
-        }
+        String filename = switch (text) {
+            case "Home" -> "HomePage.fxml";
+            case "Diet" -> "DietPage.fxml";
+            case "Workout" -> "WorkoutPage.fxml";
+            case "Groups" -> "GroupsPage.fxml";
+            case "User Information" -> "UserPage.fxml";
+            case "Edit group" -> "EditGroupPage.fxml";
+            case "Create group" -> "CreateGroupPage.fxml";
+            case "Add Diet Item" -> "AddDietItemPage.fxml";
+            case "EditWorkoutPage" -> "EditWorkoutPage.fxml";
+            case "AddWorkoutPage" -> "AddWorkoutPage.fxml";
+            case "EditUserPage" -> "EditUserPage.fxml";
+            default -> "";
+        };
         loadPage(actionEvent, filename);
 
     }

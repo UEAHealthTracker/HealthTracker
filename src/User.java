@@ -2,6 +2,7 @@ import java.io.*;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Base64;
+import java.util.Date;
 
 public class User implements Serializable {
 
@@ -20,7 +21,7 @@ public class User implements Serializable {
     double BMI;
     private ArrayList<Goal> goals = new ArrayList<>();
     private ArrayList<Group> groups = new ArrayList<>();
-    //private ArrayList<DailyActivity> activityLog = new ArrayList<DailyActivity>();
+    private ArrayList<DailyActivity> dailyActivities = new ArrayList<>();
 
     public User(String username,String password) {
         this.username=username;
@@ -37,8 +38,26 @@ public class User implements Serializable {
         calculateBMI();
     }
 
+    public ArrayList<DailyActivity> getDailyActivities() {
+        return dailyActivities;
+    }
+
+    public void setDailyActivities(ArrayList<DailyActivity> dailyActivities) {
+        this.dailyActivities = dailyActivities;
+    }
+
     public ArrayList<Goal> getGoals() {
         return goals;
+    }
+    public ArrayList<Workout> getWorkouts(){
+        ArrayList<Workout> workouts = new ArrayList<>();
+
+        for(int i = 0; i < this.getDailyActivities().size(); i++){
+            System.out.println(this.dailyActivities.get(i).toString());
+            workouts.addAll(this.getDailyActivities().get(i).getWorkout());
+        }
+
+        return workouts;
     }
     public void setGoals(ArrayList<Goal> goals) {
         this.goals = goals;
@@ -140,9 +159,9 @@ public class User implements Serializable {
                 ", groups=" + groups +
                 '}';
     }
-    //public void addDailyActivity(DailyActivity day){
-    //this.activityLog.add(day);
-    //}
+    public void addDailyActivity(DailyActivity day){
+        this.dailyActivities.add(day);
+    }
 
     public void addGoal(Goal goal){
         this.goals.add(goal);
@@ -158,6 +177,31 @@ public class User implements Serializable {
 
     public static void addTestData(User user){
         user.addGoal(new Goal("Goal 1", LocalDate.now(), LocalDate.now().plusDays(2), "N/A"));
+    }
+
+    public void addWorkout(Workout workout){
+        long millis=System.currentTimeMillis();
+        java.sql.Date date=new java.sql.Date(millis);
+
+        System.out.println(dailyActivities.isEmpty());
+
+        if(!dailyActivities.isEmpty()){
+            for(int i = 0; i < dailyActivities.size(); i++){
+                System.out.println(dailyActivities.get(i).toString());
+                System.out.println(dailyActivities.get(i).getDate());
+                System.out.println(date);
+                if(dailyActivities.get(i).getDate() == date){
+                    dailyActivities.get(i).addWorkout(workout);
+                    System.out.println(dailyActivities.toString());
+                }
+            }
+        }
+        else {
+            System.out.println("Here");
+            dailyActivities.add(new DailyActivity(date, workout));
+        }
+
+
     }
 
 //    public static void main(String[] args) {

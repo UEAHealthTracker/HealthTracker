@@ -1,6 +1,4 @@
 import javafx.application.Platform;
-import javafx.beans.InvalidationListener;
-import javafx.beans.Observable;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -15,13 +13,12 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.net.URL;
-import java.sql.PreparedStatement;
 import java.util.ResourceBundle;
 
 public class HomePageController extends BaseController implements Initializable {
 
     @FXML
-    private TableView<Goal> tbData = new TableView<>();
+    private TableView<Goal> goalTableView;
 
     @FXML
     public TableColumn<Goal, String> goalName;
@@ -32,14 +29,11 @@ public class HomePageController extends BaseController implements Initializable 
     @FXML
     public TableColumn<Goal, String> goalStatus;
 
-    @FXML
-    public TableColumn<Goal, String> goalGroups;
-
     //allow user to select a table item/row and delete it using the delete button
     public void removeTableItem(){
-        Goal data = tbData.getSelectionModel().getSelectedItem();
+        Goal data = goalTableView.getSelectionModel().getSelectedItem();
         if (data != null) {
-            data = tbData.getSelectionModel().getSelectedItem();
+            data = goalTableView.getSelectionModel().getSelectedItem();
 
             for(int i = 0; i < user.getGoals().size(); i++){
                 if(user.getGoals().get(i) == data){
@@ -88,12 +82,20 @@ public class HomePageController extends BaseController implements Initializable 
 
     //Method to populate the goal table for the page
     public void populateGoalTable(){
-        goalName.setCellValueFactory(new PropertyValueFactory<>("goalName"));
-        goalDate.setCellValueFactory(new PropertyValueFactory<>("goalDate"));
-        goalDate.setCellValueFactory(new PropertyValueFactory<>("goalStatus"));
-        goalGroups.setCellValueFactory(new PropertyValueFactory<>("goalGroups"));
+        System.out.println(user.getGoals().toString());
+        for(int i = 0; i < user.getGoals().size(); i++){
+            System.out.println(user.getGoals().get(i).goalName);
+        }
+        if (!user.getGoals().isEmpty()) {
+            goalName.setCellValueFactory(new PropertyValueFactory<>("goalName"));
+            goalDate.setCellValueFactory(new PropertyValueFactory<>("goalDate"));
+            goalStatus.setCellValueFactory(new PropertyValueFactory<>("goalStatus"));
 
-        tbData.setItems(getGoals());
+            goalTableView.setItems(getGoals());
+        } else {
+            //skip population
+        }
+
     }
 
 

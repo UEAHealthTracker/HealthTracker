@@ -11,8 +11,8 @@ public class User {
         this.userid = userid;
     }
 
-    int userid;
     //Initialise variables
+     int userid;
      String username;
      String password;
      String email;
@@ -21,8 +21,13 @@ public class User {
      double weight;
      double height;
      double BMI;
-   // private ArrayList<Goal> goals = new ArrayList<Goal>();
-  //  private ArrayList<Group> groups = new ArrayList<Group>();
+
+    public ArrayList<Group> getGroups() {
+        return groups;
+    }
+
+    // private ArrayList<Goal> goals = new ArrayList<Goal>();
+    private ArrayList<Group> groups = new ArrayList<Group>();
     private ArrayList<DailyActivity> activityLog = new ArrayList<DailyActivity>();
 
     public double getBMI() {
@@ -53,13 +58,12 @@ public class User {
     public void setEmail(String email) {
         this.email = email;
     }
-    public Integer getAge() {
+    public int getAge() {
         return age;
     }
-    public void setAge(Integer age) {
+    public void setAge(int age) {
         this.age = age;
     }
-
 
     public double getWeight() {
         return weight;
@@ -86,7 +90,7 @@ public class User {
         this.BMI= this.weight/ (height*height);
     }
 
-    public User(String Realname,String username,String password,String email, Integer age, double weight, double height) {
+    public User(String Realname,String username,String password,String email, int age, double weight, double height) {
         this.RealName = Realname;
         this.username=username;
         this.password=password;
@@ -97,6 +101,11 @@ public class User {
         this.calculateBMI();
     }
     public User() {
+
+    }
+
+    public void addGroup(Group newGroup){
+        groups.add(newGroup);
 
     }
 //    @Override

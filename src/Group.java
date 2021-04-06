@@ -2,8 +2,9 @@ import java.util.ArrayList;
 
 public class Group {
 
+
     private String groupName;
-    private User groupAdmin;
+    private String groupAdmin;
 
     public String getGroupName() {
         return groupName;
@@ -13,11 +14,11 @@ public class Group {
         this.groupName = groupName;
     }
 
-    public User getGroupAdmin() {
+    public String getGroupAdmin() {
         return groupAdmin;
     }
 
-    public void setGroupAdmin(User groupAdmin) {
+    public void setGroupAdmin(String groupAdmin) {
         this.groupAdmin = groupAdmin;
     }
 
@@ -45,7 +46,7 @@ public class Group {
         for (User groupMember : groupMembers) {
             String email = groupMember.email;
             //TODO Create email class with methods
-            Email.sendGroupGoalUpdate(email);
+           // Email.sendGroupGoalUpdate(email);
         }
     }
 

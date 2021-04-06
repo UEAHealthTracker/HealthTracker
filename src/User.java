@@ -22,13 +22,13 @@ public class User {
      double height;
      double BMI;
 
-    public ArrayList<Group> getGroups() {
-        return groups;
-    }
-
-    // private ArrayList<Goal> goals = new ArrayList<Goal>();
-    private ArrayList<Group> groups = new ArrayList<Group>();
-    private ArrayList<DailyActivity> activityLog = new ArrayList<DailyActivity>();
+//    public ArrayList<Group> getGroups() {
+//        return groups;
+//    }
+//
+//    // private ArrayList<Goal> goals = new ArrayList<Goal>();
+//    private ArrayList<Group> groups = new ArrayList<Group>();
+//    private ArrayList<DailyActivity> activityLog = new ArrayList<DailyActivity>();
 
     public double getBMI() {
         return BMI;
@@ -117,9 +117,9 @@ public class User {
 //                '}';
 //    }
 
-    public void addDailyActivity(DailyActivity day){
-        this.activityLog.add(day);
-    }
+//    public void addDailyActivity(DailyActivity day){
+//        this.activityLog.add(day);
+//    }
 
 //    public void addGoal(Goal goal){
 //        this.goals.add(goal);

@@ -58,6 +58,7 @@
                </padding>
             </Label>
             <ComboBox layoutX="121.0" layoutY="150.0" prefWidth="150.0" promptText="Select goal type" style="-fx-background-color: #ffffff;" />
+            <ComboBox layoutX="122.0" layoutY="108.0" prefWidth="150.0" promptText="GoalName" style="-fx-background-color: #ffffff;" />
          </children>
       </AnchorPane>
    </right>

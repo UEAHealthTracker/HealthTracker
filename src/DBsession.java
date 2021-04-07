@@ -7,9 +7,8 @@ public class DBsession {
     public Statement Stmt() {
         Statement stmt = null;
         try {
-            Class.forName("com.mysql.jdbc.Driver");
             Connection con = DriverManager.getConnection(
-                    "jdbc:mysql://freedb.tech:3306/freedbtech_htrackdb?useSSL=false", "freedbtech_htrack", "ganttsucks123");
+                    "jdbc:sqlite:HealthTracker.db");
             stmt = con.createStatement();
 
 
@@ -22,9 +21,8 @@ public class DBsession {
     public Connection OpenConnection() {
         Connection con=null;
         try {
-            Class.forName("com.mysql.jdbc.Driver");
             con = DriverManager.getConnection(
-                    "jdbc:mysql://freedb.tech:3306/freedbtech_htrackdb?useSSL=false", "freedbtech_htrack", "ganttsucks123");
+                    "jdbc:sqlite:HealthTracker.db");
 
         } catch (Exception e) {
             System.out.println(e);

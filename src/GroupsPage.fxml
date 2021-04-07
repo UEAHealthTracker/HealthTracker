@@ -65,10 +65,10 @@
                   <Insets bottom="10.0" left="10.0" right="25.0" top="10.0" />
                </padding>
             </Label>
-            <TableView layoutX="14.0" layoutY="102.0" prefHeight="200.0" prefWidth="360.0" style="-fx-background-color: #ffffff;">
+            <TableView fx:id="tbData" layoutX="14.0" layoutY="102.0" prefHeight="200.0" prefWidth="360.0" style="-fx-background-color: #ffffff;">
               <columns>
-                <TableColumn prefWidth="160.0" text="Name" />
-                  <TableColumn prefWidth="200.0" text="Members" />
+                <TableColumn fx:id="groupName" prefWidth="160.0" text="Name" />
+                  <TableColumn fx:id="groupMembers" prefWidth="200.0" text="Members" />
               </columns>
             </TableView>
          </children>

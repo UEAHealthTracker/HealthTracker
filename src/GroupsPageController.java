@@ -2,12 +2,13 @@ import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
+import javafx.scene.control.Button;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.ImageView;
 
-import java.awt.*;
 import java.util.ArrayList;
 
 public class GroupsPageController extends BaseController {
@@ -30,7 +31,7 @@ public class GroupsPageController extends BaseController {
     String nameOfGroup, groupMail;
 
     @FXML
-    private TableView<Group> tbData = new TableView<>();
+    private TableView<Group> tbData;
 
     @FXML
     public TableColumn<Group, String> groupName;
@@ -74,7 +75,7 @@ public class GroupsPageController extends BaseController {
         Group newGroup = new Group(nameOfGroup, groupAdmin);
 
         if(nameOfGroup.isEmpty() || groupMail.isEmpty()){
-            System.out.println("Please sill in all details");
+            System.out.println("Please fill in all details");
         }
         else{
             user.addGroup(newGroup);

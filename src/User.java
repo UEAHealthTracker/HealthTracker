@@ -177,11 +177,13 @@ public class User implements Serializable {
 
     public static void addTestData(User user){
         user.addGoal(new Goal("Goal 1", LocalDate.now(), LocalDate.now().plusDays(2), "N/A"));
+        user.addGroup(new Group("Group1", user));
     }
 
     public void addWorkout(Workout workout){
-        long millis=System.currentTimeMillis();
-        java.sql.Date date=new java.sql.Date(millis);
+        LocalDate date = LocalDate.now();
+
+        System.out.println(workout);
 
         System.out.println(dailyActivities.isEmpty());
 
@@ -190,9 +192,13 @@ public class User implements Serializable {
                 System.out.println(dailyActivities.get(i).toString());
                 System.out.println(dailyActivities.get(i).getDate());
                 System.out.println(date);
-                if(dailyActivities.get(i).getDate() == date){
+                if(dailyActivities.get(i).getDate().equals(date)){
+                    System.out.println(workout);
                     dailyActivities.get(i).addWorkout(workout);
                     System.out.println(dailyActivities.toString());
+                }
+                else{
+                    System.out.println("Here2");
                 }
             }
         }

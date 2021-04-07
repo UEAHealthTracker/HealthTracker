@@ -5,6 +5,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
+import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
@@ -54,7 +55,21 @@ public class HomePageController extends BaseController implements Initializable 
     public void openAddGoalPage(javafx.event.ActionEvent actionEvent) throws IOException {
         //if user selects weight goal then open AddWeightGoal page
         //else if user selects workout goal then open AddWorkoutGoal page
-        root = FXMLLoader.load(getClass().getResource("AddWeightGoal.fxml"));
+
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("AddWeightGoal.fxml"));
+
+        //Load the desired page/controller
+        Parent root = (Parent) fxmlLoader.load();
+
+        //Get the new controller for the desired page
+        BaseController baseController = fxmlLoader.getController();
+
+        //Pass the current user object to the new controller
+        baseController.setUser(user);
+
+        //Set the label of the new page to the user's name
+        baseController.setUserLabel();
+
         stage = (Stage)((Node)actionEvent.getSource()).getScene().getWindow();
         scene = new Scene(root);
         stage.setScene(scene);

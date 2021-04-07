@@ -1,43 +1,47 @@
+import javafx.application.Platform;
 import javafx.fxml.FXML;
+import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 
 import java.io.IOException;
+import java.net.URL;
 import java.time.LocalDate;
+import java.util.ResourceBundle;
 
-public class AddWeightController extends BaseController {
+public class AddWeightController extends BaseController implements Initializable {
     @FXML
     Label userLabel;
+
     @FXML
     TextField Weightgtf;
+
     @FXML
     TextField Nametf;
+
     @FXML
     DatePicker endDate;
-    @FXML Label statuslbl;
+
+    @FXML
+    Label statuslbl;
+
+    @FXML
     Label label;
+
     @FXML
     ToggleButton kgtb;
-    @FXML ToggleButton lbtb;
+
+    @FXML
+    ToggleButton lbtb;
+
+    @FXML
     ToggleGroup group = new ToggleGroup();
-    public void initialize() {
-        kgtb.setToggleGroup(group);
-        lbtb.setToggleGroup(group);
-        kgtb.setSelected(true);
-        label=statuslbl;
-        userLabel.setText("Hello "+user.getUsername());
-        label.setText("");
-        label.setStyle("-fx-text-fill: white");
-    }
 
 
     public void AddWeightGoal(javafx.event.ActionEvent actionEvent) throws IOException {
         LocalDate now = LocalDate.now();
-        //TODO Complete query with group exending test
 
-        String weight;
         String name = null;
         LocalDate date;
-        String status;
 
         if (Nametf.getText().equals("") && kgtb.isSelected()) {
             name = Weightgtf.getText() + "Kg";
@@ -70,27 +74,19 @@ public class AddWeightController extends BaseController {
         return true;
     }
 
-//    Thread thread = new Thread(new Runnable() {
-//        @Override
-//        public void run() {
-//            Runnable updater = new Runnable() {
-//                @Override
-//                public void run() {
-//                    label.setStyle("-fx-text-fill: red");
-//                    label.setText("Incorrect Values");
-//
-//                }
-//            };
-//            while (true) {
-//                try {
-//                    Thread.sleep(3000);
-//                } catch (InterruptedException ex) {
-//                }
-//                // UI update is run on the Application thread
-//                Platform.runLater(updater);
-//            }
-//        }
-//
-//    });
+    @Override
+    public void initialize(URL url, ResourceBundle resourceBundle) {
+        Platform.runLater(() -> {
+            this.setUserLabel();
+            this.setUser(user);
+            kgtb.setToggleGroup(group);
+            lbtb.setToggleGroup(group);
+            kgtb.setSelected(true);
+            label = statuslbl;
+            userLabel.setText("Hello " + user.getUsername());
+            label.setText("");
+            label.setStyle("-fx-text-fill: white");
+        });
+    }
 
 }

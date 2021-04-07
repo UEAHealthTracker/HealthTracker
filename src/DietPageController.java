@@ -1,18 +1,65 @@
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Node;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
+import javafx.application.Platform;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+import javafx.fxml.FXML;
+import javafx.fxml.Initializable;
+import javafx.scene.control.ComboBox;
+import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
-import javafx.stage.Stage;
+import javafx.scene.control.TextField;
+import javafx.scene.control.cell.PropertyValueFactory;
 
-import java.io.IOException;
+import java.net.URL;
+import java.util.ResourceBundle;
 
-public class DietPageController extends BaseController {
+public class DietPageController extends BaseController implements Initializable {
 
-    private TableView dietTable;
+    @FXML
+    public TableColumn<Meal, String> mealTime;
+
+    @FXML
+    public TableColumn<Meal, String> mealFood;
+
+    @FXML
+    public TableColumn<Meal, String> mealDrink;
+
+    @FXML
+    public TableColumn<Meal, Integer> calorieCount;
+
+    @FXML
+    public ComboBox<String> mealTypeSelector;
+
+    @FXML
+    public TextField itemNameTextField;
+
+    @FXML
+    public TextField calorieCountTextField;
+
+    @FXML
+    private TableView<Meal> dietTable;
+
+    private boolean open=false;
+
+    public void init(){
+        if(!open) {
+            mealTypeSelector.getItems().add("Food");
+            mealTypeSelector.getItems().add("Drink");
+            open=true;
+        }
+
+    }
 
     //add data to diet table
     public void populateDietTable(){
+
+        //Get the attributes for the table from default getters and setters
+        mealTime.setCellValueFactory(new PropertyValueFactory<>("mealTime"));
+        mealFood.setCellValueFactory(new PropertyValueFactory<>("mealFood"));
+        mealDrink.setCellValueFactory(new PropertyValueFactory<>("mealDrink"));
+        calorieCount.setCellValueFactory(new PropertyValueFactory<>("calorieCount"));
+
+        //Populate the table data
+        dietTable.setItems(getMeals());
 
     }
 
@@ -21,4 +68,37 @@ public class DietPageController extends BaseController {
 
     }
 
+    @Override
+    public void initialize(URL url, ResourceBundle resourceBundle) {
+
+        Platform.runLater(() -> {
+                populateDietTable();
+        });
+
+    }
+
+    private ObservableList<Meal> getMeals(){
+        ObservableList<Meal> meals = FXCollections.observableArrayList();
+        meals.addAll(user.getMeals());
+        return meals;
+    }
+
+    public void addItem(){
+        System.out.println("Here");
+        System.out.println(user.toString());
+        //Food
+        if(mealTypeSelector.getSelectionModel().getSelectedItem().equals("Food")){
+            Food food = new Food(Food.FoodType.REGULAR, itemNameTextField.getText(), Integer.parseInt(calorieCountTextField.getText()));
+            Meal meal = new Meal();
+            meal.addFood(food);
+            user.addMeal(meal);
+        }
+        //Drink
+        else{
+            Drink drink = new Drink(Drink.DrinkType.WATER, itemNameTextField.getText(), Integer.parseInt(calorieCountTextField.getText()));
+            Meal meal = new Meal();
+            meal.addDrink(drink);
+            user.addMeal(meal);
+        }
+    }
 }

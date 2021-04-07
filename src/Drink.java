@@ -1,4 +1,10 @@
-public class Drink extends Diet {
+import java.io.Serial;
+import java.io.Serializable;
+
+public class Drink extends Diet implements Serializable {
+
+    @Serial
+    private static final long serialVersionUID = 1L;
 
     private final DrinkType drinkType;
 

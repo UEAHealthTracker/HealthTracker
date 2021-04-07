@@ -1,15 +1,21 @@
+import java.io.Serial;
+import java.io.Serializable;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.time.LocalDateTime;
 
-public class Meal {
+public class Meal implements Serializable {
+
+    @Serial
+    private static final long serialVersionUID = 1L;
 
     private final ArrayList<Food> foodList = new ArrayList<>();
     private final ArrayList<Drink> drinkList = new ArrayList<>();
-    private final LocalDateTime timeConsumed;
-    private int calorieCount;
+    private final LocalDateTime mealTime;
+    private Integer calorieCount;
 
     public Meal() {
-        this.timeConsumed = null;
+        this.mealTime = LocalDateTime.now();
         this.calorieCount = 0;
     }
 
@@ -21,6 +27,14 @@ public class Meal {
     void addDrink(Drink drink) {
         this.calorieCount += drink.getCalorieAmount();
         this.drinkList.add(drink);
+    }
+
+    public String getMealFood(){
+        return this.foodList.toString();
+    }
+
+    public String getMealDrink(){
+        return this.drinkList.toString();
     }
 
     void updateCalories(int calorieCount) {
@@ -39,8 +53,8 @@ public class Meal {
         return drinkList;
     }
 
-    public LocalDateTime getTimeConsumed() {
-        return timeConsumed;
+    public String getMealTime() {
+        return mealTime.toString();
     }
 
     public String toString() {
@@ -56,7 +70,7 @@ public class Meal {
             result.append("Food : ").append(food.getName()).append("\n");
         }
 
-        result.append("Time consumed : ").append(timeConsumed).append("\n");
+        result.append("Time consumed : ").append(mealTime).append("\n");
         result.append("Total calories : ").append(calorieCount).append("\n");
 
         return result.toString();
@@ -84,7 +98,7 @@ public class Meal {
 
         //print calories and time consumed
         System.out.println("Total calorie count for meal : " + meal.getCalorieCount());
-        System.out.println("Time consumed : " + meal.getTimeConsumed());
+        System.out.println("Time consumed : " + meal.getMealTime());
 
         System.out.println(meal);
     }

@@ -1,9 +1,13 @@
+import java.io.Serial;
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Date;
 
 public class  DailyActivity implements Serializable {
+
+    @Serial
+    private static final long serialVersionUID = 1L;
 
     private LocalDate date;
 
@@ -22,6 +26,11 @@ public class  DailyActivity implements Serializable {
     public DailyActivity(LocalDate date, Workout workout) {
         this.date = date;
         addWorkout(workout);
+    }
+
+    public DailyActivity(LocalDate date, Meal meal){
+        this.date = date;
+        addMeal(meal);
     }
 
     public LocalDate getDate(){

@@ -59,6 +59,13 @@ public class User implements Serializable {
 
         return workouts;
     }
+    public ArrayList<Meal> getMeals(){
+        ArrayList<Meal> meals = new ArrayList<>();
+        for(int i = 0; i < this.dailyActivities.size(); i++){
+            meals.addAll(this.getDailyActivities().get(i).getMeals());
+        }
+        return meals;
+    }
     public void setGoals(ArrayList<Goal> goals) {
         this.goals = goals;
     }
@@ -157,8 +164,10 @@ public class User implements Serializable {
                 ", BMI=" + BMI +
                 ", goals=" + goals +
                 ", groups=" + groups +
+                ", dailyActivities=" + dailyActivities +
                 '}';
     }
+
     public void addDailyActivity(DailyActivity day){
         this.dailyActivities.add(day);
     }
@@ -189,22 +198,30 @@ public class User implements Serializable {
 
         if(!dailyActivities.isEmpty()){
             for(int i = 0; i < dailyActivities.size(); i++){
-                System.out.println(dailyActivities.get(i).toString());
-                System.out.println(dailyActivities.get(i).getDate());
-                System.out.println(date);
                 if(dailyActivities.get(i).getDate().equals(date)){
-                    System.out.println(workout);
                     dailyActivities.get(i).addWorkout(workout);
-                    System.out.println(dailyActivities.toString());
-                }
-                else{
-                    System.out.println("Here2");
                 }
             }
         }
         else {
-            System.out.println("Here");
             dailyActivities.add(new DailyActivity(date, workout));
+        }
+
+
+    }
+
+    public void addMeal(Meal meal){
+        LocalDate date = LocalDate.now();
+
+        if(!dailyActivities.isEmpty()){
+            for(int i = 0; i < dailyActivities.size(); i++){
+                if(dailyActivities.get(i).getDate().equals(date)){
+                    dailyActivities.get(i).addMeal(meal);
+                }
+            }
+        }
+        else {
+            dailyActivities.add(new DailyActivity(date, meal));
         }
 
 

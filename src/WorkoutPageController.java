@@ -19,42 +19,44 @@ enum WorkoutType {
 
     //exercise types- MET value for each type based on information at https://golf.procon.org/met-values-for-800-activities/
 
-    AEROBICS(6,"AEROBICS"),
-    BASKETBALL(8,"BASKETBALL"),
-    BOXING(12,"BOXING"),
-    CRICKET(5,"CRICKET"),
-    CIRCUIT_TRAINING(8, "CIRCUIT_TRAINING"),
-    CYCLING(7,"CYCLING"),
-    DANCING(5,"DANCING"),
-    FOOTBALL(8,"FOOTBALL"),
-    GYMNASTICS(6,"GYMNASTICS"),
-    HIKING(7,"HIKING"),
-    HOCKEY(8,"HOCKEY"),
-    HORSE_RIDING(5,"HORSE_RIDING"),
-    MOUNTAIN_BIKING(9,"MOUNTAIN_BIKING"),
-    MARTIAL_ARTS(10,"MARTIAL_ARTS"),
-    PILATES(3,"PILATES"),
-    RUNNING(8,"RUNNING"),
-    ROCK_CLIMBING(8,"ROCK_CLIMBING"),
-    ROWING(6,"ROWING"),
-    RUGBY(8,"RUGBY"),
-    SKATING(7,"SKATING"),
-    SKIING(7,"SKIING"),
-    SKIPPING(12,"SKIPPING"),
-    SWIMMING(7,"SWIMMING"),
-    TENNIS(7,"TENNIS"),
-    WALKING(3,"WALKING"),
-    WEIGHT_LIFTING(5,"WEIGHT_LIFTING"),
-    YOGA(3,"YOGA");
+    AEROBICS(6,"AEROBICS",1),
+    BASKETBALL(8,"BASKETBALL",2),
+    BOXING(12,"BOXING",3),
+    CRICKET(5,"CRICKET",4),
+    CIRCUIT_TRAINING(8, "CIRCUIT_TRAINING",5),
+    CYCLING(7,"CYCLING",6),
+    DANCING(5,"DANCING",7),
+    FOOTBALL(8,"FOOTBALL",8),
+    GYMNASTICS(6,"GYMNASTICS",9),
+    HIKING(7,"HIKING",10),
+    HOCKEY(8,"HOCKEY",11),
+    HORSE_RIDING(5,"HORSE_RIDING",12),
+    MOUNTAIN_BIKING(9,"MOUNTAIN_BIKING",13),
+    MARTIAL_ARTS(10,"MARTIAL_ARTS",14),
+    PILATES(3,"PILATES",15),
+    RUNNING(8,"RUNNING",16),
+    ROCK_CLIMBING(8,"ROCK_CLIMBING",17),
+    ROWING(6,"ROWING",18),
+    RUGBY(8,"RUGBY",19),
+    SKATING(7,"SKATING",20),
+    SKIING(7,"SKIING",21),
+    SKIPPING(12,"SKIPPING",22),
+    SWIMMING(7,"SWIMMING",23),
+    TENNIS(7,"TENNIS",24),
+    WALKING(3,"WALKING",24),
+    WEIGHT_LIFTING(5,"WEIGHT_LIFTING",25),
+    YOGA(3,"YOGA",26);
 
     //MET = metabolic equivalent for task- it is based on the intensity and used to calculate calories burnt
     public int MET;
     public String ID;
+    public int id;
 
     //default constructor for enum
-    WorkoutType(int MET,String ID){
+    WorkoutType(int MET,String ID, int id){
         this.MET = MET;
         this.ID=ID;
+        this.id=id;
     }
 }
 
@@ -66,8 +68,9 @@ public class WorkoutPageController extends BaseController{
    // private static final String SQL_Insert ="INSERT INTO workout (workoutid, sets, reps, calories, weekday) VALUES ('4','3','20','150 calories','Wednesday')";
     @FXML ComboBox WorkoutTypeSelector;
     @FXML TextField durationTF;
+    @FXML ComboBox id;
     boolean open=false;
-    public void init(){
+   public void init(){
         if(open==false) {
             for (WorkoutType type : WorkoutType.values()) {
                 WorkoutTypeSelector.getItems().add(type.ID);
@@ -75,6 +78,14 @@ public class WorkoutPageController extends BaseController{
             open=true;
         }
 
+    }
+    public void fillUpdateID(){
+                if(open==false){
+                    for(WorkoutType type :WorkoutType.values()){
+                        id.getItems().add(type.id);
+                    }
+
+                }
     }
 
     //add data to workout table
@@ -141,6 +152,30 @@ public class WorkoutPageController extends BaseController{
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         }
+    }
+    //Update workout
+    public void updateWorkout(){
+        LocalDate date=LocalDate.now();
+        String SQL_Update="Select workoutid FROM workout JOIN day on day.workoutid=workout.workoutid JOIN day.userid=user.userid and username=?";
+
+        try {
+            PreparedStatement sel = DBsession.INSTANCE.OpenConnection().prepareStatement(SQL_Update);
+            sel.setInt(1, Integer.parseInt(id.getSelectionModel().getSelectedItem().toString()));
+            sel.setString(2,WorkoutTypeSelector.getSelectionModel().getSelectedItem().toString());
+            sel.setInt(3, Integer.parseInt(durationTF.getText()));
+            ResultSet wid = sel.executeQuery();
+
+            while(wid.next()) {
+               Workout.Instance.setWorkoutid(Integer.parseInt(wid.getString("workoutid")));
+              // id.
+            }
+
+            DBsession.INSTANCE.OpenConnection().close();
+
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+        DateSet2();
     }
 
     //allow user to select a table item/row and delete it using the delete button

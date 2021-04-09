@@ -53,6 +53,8 @@ public class GroupsPageController extends BaseController {
     Button createGroupbtn;
     @FXML
     ImageView imageView;
+    @FXML
+    TextField groupPassword;
     String nameOfGroup, groupMail;
 
 

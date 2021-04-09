@@ -51,6 +51,8 @@ public class BaseController {
                 break;
             case "EditUserPage":
                 filename="EditUserPage.fxml";break;
+            case "Join Group":
+                filename="JoinGroup.fxml";break;
         }
         root = FXMLLoader.load(getClass().getResource(filename));
         stage = (Stage)((Node)actionEvent.getSource()).getScene().getWindow();

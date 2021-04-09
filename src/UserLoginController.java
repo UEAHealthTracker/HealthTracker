@@ -87,11 +87,7 @@ public void login(javafx.event.ActionEvent actionEvent) throws IOException {
                     User.INSTANCE.setHeight(Double.parseDouble(rs.getString("height")));
                     User.INSTANCE.setWeight(Integer.parseInt(rs.getString("weight")));
                     User.INSTANCE.setAge(Integer.parseInt(rs.getString("age")));
-                    root = FXMLLoader.load(getClass().getResource("HomePage.fxml"));
-                    stage = (Stage)((Node)actionEvent.getSource()).getScene().getWindow();
-                    scene = new Scene(root);
-                    stage.setScene(scene);
-                    stage.show();
+                    BaseController.Instance.filename="HomePage.fxml";
 
                 } else {
                     String s=null;
@@ -155,11 +151,7 @@ public void login(javafx.event.ActionEvent actionEvent) throws IOException {
                     pst.executeUpdate();
                     User.INSTANCE.setUsername(usernameTF.getText());
                     User.INSTANCE.setPassword(passwordTF.getText());
-                    root = FXMLLoader.load(getClass().getResource("HomePage.fxml"));
-                    stage = (Stage)((Node)event.getSource()).getScene().getWindow();
-                    scene = new Scene(root);
-                    stage.setScene(scene);
-                    stage.show();
+                    BaseController.Instance.filename="HomePage.fxml";
 
                 }
 

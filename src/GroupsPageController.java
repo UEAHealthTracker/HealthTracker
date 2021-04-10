@@ -55,7 +55,7 @@ public class GroupsPageController extends BaseController {
     ImageView imageView;
     @FXML
     TextField groupPassword;
-    String nameOfGroup, groupMail;
+    String nameOfGroup, groupMail, passwordGroup;
 
 
     //Methods that initialise the scene builder textfields to the static elements
@@ -73,10 +73,12 @@ public class GroupsPageController extends BaseController {
         //Set Group name and get Group object
         nameOfGroup = groupName.getText();
         groupMail = groupMembersEmail.getText();
+        passwordGroup= groupPassword.getText();
         String groupAdmin = User.INSTANCE.getUsername();
         Group newGroup = new Group();
         newGroup.setGroupName(nameOfGroup);
         newGroup.setGroupAdmin(groupAdmin);
+        newGroup.setGroupPassword(passwordGroup);
         //Insert group details and create group:
         if (nameOfGroup.isEmpty() || groupMail.isEmpty() == true) {
             System.out.println("Please ensure that both group name and the group  mail is filled ");
@@ -110,27 +112,22 @@ public class GroupsPageController extends BaseController {
                 int memberUserId;
                 adminUserId = Integer.toString(User.INSTANCE.getUserid());
                 System.out.println(adminUserId);
-                //Invite Member to the group
-                SendMail.sendMail(groupMail, groupName.getText());
-                //AddGroupMembers(actionEvent);
-
-                //Invite Member:
-       /*
-
-
-                PreparedStatement pst = DBsession.INSTANCE.OpenConnection().prepareStatement(insertQuery);
-                pst.setString(1, nameOfGroup);
-                pst.setString(2, groupAdmin);
-                pst.executeUpdate();
-                */
-                //System.out.println("Group has been created. The name of the Group is " + newGroup.getGroupName());
-                //System.out.println("Group admin is "+ groupAdmin);
-
-                //Insertion aspect ofn Creating a group:
-                //String insertQuery = "INSERT INTO groups(groupname, groupadmin) VALUES(?,?)";
-                //String insertQuery2= "INSERT INTO groupsmember()";
-
-
+                //Create Group and Invite Members
+                //If email sending is successful
+               if(SendMail.sendMail(groupMail, nameOfGroup, passwordGroup)==true && CheckCredentials() > 0){
+                   //Add the details to the database:
+                   String insertQuery = "INSERT INTO groups(groupname, groupadmin, groupPassword) VALUES(?,?, ?)";
+                   PreparedStatement pst = DBsession.INSTANCE.OpenConnection().prepareStatement(insertQuery);
+                   pst.setString(1, nameOfGroup);
+                   pst.setString(2, groupAdmin);
+                   pst.setString(3, passwordGroup);
+                   pst.executeUpdate();
+                   System.out.println("Group has been created. The name of the Group is " + newGroup.getGroupName());
+                   System.out.println("Group admin is "+ groupAdmin);
+                   System.out.println("The group password is " + newGroup.getGroupPassword());
+               }else{
+                   System.out.println("User does not exists");
+               }
             } catch (Exception e) {
                 System.out.println(e);
 
@@ -158,30 +155,26 @@ public class GroupsPageController extends BaseController {
                 ResultSet rs = firstStatement.executeQuery();
                 while (rs.next()) {
                     System.out.println("The member's user id is: " + rs.getInt("userid"));
-
                 }
             } else {
                 System.out.println("Group and/or user does not exist");
                 createGroupbtn.setStyle("-fx-background-color:rgba(0,0,0,0);-fx-text-fill: #ff0000");
                 createGroupbtn.setText("User does not exists");
             }
-
             DBsession.INSTANCE.OpenConnection().close();
-
-
         } else {
             System.out.println("Email is not written correctly. Please type it well");
             createGroupbtn.setStyle("-fx-background-color:rgba(0,0,0,0);-fx-text-fill: #ff0000");
             createGroupbtn.setText("Please type the email correctly");
-
         }
     }
 
-    public Integer CheckCredentials() {
+    //Checking credntials for adding members in the group, after group has been created.
+    public int CheckCredentials() {
         int counter = 0;
         String emailDb;
         try {
-            ResultSet rs = DBsession.INSTANCE.Stmt().executeQuery("select email from Users ");
+            ResultSet rs = DBsession.INSTANCE.Stmt().executeQuery("select email from Users");
             ResultSet rs2 = DBsession.INSTANCE.Stmt().executeQuery("select groupname from groups");
             while (rs.next() && rs2.next()) {
                 emailDb = rs.getString("email");
@@ -189,7 +182,6 @@ public class GroupsPageController extends BaseController {
                 if (emailDb.equals(groupMembersEmail.getText()) && nameOfGroup.equals(groupName.getText())) {
                     counter++;
                 }
-
             }
         } catch (Exception e) {
             System.out.println(e);
@@ -197,10 +189,45 @@ public class GroupsPageController extends BaseController {
         return counter;
     }
 
-    public void EditGroupCommands() {
+    //Check if user exists to be added to the group
+    public int checkUser() {
+        int counter = 0;
+        String emailDb;
+        try {
+            ResultSet rs = DBsession.INSTANCE.Stmt().executeQuery("select email from Users ");
+            while (rs.next()) {
+                emailDb = rs.getString("email");
+                counter++;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return counter;
+    }
+
+
+    //Check if group already exists
+    public int checkGroup() {
+        int counter = 0;
+        try {
+            ResultSet rs = DBsession.INSTANCE.Stmt().executeQuery("select groupname from groups");
+            while (rs.next()) {
+                nameOfGroup = rs.getString("groupname");
+                counter++;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return counter;
+    }
+
+
+
+/*
+        public void EditGroupCommands() {
         nameOfGroup = groupName.getText();
         String groupEmail = groupMembersEmail.getText();
-        /*
+
         if(){
 
         }
@@ -210,7 +237,7 @@ public class GroupsPageController extends BaseController {
 
     }
 
-}
+
 
 
 

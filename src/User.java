@@ -3,16 +3,16 @@ import java.util.ArrayList;
 public class User {
     public final static User INSTANCE = new User();
 
-    public Integer getUserid() {
+    public int getUserid() {
         return userid;
     }
 
-    public void setUserid(Integer userid) {
+    public void setUserid(int userid) {
         this.userid = userid;
     }
 
     //Initialise variables
-    Integer userid;
+     int userid;
      String username;
      String password;
      String email;
@@ -22,12 +22,12 @@ public class User {
      double height;
      double BMI;
 
-//    public ArrayList<Group> getGroups() {
-//        return groups;
-//    }
-//
-//    // private ArrayList<Goal> goals = new ArrayList<Goal>();
-//    private ArrayList<Group> groups = new ArrayList<Group>();
+    public ArrayList<Group> getGroups() {
+        return groups;
+    }
+
+    private ArrayList<Goal> goals = new ArrayList<Goal>();
+    private ArrayList<Group> groups = new ArrayList<Group>();
 //    private ArrayList<DailyActivity> activityLog = new ArrayList<DailyActivity>();
 
     public double getBMI() {
@@ -58,10 +58,10 @@ public class User {
     public void setEmail(String email) {
         this.email = email;
     }
-    public Integer getAge() {
+    public int getAge() {
         return age;
     }
-    public void setAge(Integer age) {
+    public void setAge(int age) {
         this.age = age;
     }
 
@@ -90,7 +90,7 @@ public class User {
         this.BMI= this.weight/ (height*height);
     }
 
-    public User(String Realname,String username,String password,String email, Integer age, double weight, double height) {
+    public User(String Realname,String username,String password,String email, int age, double weight, double height) {
         this.RealName = Realname;
         this.username=username;
         this.password=password;
@@ -101,6 +101,11 @@ public class User {
         this.calculateBMI();
     }
     public User() {
+
+    }
+
+    public void addGroup(Group newGroup){
+        groups.add(newGroup);
 
     }
 //    @Override

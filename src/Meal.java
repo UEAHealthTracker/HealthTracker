@@ -1,16 +1,23 @@
-import java.util.ArrayList;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 
 public class Meal {
 
-    private final ArrayList<Food> foodList = new ArrayList<>();
-    private final ArrayList<Drink> drinkList = new ArrayList<>();
+    private ArrayList<Food> foodList = new ArrayList<>();
+    private ArrayList<Drink> drinkList = new ArrayList<>();
     private final LocalDateTime timeConsumed;
     private int calorieCount;
 
     public Meal() {
         this.timeConsumed = null;
         this.calorieCount = 0;
+    }
+
+    public Meal(ArrayList<Food> foodList, ArrayList<Drink> drinkList, LocalDateTime timeConsumed, int calorieCount){
+        this.foodList = foodList;
+        this.drinkList = drinkList;
+        this.timeConsumed = timeConsumed;
+        this.calorieCount = calorieCount;
     }
 
     public void addFood(Food food) {

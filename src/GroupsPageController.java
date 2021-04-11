@@ -8,14 +8,6 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
-import java.io.UnsupportedEncodingException;
-import java.util.Date;
-
-
-import javax.mail.internet.MimeMessage;
-
-
-import java.util.Properties;
 import javafx.scene.image.ImageView;
 import java.io.IOException;
 import java.sql.PreparedStatement;

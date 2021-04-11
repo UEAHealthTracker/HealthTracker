@@ -6,7 +6,14 @@ public class Drink extends Diet {
         JUICE,
         SMOOTHIE,
         WATER,
-        SODA
+        SODA,
+        OTHER
+    }
+
+    public Drink(String name) {
+        super();
+        this.drinkType = DrinkType.OTHER;
+        this.setName(name);
     }
 
     public Drink(DrinkType drinkType, String name, int calories) {

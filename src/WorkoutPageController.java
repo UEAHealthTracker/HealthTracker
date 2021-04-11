@@ -66,6 +66,7 @@ public class WorkoutPageController extends BaseController{
    // private static final String SQL_Insert ="INSERT INTO workout (workoutid, sets, reps, calories, weekday) VALUES ('4','3','20','150 calories','Wednesday')";
     @FXML ComboBox WorkoutTypeSelector;
     @FXML TextField durationTF;
+    @FXML ComboBox ID;
     boolean open=false;
     public void init(){
         if(open==false) {
@@ -135,6 +136,24 @@ public class WorkoutPageController extends BaseController{
             pst.setInt(2, Workout.Instance.getWorkoutid());
             pst.setInt(3, User.INSTANCE.getUserid());
             pst.executeUpdate();
+
+            DBsession.INSTANCE.OpenConnection().close();
+
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+    }
+
+    public void fillID(){
+        String SQL_Select="Select workout.workoutid FROM workout JOIN day ON day.workoutid=workout.workoutid JOIN Users ON day.userid=Users.userid and Users.userid=?";
+        try {
+            PreparedStatement sel = DBsession.INSTANCE.OpenConnection().prepareStatement(SQL_Select);
+            sel.setInt(1, Integer.parseInt(String.valueOf( User.INSTANCE.getUserid())));
+
+            ResultSet wid = sel.executeQuery();
+          while(wid.next()){
+              ID.getItems().add(wid.getInt("workoutid"));
+          }
 
             DBsession.INSTANCE.OpenConnection().close();
 

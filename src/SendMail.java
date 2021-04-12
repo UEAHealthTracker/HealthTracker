@@ -7,7 +7,7 @@ import java.awt.Desktop;
 import java.net.URI;
 
 public class SendMail {
-    public static void sendMail(String receipient, String groupName) throws MessagingException {
+    public static boolean sendMail(String receipient, String groupName, String groupPassword) throws MessagingException {
 
         String appSender = "team1.5healthtracker@gmail.com";
         String password = "ganttsucks123";
@@ -31,10 +31,11 @@ public class SendMail {
                 });
         //compose message
 
-        Message message = prepareMessage(session, appSender, receipient, groupName);
+        Message message = prepareMessage(session, appSender, receipient, groupName, groupPassword);
         Transport.send(message);
+        return true;
     }
-  private static Message prepareMessage(Session session, String appSender, String receipient,String groupName){
+  private static Message prepareMessage(Session session, String appSender, String receipient,String groupName, String groupPassword){
         try{
             //String groupMessage="<h1> Invitation to join group </h1> <p> You are  invited to join the group of <p1> "+ User.INSTANCE.getUsername()+"<p1> If you wish to join the group kindly click <a>Yes</a>. If not don't click anythting and ignore the message</p1>";
             Message message = new MimeMessage(session);    //Create a message object
@@ -45,58 +46,11 @@ public class SendMail {
             //message.setText("You are invited to join "+ User.INSTANCE.getUsername()+"'s Group"+" called: " +groupName+" If you accept to join please send a reply to this mail, confirming so other wise ignore this message");  //Create the message
             // Send the actual HTML message, as big as you like
             message.setContent(
-                    "<h1> Invitation to join group </h1> <p1> You are  invited to join the group of </p1> "+ User.INSTANCE.getUsername()+" namely: " + groupName + " If you wish to join the group kindly click <a href='confirmation.html'>Yes</a>. If not don't click anythting and ignore the message</p1></h1>",
+                    "<h1> Invitation to join group </h1> <p1> You are  invited to join the group of </p1> <i>"+ User.INSTANCE.getUsername()+ "</i> namely: <i> " + groupName + "  </i> If you wish to join the group kindly go the  join the group section of the application and type the group name and  the following password: <b><i> " + groupPassword +  "</i></b>",
                     "text/html");
             System.out.println("Email has been sent successfully");
             System.out.println(message.getReplyTo().toString());
             return message;
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
         }catch(Exception ex){
             ex.printStackTrace();
@@ -107,14 +61,6 @@ public class SendMail {
 return null;
   }
 
-  /*
-  public static boolean ConfirmEmail(Session session, String[] appSender, String receipient,String groupName) throws MessagingException {
-      Message message = new MimeMessage(session);    //Create a message object
-      Desktop d =Desktop.getDesktop();
-      d.browse(new URI());
-  }
-
-   */
 
 }
 

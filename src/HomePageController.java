@@ -29,7 +29,6 @@ public class HomePageController extends BaseController {
     int items=0;
     TextField en;
     public void initialize() {
-
         userLabel.setText("Hello "+User.INSTANCE.getUsername());
         Check();
         populateGoalsTable();

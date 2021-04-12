@@ -1,10 +1,11 @@
-import java.util.ArrayList;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 
 public class Meal {
 
-    private final ArrayList<Food> foodList = new ArrayList<>();
-    private final ArrayList<Drink> drinkList = new ArrayList<>();
+    private int mealid;
+    private ArrayList<Food> foods = new ArrayList<>();
+    private ArrayList<Drink> drinks = new ArrayList<>();
     private final LocalDateTime timeConsumed;
     private int calorieCount;
 
@@ -13,34 +14,46 @@ public class Meal {
         this.calorieCount = 0;
     }
 
+    public Meal(int mealid, ArrayList<Food> foodList, ArrayList<Drink> drinkList, LocalDateTime timeConsumed, int calorieCount){
+        this.mealid = mealid;
+        this.foods = foodList;
+        this.drinks = drinkList;
+        this.timeConsumed = timeConsumed;
+        this.calorieCount = calorieCount;
+    }
+
     public void addFood(Food food) {
         this.calorieCount += food.getCalorieAmount();
-        this.foodList.add(food);
+        this.foods.add(food);
     }
 
     void addDrink(Drink drink) {
         this.calorieCount += drink.getCalorieAmount();
-        this.drinkList.add(drink);
+        this.drinks.add(drink);
     }
 
     void updateCalories(int calorieCount) {
         this.calorieCount += calorieCount;
     }
 
-    int getCalorieCount() {
+    public int getCalorieCount() {
         return calorieCount;
     }
 
-    public ArrayList<Food> getFoodList() {
-        return foodList;
+    public ArrayList<Food> getFoods() {
+        return foods;
     }
 
-    public ArrayList<Drink> getDrinkList() {
-        return drinkList;
+    public ArrayList<Drink> getDrinks() {
+        return drinks;
     }
 
     public LocalDateTime getTimeConsumed() {
         return timeConsumed;
+    }
+
+    public int getMealid(){
+        return mealid;
     }
 
     public String toString() {
@@ -49,10 +62,10 @@ public class Meal {
 
         result.append("Meal consists of : \n");
 
-        for (Drink drink : this.drinkList) {
+        for (Drink drink : this.drinks) {
             result.append("Drink : ").append(drink.getName()).append("\n");
         }
-        for (Food food : this.foodList) {
+        for (Food food : this.foods) {
             result.append("Food : ").append(food.getName()).append("\n");
         }
 
@@ -75,11 +88,11 @@ public class Meal {
         meal.addFood(new Food(Food.FoodType.VEGAN, "Vegan Cake", 257));
 
         //Print all food and drinks in the meal
-        for (int i = 0; i < meal.getDrinkList().size(); i++) {
-            System.out.println("Drink : " + meal.getDrinkList().get(i).getName());
+        for (int i = 0; i < meal.getDrinks().size(); i++) {
+            System.out.println("Drink : " + meal.getDrinks().get(i).getName());
         }
-        for (int i = 0; i < meal.getFoodList().size(); i++) {
-            System.out.println("Food : " + meal.getFoodList().get(i).getName());
+        for (int i = 0; i < meal.getFoods().size(); i++) {
+            System.out.println("Food : " + meal.getFoods().get(i).getName());
         }
 
         //print calories and time consumed

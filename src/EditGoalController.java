@@ -40,7 +40,7 @@ public class EditGoalController extends BaseController{
     }
     public void Check(){
         int i=0;
-        String SQL_QUERY="select goalname,enddate,groups.groupname as gn from Goal join groupgoal on groupgoal.goalid=Goal.goalid JOIN groups on groups.groupid=groupgoal.groupid where Goal.goalid=?";
+        String SQL_QUERY="select goalname,enddate,groups.groupname as gn from Goal left join groupgoal on groupgoal.goalid=Goal.goalid left JOIN groups on groups.groupid=groupgoal.groupid where Goal.goalid=?";
         try{
             PreparedStatement pst = DBsession.INSTANCE.OpenConnection().prepareStatement(SQL_QUERY);
             pst.setInt(1, Goal.Instance.getGoalid());

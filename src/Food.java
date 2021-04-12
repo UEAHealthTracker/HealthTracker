@@ -2,6 +2,12 @@ public class Food extends Diet {
 
     private final FoodType foodType;
 
+    public Food(String name){
+        super();
+        this.foodType = FoodType.REGULAR;
+        this.setName(name);
+    }
+
     public Food(FoodType foodType, String name, int calories) {
         super();
         this.foodType = foodType;

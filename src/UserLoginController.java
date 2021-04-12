@@ -86,7 +86,6 @@ public void login(javafx.event.ActionEvent actionEvent) throws IOException {
                     User.INSTANCE.setEmail(rs.getString("email"));
                     User.INSTANCE.setHeight(Double.parseDouble(rs.getString("height")));
                     User.INSTANCE.setWeight(Integer.parseInt(rs.getString("weight")));
-                    User.INSTANCE.setAge(Integer.parseInt(rs.getString("age")));
                     root = FXMLLoader.load(getClass().getResource("HomePage.fxml"));
                     stage = (Stage)((Node)actionEvent.getSource()).getScene().getWindow();
                     scene = new Scene(root);

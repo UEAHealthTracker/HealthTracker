@@ -18,21 +18,21 @@ import java.sql.ResultSet;
 import java.sql.Time;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 
 public class DietPageController extends BaseController {
 
-    //diet page
     @FXML TableView<Meal> dietTable;
-    @FXML TableColumn<Meal, Timestamp> mealTime;
-    @FXML TableColumn<Meal, ArrayList<Food>> mealFood;
-    @FXML TableColumn<Meal, ArrayList<Drink>> mealDrink;
-    @FXML TableColumn<Meal, Integer> mealCalories;
+    @FXML TableColumn<Meal, Timestamp> timeConsumed;
+    @FXML TableColumn<Meal, ArrayList<Food>> foods;
+    @FXML TableColumn<Meal, ArrayList<Drink>> drinks;
+    @FXML TableColumn<Meal, Integer> calorieCount;
 
     //add diet item page
-    @FXML ComboBox<String> itemType;
-    @FXML TextField itemName;
-    @FXML TextField calorieCount;
+    @FXML ComboBox<String> setItemType;
+    @FXML TextField setItemName;
+    @FXML TextField setCalorieCount;
 
     public void initialize(){
         populateDietTable();
@@ -41,9 +41,10 @@ public class DietPageController extends BaseController {
     //add data to diet table
     public void populateDietTable(){
 
-        ObservableList mealData = FXCollections.observableArrayList();
+        //diet page
+        ObservableList<Meal> mealData = FXCollections.observableArrayList();
 
-        String SQL_QUERY = "SELECT timeconsumed, food.foodName AS foodname, drink.drinkName AS drinkname, food.caloriecount + drink.caloriecount AS caloriecount \n" +
+        String SQL_QUERY = "SELECT mealid, timeconsumed, food.foodName AS foodname, drink.drinkName AS drinkname, food.caloriecount + drink.caloriecount AS caloriecount \n" +
                             "FROM meal JOIN food ON food.foodid = meal.foodid JOIN drink ON drink.drinkid = meal.drinkid \n" +
                             "WHERE userid = ? \n" +
                             "GROUP BY mealid \n" +
@@ -56,17 +57,18 @@ public class DietPageController extends BaseController {
             ArrayList<Food> food = new ArrayList<>();
             ArrayList<Drink> drink = new ArrayList<>();
             while(rs.next()){
-                LocalDateTime timeConsumed = LocalDateTime.parse(rs.getString("timeconsumed"));
+
+                LocalDateTime time = rs.getTimestamp("timeconsumed").toLocalDateTime().withSecond(0);
                 food.add(new Food(rs.getString("foodname")));
                 drink.add(new Drink(rs.getString("drinkname")));
 
-                mealData.add(new Meal(food, drink, timeConsumed, rs.getInt("caloriecount")));
+                mealData.add(new Meal(Integer.parseInt(rs.getString("mealid")), food, drink, time, rs.getInt("caloriecount")));
             }
 
-            mealTime.setCellValueFactory(new PropertyValueFactory<>("mealTime"));
-            mealFood.setCellValueFactory(new PropertyValueFactory<>("mealFood"));
-            mealDrink.setCellValueFactory(new PropertyValueFactory<>("mealDrink"));
-            mealCalories.setCellValueFactory(new PropertyValueFactory<>("mealCalories"));
+            timeConsumed.setCellValueFactory(new PropertyValueFactory<>("timeConsumed"));
+            foods.setCellValueFactory(new PropertyValueFactory<>("foods"));
+            drinks.setCellValueFactory(new PropertyValueFactory<>("drinks"));
+            calorieCount.setCellValueFactory(new PropertyValueFactory<>("calorieCount"));
 
             dietTable.setItems(mealData);
 
@@ -78,12 +80,23 @@ public class DietPageController extends BaseController {
     }
 
     //allow user to select a table item/row and delete it using the delete button
-    public void removeTableItem(){
+    public void removeTableItem(javafx.event.ActionEvent actionEvent) throws IOException{
+        /*if (dietTable.getSelectionModel().getSelectedItem() != null) {
+            Meal selectedMeal = dietTable.getSelectionModel().getSelectedItem();
+            String SQL_QUERY="DELETE FROM Meal WHERE mealid=?;";
+            try{
+                PreparedStatement pst = DBsession.INSTANCE.OpenConnection().prepareStatement(SQL_QUERY);
+                pst.setInt(1, selectedMeal.getMealid());
+                pst.executeUpdate();
+                DBsession.INSTANCE.OpenConnection().close();
+            }catch(Exception e){System.out.println(e);}
+
+        }*/
 
     }
 
-    public void selectItemType(){
-        itemType.getItems().addAll("Food", "Drink");
+    public void selectItemType() {
+        setItemType.getItems().addAll("Food", "Drink");
     }
 
 }

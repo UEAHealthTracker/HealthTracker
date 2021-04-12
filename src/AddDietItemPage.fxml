@@ -62,9 +62,9 @@
                   <Insets bottom="10.0" left="10.0" right="25.0" top="10.0" />
                </padding>
             </Label>
-            <ComboBox fx:id="itemType" layoutX="123.0" layoutY="100.0" onMouseClicked="#selectItemType" prefWidth="150.0" promptText="Item type" style="-fx-background-color: #ffffff;" />
-            <TextField fx:id="itemName" layoutX="123.0" layoutY="150.0" promptText="Item name" style="-fx-background-color: #ffffff;" />
-            <TextField fx:id="calorieCount" layoutX="123.0" layoutY="200.0" promptText="Calorie count" style="-fx-background-color: #ffffff;" />
+            <ComboBox fx:id="setItemType" layoutX="123.0" layoutY="100.0" onMouseClicked="#selectItemType" prefWidth="150.0" promptText="Item type" style="-fx-background-color: #ffffff;" />
+            <TextField fx:id="setItemName" layoutX="123.0" layoutY="150.0" promptText="Item name" style="-fx-background-color: #ffffff;" />
+            <TextField fx:id="setCalorieCount" layoutX="123.0" layoutY="200.0" promptText="Calorie count" style="-fx-background-color: #ffffff;" />
          </children>
       </AnchorPane>
    </right>

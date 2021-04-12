@@ -73,10 +73,10 @@
             </ImageView>
             <TableView fx:id="dietTable" layoutX="15.0" layoutY="60.0" prefHeight="280.0" prefWidth="360.0" style="-fx-background-color: #ffffff;">
               <columns>
-                <TableColumn fx:id="mealTime" prefWidth="90.0" text="Time" />
-                  <TableColumn fx:id="mealFood" prefWidth="90.0" text="Food" />
-                  <TableColumn fx:id="mealDrink" prefWidth="90.0" text="Drink" />
-                  <TableColumn fx:id="mealCalories" prefWidth="90.0" text="Calories" />
+                <TableColumn fx:id="timeConsumed" prefWidth="90.0" text="Time" />
+                  <TableColumn fx:id="foods" prefWidth="90.0" text="Food" />
+                  <TableColumn fx:id="drinks" prefWidth="90.0" text="Drink" />
+                  <TableColumn fx:id="calorieCount" prefWidth="90.0" text="Calories" />
               </columns>
             </TableView>
          </children>
@@ -99,7 +99,7 @@
                   <Image url="@img/delete.png" />
                </image>
             </ImageView>
-            <Button fx:id="deleteButton" graphicTextGap="0.0" layoutX="460.0" layoutY="10.0" mnemonicParsing="false" opacity="0.0" prefHeight="30.0" prefWidth="30.0" />
+            <Button fx:id="deleteButton" graphicTextGap="0.0" layoutX="460.0" layoutY="10.0" mnemonicParsing="false" onAction="#removeTableItem" opacity="0.0" prefHeight="30.0" prefWidth="30.0" />
          </children>
       </AnchorPane>
    </bottom>

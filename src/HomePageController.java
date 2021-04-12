@@ -44,7 +44,7 @@ public class HomePageController extends BaseController {
         String SQL_QUERY = "select goalname,startdate,enddate,Goal.goalid as goalid,COUNT(groupgoal.groupgoalid) as total from Goal JOIN Users ON Users.userid=Goal.userid left JOIN groupgoal on Goal.goalid = groupgoal.goalid where Users.userid=? GROUP BY Goal.goalid";
         try {
             PreparedStatement pst = DBsession.INSTANCE.OpenConnection().prepareStatement(SQL_QUERY);
-            pst.setString(1, Integer.toString(User.INSTANCE.getUserid()));
+            pst.setInt(1, User.INSTANCE.getUserid());
             ResultSet rs = pst.executeQuery();
             String status = null;
             while (rs.next()) {

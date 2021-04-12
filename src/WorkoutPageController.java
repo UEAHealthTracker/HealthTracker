@@ -142,6 +142,7 @@ public class WorkoutPageController extends BaseController{
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         }
+
     }
 
     public void fillID(){
@@ -149,7 +150,6 @@ public class WorkoutPageController extends BaseController{
         try {
             PreparedStatement sel = DBsession.INSTANCE.OpenConnection().prepareStatement(SQL_Select);
             sel.setInt(1, Integer.parseInt(String.valueOf( User.INSTANCE.getUserid())));
-
             ResultSet wid = sel.executeQuery();
           while(wid.next()){
               ID.getItems().add(wid.getInt("workoutid"));
@@ -160,6 +160,29 @@ public class WorkoutPageController extends BaseController{
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         }
+        selectWorkoutType();
+    }
+
+    public void selectWorkoutType(){
+        String SQL_Select="Select workouttype,duration FROM workout JOIN day ON day.workoutid=workout.workoutid JOIN Users ON day.userid=Users.userid and Users.userid=?";
+        //Select workouttype,duration FROM workout JOIN day ON day.workoutid=workout.workoutid JOIN Users ON day.userid=Users.userid and workout.workoutid=1
+        //Select workouttype,duration FROM workout, Users WHERE User.userid=1 and workout.workoutid=1
+        //Select workouttype,duration from workout where workoutid=?
+        try {
+            PreparedStatement sel = DBsession.INSTANCE.OpenConnection().prepareStatement(SQL_Select);
+            sel.setInt(1,Integer.parseInt(String.valueOf(User.INSTANCE.getUserid())));
+            ResultSet wid = sel.executeQuery();
+            while(wid.next()){
+                WorkoutTypeSelector.getItems().add(wid.getString("workouttype"));
+                //durationTF.getText();
+            }
+
+
+
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+
     }
 
     //allow user to select a table item/row and delete it using the delete button

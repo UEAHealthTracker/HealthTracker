@@ -5,9 +5,19 @@ public class Group {
 
     private String groupName;
     private String groupAdmin;
+    private String groupPassword;
+
 
     public String getGroupName() {
         return groupName;
+    }
+
+    public String getGroupPassword() {
+        return groupPassword;
+    }
+
+    public void setGroupPassword(String groupPassword) {
+        this.groupPassword = groupPassword;
     }
 
     public void setGroupName(String groupName) {

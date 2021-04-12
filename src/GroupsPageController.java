@@ -12,7 +12,7 @@ import java.io.UnsupportedEncodingException;
 import java.util.Date;
 
 
-import javax.mail.internet.MimeMessage;
+//import javax.mail.internet.MimeMessage;
 
 
 import java.util.Properties;
@@ -27,7 +27,7 @@ import java.util.*;
 import javax.mail.*;
 import javax.mail.internet.*;
 import javax.activation.*;
-import javax.mail.Session;
+//import javax.mail.Session;
 
 
 public class GroupsPageController extends BaseController {
@@ -73,7 +73,7 @@ public class GroupsPageController extends BaseController {
         //Set Group name and get Group object
         nameOfGroup = groupName.getText();
         groupMail = groupMembersEmail.getText();
-        passwordGroup= groupPassword.getText();
+        passwordGroup = groupPassword.getText();
         String groupAdmin = User.INSTANCE.getUsername();
         Group newGroup = new Group();
         newGroup.setGroupName(nameOfGroup);
@@ -86,50 +86,55 @@ public class GroupsPageController extends BaseController {
             createGroupbtn.setOpacity(1);
             createGroupbtn.setStyle("-fx-background-color:rgba(0,0,0,0);-fx-text-fill: #ff0000");
             createGroupbtn.setText("Please fill all the details");
-            //Reload the page seconds after displaying the error message
-            /*
-            reloadTime reloadTiming=null;
-            reloadTiming.timer.schedule(new reloadTime(), );
-
-            class reloadPage extends TimerTask{
-                public void run(){
-                    try {
-                        root = FXMLLoader.load(getClass().getResource("CreateGroupPage.fxml"));
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-                    stage = (Stage)((Node)actionEvent.getSource()).getScene().getWindow();
-                    scene = new Scene(root);
-                    stage.setScene(scene);
-                    stage.show();
-                }
-            }
-             */
         } else {
-            try {
-                String username, password;
-                String adminUserId;
-                int memberUserId;
-                adminUserId = Integer.toString(User.INSTANCE.getUserid());
-                System.out.println(adminUserId);
-                //Create Group and Invite Members
-                //If email sending is successful
-               if(SendMail.sendMail(groupMail, nameOfGroup, passwordGroup)==true && CheckCredentials() > 0){
-                   //Add the details to the database:
-                   String insertQuery = "INSERT INTO groups(groupname, groupadmin, groupPassword) VALUES(?,?, ?)";
-                   PreparedStatement pst = DBsession.INSTANCE.OpenConnection().prepareStatement(insertQuery);
-                   pst.setString(1, nameOfGroup);
-                   pst.setString(2, groupAdmin);
-                   pst.setString(3, passwordGroup);
-                   pst.executeUpdate();
-                   System.out.println("Group has been created. The name of the Group is " + newGroup.getGroupName());
-                   System.out.println("Group admin is "+ groupAdmin);
-                   System.out.println("The group password is " + newGroup.getGroupPassword());
-               }else{
-                   System.out.println("User does not exists");
-               }
-            } catch (Exception e) {
-                System.out.println(e);
+            //checkGroup();
+            //checkUser();
+            //Since all the input fileds are filed next is:
+            //Check if user to be invited exists:
+            if (checkUser() == true) {
+                if (checkGroup() == false) {
+                    try {
+                        String username, password;
+                        String adminUserId;
+                        int memberUserId;
+                        adminUserId = Integer.toString(User.INSTANCE.getUserid());
+                        System.out.println(adminUserId);
+                        //Create Group and Invite Members
+                        //If email sending is successful
+                        if (SendMail.sendMail(groupMail, nameOfGroup, passwordGroup) == true) {
+                            //Add the details to the database:
+                            String insertQuery = "INSERT INTO groups(groupname, groupadmin, groupPassword) VALUES(?,?, ?)";
+                            PreparedStatement pst = DBsession.INSTANCE.OpenConnection().prepareStatement(insertQuery);
+                            pst.setString(1, nameOfGroup);
+                            pst.setString(2, groupAdmin);
+                            pst.setString(3, passwordGroup);
+                            pst.executeUpdate();
+                            System.out.println("Group has been created. The name of the Group is " + newGroup.getGroupName());
+                            System.out.println("Group admin is " + groupAdmin);
+                            System.out.println("The group password is " + newGroup.getGroupPassword());
+                        } else {
+                            System.out.println("Mail has not been sent)");
+                        }
+                    } catch (Exception e) {
+                        System.out.println(e);
+
+                    }
+                } else {
+
+                    imageView.setOpacity(0);
+                    createGroupbtn.setOpacity(1);
+                    createGroupbtn.setStyle("-fx-background-color:rgba(0,0,0,0);-fx-text-fill: #ff0000");
+                    createGroupbtn.setText("Group already exist");
+                    System.out.println("Group already exist");
+
+                }
+            }else{
+                imageView.setOpacity(0);
+                createGroupbtn.setOpacity(1);
+                createGroupbtn.setStyle("-fx-background-color:rgba(0,0,0,0);-fx-text-fill: #ff0000");
+                createGroupbtn.setText("User doesn't exist");
+                System.out.println("User doesn't exist");
+
 
             }
 
@@ -138,36 +143,41 @@ public class GroupsPageController extends BaseController {
         DBsession.INSTANCE.OpenConnection().close();
     }
 
-    public void AddGroupMembers(ActionEvent actionEvent) throws SQLException {
-        String email;
-        String adminUserId;
-        email = groupMembersEmail.getText();
-        adminUserId = Integer.toString(User.INSTANCE.getUserid());
-        //System.out.println("AddGroup Member userId:" +adminUserId);
-        //If user exists
-        if (email.matches(EMAIL_PATTERN)) {
-            if (CheckCredentials() > 0) {
-                System.out.println("User and group exists test");
-                //Getting the emails of the members
-                String memberQuery = "select userid from Users where email=?";
-                PreparedStatement firstStatement = DBsession.INSTANCE.OpenConnection().prepareStatement(memberQuery);
-                firstStatement.setString(1, email);
-                ResultSet rs = firstStatement.executeQuery();
-                while (rs.next()) {
-                    System.out.println("The member's user id is: " + rs.getInt("userid"));
+
+        /*
+        public void AddGroupMembers (ActionEvent actionEvent) throws SQLException {
+            String email;
+            String adminUserId;
+            email = groupMembersEmail.getText();
+            adminUserId = Integer.toString(User.INSTANCE.getUserid());
+            //System.out.println("AddGroup Member userId:" +adminUserId);
+            //If user exists
+            if (email.matches(EMAIL_PATTERN)) {
+                if (CheckCredentials() > 0) {
+                    System.out.println("User and group exists test");
+                    //Getting the emails of the members
+                    String memberQuery = "select userid from Users where email=?";
+                    PreparedStatement firstStatement = DBsession.INSTANCE.OpenConnection().prepareStatement(memberQuery);
+                    firstStatement.setString(1, email);
+                    ResultSet rs = firstStatement.executeQuery();
+                    while (rs.next()) {
+                        System.out.println("The member's user id is: " + rs.getInt("userid"));
+                    }
+                } else {
+                    System.out.println("Group and/or user does not exist");
+                    createGroupbtn.setStyle("-fx-background-color:rgba(0,0,0,0);-fx-text-fill: #ff0000");
+                    createGroupbtn.setText("User does not exists");
                 }
+                DBsession.INSTANCE.OpenConnection().close();
             } else {
-                System.out.println("Group and/or user does not exist");
+                System.out.println("Email is not written correctly. Please type it well");
                 createGroupbtn.setStyle("-fx-background-color:rgba(0,0,0,0);-fx-text-fill: #ff0000");
-                createGroupbtn.setText("User does not exists");
+                createGroupbtn.setText("Please type the email correctly");
             }
-            DBsession.INSTANCE.OpenConnection().close();
-        } else {
-            System.out.println("Email is not written correctly. Please type it well");
-            createGroupbtn.setStyle("-fx-background-color:rgba(0,0,0,0);-fx-text-fill: #ff0000");
-            createGroupbtn.setText("Please type the email correctly");
         }
-    }
+
+         */
+
 
     //Checking credntials for adding members in the group, after group has been created.
     public int CheckCredentials() {
@@ -189,38 +199,73 @@ public class GroupsPageController extends BaseController {
         return counter;
     }
 
-    //Check if user exists to be added to the group
-    public int checkUser() {
-        int counter = 0;
+
+    public boolean checkUser() {
         String emailDb;
+        boolean userExist = false;
         try {
             ResultSet rs = DBsession.INSTANCE.Stmt().executeQuery("select email from Users ");
-            while (rs.next()) {
+            while(rs.next()){
                 emailDb = rs.getString("email");
-                counter++;
+                if(emailDb==groupMail){
+                    userExist=true;
+
+                }
             }
-        } catch (SQLException e) {
+        }catch (SQLException e) {
             e.printStackTrace();
         }
-        return counter;
+        return userExist;
     }
 
-
-    //Check if group already exists
-    public int checkGroup() {
-        int counter = 0;
+    public boolean checkGroup(){
+        String databaseGroups;
+        boolean groupExist=true;
         try {
-            ResultSet rs = DBsession.INSTANCE.Stmt().executeQuery("select groupname from groups");
-            while (rs.next()) {
-                nameOfGroup = rs.getString("groupname");
-                counter++;
+            ResultSet rs2 = DBsession.INSTANCE.Stmt().executeQuery("select groupname from groups");
+            while(rs2.next()) {
+                databaseGroups = rs2.getString("groupname");
+                if (databaseGroups != nameOfGroup) {
+                    groupExist = false;
+
+                }
             }
+        }catch (SQLException e){
+
+        }
+        return groupExist;
+
+    }
+
+    /*
+    public boolean checkGroupAndUser() {
+        String databaseGroups;
+       String emailDb;
+        boolean groupNewUserNot = false;
+        try {
+            ResultSet rs = DBsession.INSTANCE.Stmt().executeQuery("select email from Users ");
+            ResultSet rs2 = DBsession.INSTANCE.Stmt().executeQuery("select groupname from groups");
+            while(rs.next()&&rs2.next()){
+                emailDb = rs.getString("email");
+                databaseGroups = rs2.getString("groupname");
+                //If user exist and group des not exist that means the group can be created
+                if((emailDb==groupMail)&&(databaseGroups!=nameOfGroup)){
+                    groupNewUserNot=true;
+                }
+            }
+
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return counter;
+        System.out.println(groupNewUserNot);
+        return groupNewUserNot;
     }
 
+     */
+
+
+
+}
 
 
 /*
@@ -235,7 +280,7 @@ public class GroupsPageController extends BaseController {
          */
 
 
-    }
+
 
 
 

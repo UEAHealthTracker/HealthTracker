@@ -13,6 +13,7 @@ import java.util.ArrayList;
 
 public class GroupsPageController extends BaseController {
 
+    public Button createGroupbtn;
     @FXML
     TextField groupNameTextField;
 

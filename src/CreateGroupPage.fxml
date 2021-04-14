@@ -61,7 +61,7 @@
                   <Insets bottom="10.0" left="10.0" right="25.0" top="10.0" />
                </padding>
             </Label>
-            <TextField fx:id="groupName" layoutX="123.0" layoutY="60.0" prefWidth="150.0" promptText="Group name" style="-fx-background-color: #ffffff;" />
+            <TextField fx:id="groupNameTextField" layoutX="123.0" layoutY="60.0" prefWidth="150.0" promptText="Group name" style="-fx-background-color: #ffffff;" />
             <TextField fx:id="groupMembersEmail" layoutX="123.0" layoutY="110.0" prefWidth="150.0" promptText="Type email" style="-fx-background-color: #ffffff;" />
             <Button layoutX="123.0" layoutY="140.0" mnemonicParsing="false" prefWidth="150.0" style="-fx-background-color: #aa80ff;" text="Invite member" textFill="WHITE">
                <font>
@@ -79,7 +79,7 @@
                   <Image url="@img/add_box.png" />
                </image>
             </ImageView>
-            <Button fx:id="createGroupbtn" graphicTextGap="0.0" layoutX="313.0" layoutY="10.0" mnemonicParsing="false" onAction="#CreateGroup" opacity="0.0" prefHeight="30.0" prefWidth="179.0" text="Create Group" />
+            <Button fx:id="createGroupbtn" graphicTextGap="0.0" layoutX="313.0" layoutY="10.0" mnemonicParsing="false" onAction="#createGroup" opacity="0.0" prefHeight="30.0" prefWidth="179.0" text="Create Group" />
          </children>
       </AnchorPane>
    </bottom>

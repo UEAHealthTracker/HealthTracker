@@ -6,7 +6,7 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="GroupsPageController">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="GroupsPageController">
    <left>
       <AnchorPane prefHeight="400.0" prefWidth="200.0" style="-fx-background-color: #c7a4ff;" BorderPane.alignment="CENTER">
          <children>
@@ -66,10 +66,10 @@
                </padding>
             </Label>
             <TableView fx:id="tbData" layoutX="14.0" layoutY="102.0" prefHeight="200.0" prefWidth="360.0" style="-fx-background-color: #ffffff;">
-              <columns>
-                <TableColumn fx:id="groupName" prefWidth="160.0" text="Name" />
-                  <TableColumn fx:id="groupMembers" prefWidth="200.0" text="Members" />
-              </columns>
+               <columns>
+                  <TableColumn fx:id="groupName" prefWidth="160.0" text="groupName" />
+                  <TableColumn fx:id="groupMembers" prefWidth="200.0" text="groupMembers" />
+               </columns>
             </TableView>
          </children>
       </AnchorPane>
@@ -77,12 +77,12 @@
    <bottom>
       <AnchorPane prefHeight="50.0" prefWidth="600.0" style="-fx-background-color: #c7a4ff;" BorderPane.alignment="CENTER">
          <children>
-            <ImageView fitHeight="30.0" fitWidth="30.0" layoutX="380.0" layoutY="10.0" pickOnBounds="true" preserveRatio="true">
+            <ImageView fitHeight="30.0" fitWidth="30.0" layoutX="358.0" layoutY="10.0" pickOnBounds="true" preserveRatio="true">
                <image>
                   <Image url="@img/add_box.png" />
                </image>
             </ImageView>
-            <Button graphicTextGap="0.0" layoutX="380.0" layoutY="10.0" mnemonicParsing="false" onAction="#MenuSwitch" opacity="0.0" prefHeight="30.0" prefWidth="30.0" text="Create group">
+            <Button graphicTextGap="0.0" layoutX="358.0" layoutY="10.0" mnemonicParsing="false" onAction="#MenuSwitch" opacity="0.0" prefHeight="30.0" prefWidth="30.0" text="Create group">
                <font>
                   <Font size="1.0" />
                </font></Button>
@@ -95,12 +95,18 @@
                <font>
                   <Font size="1.0" />
                </font></Button>
-            <ImageView fitHeight="30.0" fitWidth="30.0" layoutX="460.0" layoutY="10.0" pickOnBounds="true" preserveRatio="true">
+            <ImageView fitHeight="30.0" fitWidth="30.0" layoutX="431.0" layoutY="10.0" pickOnBounds="true" preserveRatio="true">
                <image>
                   <Image url="@img/delete.png" />
                </image>
             </ImageView>
-            <Button graphicTextGap="0.0" layoutX="460.0" layoutY="10.0" mnemonicParsing="false" opacity="0.0" prefHeight="30.0" prefWidth="30.0" />
+            <Button graphicTextGap="0.0" layoutX="431.0" layoutY="10.0" mnemonicParsing="false" opacity="0.0" prefHeight="30.0" prefWidth="30.0" />
+            <ImageView fitHeight="30.0" fitWidth="30.0" layoutX="530.0" layoutY="10.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@img/group_add.png" />
+               </image>
+            </ImageView>
+            <Button graphicTextGap="0.0" layoutX="530.0" layoutY="10.0" mnemonicParsing="false" opacity="0.0" prefHeight="30.0" prefWidth="30.0" text="Join Group" />
          </children>
       </AnchorPane>
    </bottom>

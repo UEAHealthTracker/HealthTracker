@@ -186,7 +186,7 @@ public class User implements Serializable {
 
     public static void addTestData(User user){
         user.addGoal(new Goal("Goal 1", LocalDate.now(), LocalDate.now().plusDays(2), "N/A"));
-        user.addGroup(new Group("Group1", user));
+        user.addGroup(new Group("Group1", user, "password"));
     }
 
     public void addWorkout(Workout workout){

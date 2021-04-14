@@ -9,12 +9,23 @@ public class Group implements Serializable {
 
     private String groupName;
     private User groupAdmin;
+    private String groupPassword;
+
+    public String getGroupPassword() {
+        return groupPassword;
+    }
+
+    public void setGroupPassword(String groupPassword) {
+        this.groupPassword = groupPassword;
+    }
+
     private ArrayList<User> groupMembers = new ArrayList<>();
     private Goal groupGoal;
 
-    public Group(String nameOfGroup, User groupAdmin) {
+    public Group(String nameOfGroup, User groupAdmin, String groupPassword) {
         this.groupName = nameOfGroup;
         this.groupAdmin = groupAdmin;
+        this.groupPassword = groupPassword;
         this.addGroupMember(groupAdmin);
     }
 

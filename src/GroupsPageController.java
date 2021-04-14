@@ -20,6 +20,9 @@ public class GroupsPageController extends BaseController {
     TextField groupMembersEmail;
 
     @FXML
+    TextField groupPassword;
+
+    @FXML
     Button inviteMember;
 
     @FXML
@@ -71,8 +74,9 @@ public class GroupsPageController extends BaseController {
 
         String nameOfGroup = groupNameTextField.getText();
         String groupMail = groupMembersEmail.getText();
+        String groupPass = groupPassword.getText();
         User groupAdmin = user;
-        Group newGroup = new Group(nameOfGroup, groupAdmin);
+        Group newGroup = new Group(nameOfGroup, groupAdmin, groupPass);
 
         if(nameOfGroup.isEmpty() || groupMail.isEmpty()){
             System.out.println("Please fill in all details");

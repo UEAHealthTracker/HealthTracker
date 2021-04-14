@@ -57,14 +57,14 @@
                   <Insets bottom="10.0" left="10.0" right="25.0" top="10.0" />
                </padding>
             </Label>
-            <TextField layoutX="123.0" layoutY="60.0" prefWidth="150.0" promptText="Edit name" style="-fx-background-color: #ffffff;" />
-            <TextField layoutX="123.0" layoutY="110.0" prefWidth="150.0" promptText="Type email" style="-fx-background-color: #ffffff;" />
-            <Button layoutX="123.0" layoutY="140.0" mnemonicParsing="false" prefWidth="150.0" style="-fx-background-color: #aa80ff;" text="Invite member" textFill="WHITE">
+            <TextField fx:id="editNameTextField" layoutX="123.0" layoutY="60.0" prefWidth="150.0" promptText="Group Name to Edit" style="-fx-background-color: #ffffff;" />
+            <TextField fx:id="editGroupEmailAddTextField" layoutX="123.0" layoutY="110.0" prefWidth="150.0" promptText="Type email" style="-fx-background-color: #ffffff;" />
+            <Button onAction="#editGroup" layoutX="123.0" layoutY="140.0" mnemonicParsing="false" prefWidth="150.0" style="-fx-background-color: #aa80ff;" text="Invite member" textFill="WHITE">
                <font>
                   <Font name="Segoe UI Semilight" size="12.0" />
                </font>
             </Button>
-            <TextField layoutX="123.0" layoutY="190.0" prefWidth="150.0" promptText="Type email" style="-fx-background-color: #ffffff;" />
+            <TextField fx:id="editGroupEmailRemoveTextField" layoutX="123.0" layoutY="190.0" prefWidth="150.0" promptText="Type email" style="-fx-background-color: #ffffff;" />
             <Button layoutX="123.0" layoutY="220.0" mnemonicParsing="false" prefWidth="150.0" style="-fx-background-color: #aa80ff;" text="Remove member" textFill="WHITE">
                <font>
                   <Font name="Segoe UI Semilight" size="12.0" />

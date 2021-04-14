@@ -1,6 +1,7 @@
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.TableColumn;
@@ -9,11 +10,12 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.ImageView;
 
-import java.util.ArrayList;
-
 public class GroupsPageController extends BaseController {
 
     public Button createGroupbtn;
+    public TextField editNameTextField;
+    public TextField editGroupEmailAddTextField;
+    public TextField editGroupEmailRemoveTextField;
     @FXML
     TextField groupNameTextField;
 
@@ -90,4 +92,30 @@ public class GroupsPageController extends BaseController {
     }
 
 
+    public void editGroup(ActionEvent actionEvent) {
+        String groupName = editNameTextField.getText();
+        String addEmail = editGroupEmailAddTextField.getText();
+        String removeEmail = editGroupEmailRemoveTextField.getText();
+
+        for(int i = 0; i < user.getGroups().size(); i++){
+            if(user.getGroups().get(i).getGroupName().equals(groupName) && user.getGroups().get(i).getGroupAdmin() == user){
+
+                if(addEmail != null){
+                    //TODO email user
+                    //user.getGroups().get(i).sendNewMemberEmail(addEmail);
+                }
+
+                if(removeEmail != null){
+                    user.getGroups().get(i).removeUser(removeEmail);
+                }
+
+
+
+            }
+        }
+
+        if(addEmail != null){
+
+        }
+    }
 }

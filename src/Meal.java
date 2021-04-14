@@ -9,10 +9,10 @@ public class Meal implements Serializable {
     @Serial
     private static final long serialVersionUID = 1L;
 
-    private final ArrayList<Food> foodList = new ArrayList<>();
-    private final ArrayList<Drink> drinkList = new ArrayList<>();
-    private final LocalDateTime mealTime;
-    private Integer calorieCount;
+    private ArrayList<Food> foodList = new ArrayList<>();
+    private ArrayList<Drink> drinkList = new ArrayList<>();
+    private LocalDateTime mealTime;
+    private int calorieCount;
 
     public Meal() {
         this.mealTime = LocalDateTime.now();

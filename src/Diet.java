@@ -1,6 +1,16 @@
 public abstract class Diet {
 
     private String name;
+
+    @Override
+    public String toString() {
+        return "Diet{" +
+                "name='" + name + '\'' +
+                ", calorieAmount=" + calorieAmount +
+                ", quantity=" + quantity +
+                '}';
+    }
+
     private int calorieAmount;
     private int quantity;
 

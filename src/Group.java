@@ -30,7 +30,13 @@ public class Group implements Serializable {
     }
 
     public String getGroupMembers() {
-        return groupMembers.toString();
+
+        StringBuilder stringBuilder = new StringBuilder();
+
+        for(int i = 0; i < groupMembers.size(); i++){
+            stringBuilder.append(groupMembers.get(i).getName());
+        }
+        return stringBuilder.toString();
     }
 
     public void setGroupMembers(ArrayList<User> groupMembers) {
@@ -79,5 +85,13 @@ public class Group implements Serializable {
 
     public void deleteGroupGoal(){
         groupGoal = null;
+    }
+
+    public void removeUser(String removeEmail) {
+        for(int i = 0; i < groupMembers.size(); i++){
+            if(groupMembers.get(i).getEmail().equals(removeEmail)){
+                groupMembers.remove(groupMembers.get(i));
+            }
+        }
     }
 }

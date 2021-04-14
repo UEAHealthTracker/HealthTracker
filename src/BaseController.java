@@ -55,6 +55,7 @@ public class BaseController {
             case "EditWorkoutPage" -> "EditWorkoutPage.fxml";
             case "AddWorkoutPage" -> "AddWorkoutPage.fxml";
             case "EditUserPage" -> "EditUserPage.fxml";
+            case "Join Group" -> "JoinGroup.fxml";
             default -> "";
         };
         loadPage(actionEvent, filename);

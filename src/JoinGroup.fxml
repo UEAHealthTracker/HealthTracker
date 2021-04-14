@@ -61,8 +61,8 @@
                         <Insets bottom="10.0" left="10.0" right="25.0" top="10.0" />
                     </padding>
                 </Label>
-                <TextField layoutX="123.0" layoutY="60.0" prefWidth="150.0" promptText="Group Name" style="-fx-background-color: #ffffff;" />
-                <TextField layoutX="123.0" layoutY="110.0" prefWidth="150.0" promptText="Type Password" style="-fx-background-color: #ffffff;" />
+                <TextField fx:id="groupNameToJoinTextField" layoutX="123.0" layoutY="60.0" prefWidth="150.0" promptText="Group Name" style="-fx-background-color: #ffffff;" />
+                <TextField fx:id="groupToJoinPassword" layoutX="123.0" layoutY="110.0" prefWidth="150.0" promptText="Type Password" style="-fx-background-color: #ffffff;" />
                 <Button layoutX="123.0" layoutY="140.0" mnemonicParsing="false" prefWidth="150.0" style="-fx-background-color: #aa80ff;" text="Hide/Show" textFill="WHITE">
                     <font>
                         <Font name="Segoe UI Semilight" size="12.0" />
@@ -78,7 +78,7 @@
                            preserveRatio="true">
                     <Image url="@img/group_add.png"/>
                 </ImageView>
-                <Button onAction="#MenuSwitch" graphicTextGap="0.0" layoutX="380.0" layoutY="10.0" mnemonicParsing="false" opacity="0.0" prefHeight="30.0" prefWidth="30.0" />
+                <Button onAction="#joinGroup" graphicTextGap="0.0" layoutX="380.0" layoutY="10.0" mnemonicParsing="false" opacity="0.0" prefHeight="30.0" prefWidth="30.0" />
             </children>
         </AnchorPane>
     </bottom>

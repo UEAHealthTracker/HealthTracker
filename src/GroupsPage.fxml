@@ -106,7 +106,7 @@
                   <Image url="@img/group_add.png" />
                </image>
             </ImageView>
-            <Button graphicTextGap="0.0" layoutX="530.0" layoutY="10.0" mnemonicParsing="false" opacity="0.0" prefHeight="30.0" prefWidth="30.0" text="Join Group" />
+            <Button onAction="#MenuSwitch" graphicTextGap="0.0" layoutX="530.0" layoutY="10.0" mnemonicParsing="false" opacity="0.0" prefHeight="30.0" prefWidth="30.0" text="Join Group" />
          </children>
       </AnchorPane>
    </bottom>

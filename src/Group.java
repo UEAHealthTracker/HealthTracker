@@ -1,6 +1,7 @@
 import java.io.Serial;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.RandomAccess;
 
 public class Group implements Serializable {
 
@@ -19,6 +20,10 @@ public class Group implements Serializable {
         this.groupPassword = groupPassword;
     }
 
+    public ArrayList<User> getGroupMembersList(){
+        return groupMembers;
+    }
+
     private ArrayList<User> groupMembers = new ArrayList<>();
     private Goal groupGoal;
 
@@ -27,6 +32,13 @@ public class Group implements Serializable {
         this.groupAdmin = groupAdmin;
         this.groupPassword = groupPassword;
         this.addGroupMember(groupAdmin);
+    }
+
+    public Group(String groupName, User groupAdmin, ArrayList<User> groupMembers, Goal groupGoal){
+        this.groupName = groupName;
+        this.groupAdmin = groupAdmin;
+        this.groupMembers = groupMembers;
+        this.groupGoal = groupGoal;
     }
 
     public String getGroupMembers() {

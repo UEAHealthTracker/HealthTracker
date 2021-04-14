@@ -4,6 +4,8 @@ import javafx.scene.control.Label;
 
 import java.text.DecimalFormat;
 
+//TODO add weight and height units lb/kg cm/ft
+
 public class UserPageController extends BaseController{
 
     @FXML

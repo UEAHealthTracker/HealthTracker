@@ -16,6 +16,8 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 
+//TODO add a logo/hero image and change font
+
 public class UserLoginController extends BaseController{
 
     private static Button loginButton, createAccountButton;

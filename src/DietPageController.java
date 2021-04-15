@@ -44,11 +44,22 @@ public class DietPageController extends BaseController {
         //diet page
         ObservableList<Meal> mealData = FXCollections.observableArrayList();
 
-        String SQL_QUERY = "SELECT mealid, timeconsumed, food.foodName AS foodname, drink.drinkName AS drinkname, food.caloriecount + drink.caloriecount AS caloriecount \n" +
-                            "FROM meal JOIN food ON food.foodid = meal.foodid JOIN drink ON drink.drinkid = meal.drinkid \n" +
+        String SQL_QUERY = "SELECT mealid, timeconsumed, dietitem.itemname AS itemname, dietitem.caloriecount AS caloriecount \n" +
+                            "FROM meal JOIN dietitem ON meal.itemid = dietitem.itemid \n" +
                             "WHERE userid = ? \n" +
                             "GROUP BY mealid \n" +
                             "ORDER BY timeconsumed";
+        //SELECT meal.mealid AS mealid, meal.timeconsumed AS timeconsumed, dietitem.itemname AS itemname, dietitem.caloriecount AS caloriecount
+        //FROM mealitem JOIN meal ON meal.mealid = mealitem.mealid JOIN dietitem ON dietitem.itemid = mealitem.itemid
+        //WHERE meal.userid = 1
+        //GROUP BY mealitem.mealid
+        //ORDER BY meal.timeconsumed
+
+        //SELECT meal.mealid AS mealid, meal.timeconsumed AS timeconsumed, STRING_AGG(dietitem.itemname, ',') AS itemname, SUM(dietitem.caloriecount) AS caloriecount
+        //FROM mealitem JOIN meal ON meal.mealid = mealitem.mealid JOIN dietitem ON dietitem.itemid = mealitem.itemid
+        //WHERE meal.userid = 1
+        //GROUP BY mealitem.mealid
+        //ORDER BY meal.timeconsumed
         try {
             PreparedStatement pst = DBsession.INSTANCE.OpenConnection().prepareStatement(SQL_QUERY);
             pst.setString(1, Integer.toString(User.INSTANCE.getUserid()));
@@ -81,7 +92,7 @@ public class DietPageController extends BaseController {
 
     //allow user to select a table item/row and delete it using the delete button
     public void removeTableItem(javafx.event.ActionEvent actionEvent) throws IOException{
-        /*if (dietTable.getSelectionModel().getSelectedItem() != null) {
+        if (dietTable.getSelectionModel().getSelectedItem() != null) {
             Meal selectedMeal = dietTable.getSelectionModel().getSelectedItem();
             String SQL_QUERY="DELETE FROM Meal WHERE mealid=?;";
             try{
@@ -91,8 +102,31 @@ public class DietPageController extends BaseController {
                 DBsession.INSTANCE.OpenConnection().close();
             }catch(Exception e){System.out.println(e);}
 
-        }*/
+        }
 
+    }
+
+    public void addDietItem(){
+        //instantiate new food or drink item (if not already exists?) and insert it into corresponding database table eg food or drink table
+        //update selected meal to include item, both in the model and database
+        //food/drink array nd calories should be updated when returning to main page
+        //if a meal is selected from the table then just add the food item to that meal
+        //if not, add a new meal at the current time, with that item
+        String SQL_QUERY;
+        if (dietTable.getSelectionModel().getSelectedItem() != null) {
+            Meal selectedMeal = dietTable.getSelectionModel().getSelectedItem();
+
+            //open add diet item page
+            if ("Food".equals(setItemType.getValue())) {
+                for (Food food : selectedMeal.getFoods()) {
+                    if (food.getName().equals(setItemName.getText())) {
+                        SQL_QUERY = "UPDATE meal \n" +
+                                "SET ";
+                    }
+                }
+                SQL_QUERY = "INSERT INTO food (foodName, caloriecount) VALUES (" + setItemName.getText() + "," + setCalorieCount.getText() + ")";
+            }
+        }
     }
 
     public void selectItemType() {

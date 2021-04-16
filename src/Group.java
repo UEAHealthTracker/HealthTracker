@@ -1,11 +1,30 @@
 import java.util.ArrayList;
 
 public class Group {
-
-
     private String groupName;
     private String groupAdmin;
     private String groupPassword;
+    String memberName;
+
+    public Group(String groupName, String groupAdmin, String groupPassword){
+        this.groupName=groupName;
+        this.groupAdmin=groupAdmin;
+        this.groupPassword=groupPassword;
+
+    }
+
+    public Group(String groupName, String groupAdmin, String groupPassword, ArrayList groupMembers){
+        this.groupName=groupName;
+        this.groupAdmin=groupAdmin;
+        this.groupPassword=groupPassword;
+
+
+    }
+
+    public Group(String groupName, String memberNamIme){
+        this.groupName=groupName;
+        this.memberName=memberName;
+    }
 
 
     public String getGroupName() {
@@ -28,8 +47,9 @@ public class Group {
         return groupAdmin;
     }
 
-    public void setGroupAdmin(String groupAdmin) {
+    public String setGroupAdmin(String groupAdmin) {
         this.groupAdmin = groupAdmin;
+        return groupAdmin;
     }
 
     public Goal getGroupGoal() {
@@ -40,12 +60,13 @@ public class Group {
         this.groupGoal = groupGoal;
     }
 
-    private ArrayList<User> groupMembers;
+    private ArrayList groupMembers;
     private Goal groupGoal;
     private int groupId;
 
-    public void addGroupMember(User user){
-        groupMembers.add(user);
+    public void addGroupMember(String memberName){
+        groupMembers.add(memberName);
+
     }
 
     public void deleteGroupMember(User user){
@@ -53,11 +74,13 @@ public class Group {
     }
 
     public void emailGroupGoal(){
-        for (User groupMember : groupMembers) {
-            String email = groupMember.email;
-            //TODO Create email class with methods
-           // Email.sendGroupGoalUpdate(email);
-        }
+            for(int i=0; i<groupMembers.size(); i++) {
+                User newMember= new User();
+                newMember.setUsername(groupMembers.get(i).toString());
+                String email = newMember.getEmail();
+                //TODO Create email class with methods
+                // Email.sendGroupGoalUpdate(email);
+            }
     }
 
     public void deleteGroupGoal(){

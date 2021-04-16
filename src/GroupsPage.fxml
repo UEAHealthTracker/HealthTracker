@@ -15,7 +15,7 @@
       <left>
          <AnchorPane prefHeight="400.0" prefWidth="200.0" style="-fx-background-color: #c7a4ff;" BorderPane.alignment="CENTER">
             <children>
-               <Label alignment="TOP_CENTER" contentDisplay="CENTER" text="Hello &lt;User&gt;" textAlignment="CENTER" textFill="WHITE">
+               <Label fx:id="userLabel" alignment="TOP_CENTER" contentDisplay="CENTER" text="Hello &lt;User&gt;" textAlignment="CENTER" textFill="WHITE">
                   <font>
                      <Font name="Segoe UI Semilight" size="24.0" />
                   </font>
@@ -70,10 +70,10 @@
                      <Insets bottom="10.0" left="10.0" right="25.0" top="10.0" />
                   </padding>
                </Label>
-               <TableView layoutX="14.0" layoutY="102.0" prefHeight="200.0" prefWidth="360.0" style="-fx-background-color: #ffffff;">
+               <TableView fx:id="groupView" layoutX="14.0" layoutY="102.0" prefHeight="200.0" prefWidth="360.0" style="-fx-background-color: #ffffff;">
                   <columns>
-                     <TableColumn prefWidth="160.0" text="Name" />
-                     <TableColumn prefWidth="200.0" text="Members" />
+                     <TableColumn fx:id="groupname" prefWidth="160.0" text="Name" />
+                     <TableColumn fx:id="groupMembers" prefWidth="200.0" text="Members" />
                   </columns>
                </TableView>
             </children>
@@ -106,12 +106,12 @@
                   </image>
                </ImageView>
                <Button graphicTextGap="0.0" layoutX="431.0" layoutY="10.0" mnemonicParsing="false" opacity="0.0" prefHeight="30.0" prefWidth="30.0" />
-               <ImageView fitHeight="30.0" fitWidth="30.0" layoutX="530.0" layoutY="10.0" pickOnBounds="true" preserveRatio="true">
+               <ImageView fitHeight="30.0" fitWidth="30.0" layoutX="489.0" layoutY="10.0" pickOnBounds="true" preserveRatio="true">
                   <image>
                      <Image url="@img/group_add.png" />
                   </image>
                </ImageView>
-               <Button graphicTextGap="0.0" layoutX="530.0" layoutY="10.0" mnemonicParsing="false" onAction="#MenuSwitch" opacity="0.0" prefHeight="30.0" prefWidth="30.0" text="Join Group" />
+               <Button graphicTextGap="0.0" layoutX="489.0" layoutY="10.0" mnemonicParsing="false" onAction="#MenuSwitch" opacity="0.0" prefHeight="30.0" prefWidth="30.0" text="Join Group" />
             </children>
          </AnchorPane>
       </bottom>

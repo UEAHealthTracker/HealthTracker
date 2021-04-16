@@ -17,14 +17,11 @@ public class Group {
         this.groupName=groupName;
         this.groupAdmin=groupAdmin;
         this.groupPassword=groupPassword;
+        this.groupMembers= groupMembers;
 
 
     }
 
-    public Group(String groupName, String memberNamIme){
-        this.groupName=groupName;
-        this.memberName=memberName;
-    }
 
 
     public String getGroupName() {
@@ -68,6 +65,19 @@ public class Group {
         groupMembers.add(memberName);
 
     }
+
+    public String getGroupMembers(){
+        StringBuilder stringBuilder = new StringBuilder();
+        for(int i=0; i<groupMembers.size(); i++){
+            stringBuilder.append(groupMembers.get(i));
+            if(i!=groupMembers.size()-1) {
+                stringBuilder.append(", ");
+            }
+        }
+       return  stringBuilder.toString();
+
+    }
+
 
     public void deleteGroupMember(User user){
         groupMembers.remove(user);

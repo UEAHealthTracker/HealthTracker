@@ -1,6 +1,15 @@
-import java.io.Serial;
-import java.io.Serializable;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.stage.Stage;
+
+import java.io.*;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.util.ArrayList;
+import java.util.Base64;
 import java.util.RandomAccess;
 
 public class Group implements Serializable {
@@ -11,6 +20,65 @@ public class Group implements Serializable {
     private String groupName;
     private User groupAdmin;
     private String groupPassword;
+
+    public static Integer createGroup(Group groupToAdd) {
+
+        String groupid = null;
+
+        try {
+            //Create a new db connection
+            Connection connection = DatabaseConnect.connect();
+
+            //SQL query to add user information to db
+            String SQL_INSERT="INSERT INTO groups(groupObject) VALUES (?)";
+
+
+            PreparedStatement pst = connection.prepareStatement(SQL_INSERT);
+
+            pst.setString(1, Group.toDatabaseString(groupToAdd));
+
+
+
+            pst.executeUpdate();
+
+
+        } catch (Exception e) {
+            System.out.println(e);
+        }
+
+        return Group.getGroupByObject(groupToAdd);
+
+    }
+
+    public static Integer getGroupByObject(Group groupToJoin) {
+        String groupid = null;
+
+        String SQL_QUERY = "SELECT groupid FROM groups WHERE groupObject = ?";
+
+        try{
+
+            //Create a new db connection
+            Connection connection = DatabaseConnect.connect();
+            PreparedStatement pst = connection.prepareStatement(SQL_QUERY);
+
+            pst.setString(1, Group.toDatabaseString(groupToJoin));
+
+            ResultSet rs=pst.executeQuery();
+
+            //Loop through db results
+            while(rs.next()) {
+
+                //Set username and password variables
+                groupid = rs.getString("groupid");
+            }
+
+        }
+        catch(Exception e){
+            System.out.println(e);
+        }
+
+        return Integer.parseInt(groupid);
+    }
 
     public String getGroupPassword() {
         return groupPassword;
@@ -43,10 +111,12 @@ public class Group implements Serializable {
 
     public String getGroupMembers() {
 
+        System.out.println(groupMembers.toString());
+
         StringBuilder stringBuilder = new StringBuilder();
 
         for(int i = 0; i < groupMembers.size(); i++){
-            stringBuilder.append(groupMembers.get(i).getName());
+            stringBuilder.append(groupMembers.get(i).getUsername());
         }
         return stringBuilder.toString();
     }
@@ -105,5 +175,23 @@ public class Group implements Serializable {
                 groupMembers.remove(groupMembers.get(i));
             }
         }
+    }
+
+    static String toDatabaseString(Serializable o) throws IOException {
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        ObjectOutputStream oos = new ObjectOutputStream( baos );
+        oos.writeObject( o );
+        oos.close();
+        return Base64.getEncoder().encodeToString(baos.toByteArray());
+    }
+
+    static Object fromDatabaseString( String s ) throws IOException ,
+            ClassNotFoundException {
+        byte [] data = Base64.getDecoder().decode( s );
+        ObjectInputStream ois = new ObjectInputStream(
+                new ByteArrayInputStream(  data ) );
+        Object o  = ois.readObject();
+        ois.close();
+        return o;
     }
 }

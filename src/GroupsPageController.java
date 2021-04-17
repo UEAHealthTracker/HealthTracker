@@ -3,18 +3,14 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Node;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.ImageView;
-import javafx.stage.Stage;
 
+import javax.swing.*;
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -62,13 +58,17 @@ public class GroupsPageController extends BaseController {
     public void initialize(){
         Platform.runLater(() -> {
 
-            populateGroupTable();
+            try {
+                populateGroupTable();
+            } catch (SQLException throwables) {
+                throwables.printStackTrace();
+            }
 
         });
     }
 
     //Method to populate the group table when the page is rendered
-    public void populateGroupTable(){
+    public void populateGroupTable() throws SQLException {
 
         //Get the attributes for the table from default getters and setters
         groupName.setCellValueFactory(new PropertyValueFactory<>("groupName"));
@@ -79,10 +79,9 @@ public class GroupsPageController extends BaseController {
     }
 
     //Create an observable list that can be rendered by javafx with the data inside
-    private ObservableList<Group> getGroups(){
+    private ObservableList<Group> getGroups() throws SQLException {
         ObservableList<Group> groups = FXCollections.observableArrayList();
         System.out.println(user);
-        System.out.println(user.getGroups().get(0).getGroupName());
         groups.addAll(user.getGroups());
         return groups;
     }
@@ -91,28 +90,31 @@ public class GroupsPageController extends BaseController {
 
         String nameOfGroup = groupNameTextField.getText();
         String groupMail = groupMembersEmail.getText();
-        User groupAdmin = user;
-        String groupPass = User.toDatabaseString(user);
-        Group newGroup = new Group(nameOfGroup, groupAdmin, groupPass);
+        String groupPass = groupPassword.getText();
+        Group newGroup = new Group(nameOfGroup, user, groupPass);
 
         if(nameOfGroup.isEmpty() || groupMail.isEmpty()){
             System.out.println("Please fill in all details");
         }
         else{
-            user.addGroup(newGroup);
+            Integer groupReference = Group.createGroup(newGroup);
+            user.addGroup(groupReference);
             //SendMail.sendMail(groupMail, nameOfGroup);
         }
 
     }
 
 
-    public void editGroup(ActionEvent actionEvent) throws IOException {
+    public void editGroup(ActionEvent actionEvent) throws IOException, SQLException {
         String groupName = editNameTextField.getText();
         String addEmail = editGroupEmailAddTextField.getText();
         String removeEmail = editGroupEmailRemoveTextField.getText();
 
-        for(int i = 0; i < user.getGroups().size(); i++){
-            if(user.getGroups().get(i).getGroupName().equals(groupName) && user.getGroups().get(i).getGroupAdmin() == user){
+        for(int i = 0; i < user.getGroupsIds().size(); i++){
+
+            Group group = user.getGroupFromId(user.getGroupsIds().get(i));
+
+            if(group.getGroupName().equals(groupName) && group.getGroupAdmin() == user){
 
                 if(addEmail != null){
                     String password = User.toDatabaseString(user);
@@ -121,29 +123,22 @@ public class GroupsPageController extends BaseController {
                 }
 
                 if(removeEmail != null){
-                    user.getGroups().get(i).removeUser(removeEmail);
+                    group.removeUser(removeEmail);
                 }
 
 
 
             }
         }
-
-        if(addEmail != null){
-
-        }
     }
 
-    public void joinGroup(ActionEvent actionEvent) throws IOException, ClassNotFoundException {
+    public void joinGroup(ActionEvent actionEvent) throws IOException, ClassNotFoundException, SQLException {
         String groupName = groupNameToJoinTextField.getText();
         String groupPassword = groupToJoinPassword.getText();
 
-        User prospectiveAdmin = (User) User.fromDatabaseString(groupPassword);
-        String adminUsername = prospectiveAdmin.getUsername();
+        Group groupToJoin = null;
 
-        String SQL_QUERY = "SELECT userObject FROM users WHERE username = ?";
-
-        String userObject = null;
+        String SQL_QUERY = "SELECT groupObject FROM groups";
 
         try{
 
@@ -151,74 +146,55 @@ public class GroupsPageController extends BaseController {
             Connection connection = DatabaseConnect.connect();
             PreparedStatement pst = connection.prepareStatement(SQL_QUERY);
 
-            pst.setString(1, adminUsername);
-
             ResultSet rs=pst.executeQuery();
 
             //Loop through db results
             while(rs.next()) {
 
                 //Set username and password variables
-                userObject=rs.getString("userObject");
+                String groupString = rs.getString("groupObject");
 
-                    //If the user exists, retrieve their object from the db
-                    User currentAdminObject = (User) User.fromDatabaseString(userObject);
+                Group group = (Group) Group.fromDatabaseString(groupString);
 
-                    Goal groupGoalToAdd = null;
-                ArrayList<User> groupMembersToAdd = new ArrayList<>();
-
-
-                    for(int i = 0; i < currentAdminObject.getGroups().size(); i++){
-                        if(groupName.equals(currentAdminObject.getGroups().get(i).getGroupName())){
-                            currentAdminObject.getGroups().get(i).addGroupMember(user);
-                            groupGoalToAdd = currentAdminObject.getGroups().get(i).getGroupGoal();
-                            groupMembersToAdd = currentAdminObject.getGroups().get(i).getGroupMembersList();
-                        }
-                    }
-
-                Group groupToAdd = new Group(groupName, currentAdminObject, groupMembersToAdd, groupGoalToAdd);
-
-                    user.addGroup(groupToAdd);
-
-                try {
-                    //Create a new db connection
-                    Connection connection2 = DatabaseConnect.connect();
-
-                    //SQL query to add user information to db
-                    String SQL_INSERT="UPDATE users SET userObject = (?)";
-                    PreparedStatement pst2 = connection.prepareStatement(SQL_INSERT);
-
-                    pst2.setString(1, User.toDatabaseString(currentAdminObject));
-
-
-                    pst2.executeUpdate();
-
-                    connection2.close();
-
-                } catch (Exception e) {
-                    System.out.println(e);
+                if(group.getGroupName().equals(groupName) && group.getGroupPassword().equals(groupPassword)){
+                    groupToJoin = group;
                 }
-
 
             }
 
                 //Close the db connection
-                connection.close();
+            connection.close();
             } catch (SQLException throwables) {
             throwables.printStackTrace();
         }
 
-        for(int i = 0; i < user.getGroups().size(); i++){
-            if(user.getGroups().get(i).getGroupName().equals(groupName)){
-                for(int j = 0; j < user.getGroups().get(i).getGroupMembersList().size();j++){
-                    if(user.getGroups().get(i).getGroupMembersList().get(j).getGroups().get(j).getGroupName().equals(groupName)){
-                        user.getGroups().get(i).getGroupMembersList().get(j).getGroups().get(j).addGroupMember(user);
+        Integer groupReference = Group.getGroupByObject(groupToJoin);
 
-                        //TODO add user to the database once their object has been updated by the user being added to the group
 
-                    }
-                }
-            }
+
+        user.addGroup(groupReference);
+        groupToJoin.addGroupMember(user);
+
+        try {
+            //Create a new db connection
+            Connection connection = DatabaseConnect.connect();
+
+            //SQL query to add user information to db
+            String SQL_INSERT="UPDATE groups SET groupObject = (?) WHERE groupid = (?)";
+            PreparedStatement pst = connection.prepareStatement(SQL_INSERT);
+
+            pst.setString(1, Group.toDatabaseString(groupToJoin));
+            pst.setString(2, groupReference.toString());
+
+
+            pst.executeUpdate();
+
+            connection.close();
+
+        } catch (Exception e) {
+            System.out.println(e);
         }
+
+
     }
 }

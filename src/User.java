@@ -1,8 +1,11 @@
 import java.io.*;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Base64;
-import java.util.Date;
 
 public class User implements Serializable {
 
@@ -20,7 +23,7 @@ public class User implements Serializable {
     double height;
     double BMI;
     private ArrayList<Goal> goals = new ArrayList<>();
-    private ArrayList<Group> groups = new ArrayList<>();
+    private ArrayList<Integer> groupsIds = new ArrayList<>();
     private ArrayList<DailyActivity> dailyActivities = new ArrayList<>();
 
     public User(String username,String password) {
@@ -69,11 +72,11 @@ public class User implements Serializable {
     public void setGoals(ArrayList<Goal> goals) {
         this.goals = goals;
     }
-    public ArrayList<Group> getGroups() {
-        return groups;
+    public ArrayList<Integer> getGroupsIds() {
+        return groupsIds;
     }
-    public void setGroups(ArrayList<Group> groups) {
-        this.groups = groups;
+    public void setGroupsIds(ArrayList<Integer> groupsIds) {
+        this.groupsIds = groupsIds;
     }
     public double getBMI() {
         return BMI;
@@ -163,7 +166,7 @@ public class User implements Serializable {
                 ", height=" + height +
                 ", BMI=" + BMI +
                 ", goals=" + goals +
-                ", groups=" + groups +
+                ", groups=" + groupsIds +
                 ", dailyActivities=" + dailyActivities +
                 '}';
     }
@@ -176,8 +179,8 @@ public class User implements Serializable {
         this.goals.add(goal);
     }
 
-    public void addGroup(Group group){
-        this.groups.add(group);
+    public void addGroup(Integer groupReference){
+        this.groupsIds.add(groupReference);
     }
 
     public void removeGoal(Goal goal){
@@ -186,7 +189,7 @@ public class User implements Serializable {
 
     public static void addTestData(User user){
         user.addGoal(new Goal("Goal 1", LocalDate.now(), LocalDate.now().plusDays(2), "N/A"));
-        user.addGroup(new Group("Group1", user, "password"));
+        //user.addGroup(new Group("Group1", user, "password"));
     }
 
     public void addWorkout(Workout workout){
@@ -225,6 +228,53 @@ public class User implements Serializable {
         }
 
 
+    }
+
+    public ArrayList<Group> getGroups() throws SQLException {
+
+        ArrayList<Group> groups = new ArrayList<>();
+
+        for(int i = 0; i < this.groupsIds.size(); i++){
+            Group group= getGroupFromId(this.groupsIds.get(i));
+            groups.add(group);
+        }
+
+        return groups;
+    }
+
+    public Group getGroupFromId(Integer groupId) throws SQLException {
+
+        String SQL_QUERY = "SELECT groupObject FROM groups WHERE groupid = ?";
+
+        Group groupObject = null;
+        String groupString = null;
+
+        try {
+
+            //Create a new db connection
+            Connection connection = DatabaseConnect.connect();
+            PreparedStatement pst = connection.prepareStatement(SQL_QUERY);
+
+            pst.setString(1, groupId.toString());
+
+            ResultSet rs = pst.executeQuery();
+
+            //Loop through db results
+            while (rs.next()) {
+
+                //Set username and password variables
+                groupString = rs.getString("groupObject");
+
+                //If the user exists, retrieve their object from the db
+                groupObject = (Group) Group.fromDatabaseString(groupString);
+
+            }
+        }
+        catch (Exception e){
+            System.out.println(e);
+        }
+
+        return groupObject;
     }
 
 //    public static void main(String[] args) {

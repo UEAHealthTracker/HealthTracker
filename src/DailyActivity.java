@@ -41,6 +41,10 @@ public class  DailyActivity implements Serializable {
         this.meals.add(newMeal);
     }
 
+    public void removeMeal(Meal meal){
+        meals.remove(meal);
+    }
+
     public void addWorkout(Workout newWorkout){
         this.workouts.add(newWorkout);
     }

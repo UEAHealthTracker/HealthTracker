@@ -30,11 +30,22 @@ public class Meal implements Serializable {
     }
 
     public String getMealFood(){
-        return this.foodList.toString();
+        StringBuilder stringBuilder = new StringBuilder();
+
+        for(int i = 0; i < foodList.size(); i++){
+            stringBuilder.append(foodList.get(i).getName());
+        }
+        return stringBuilder.toString();
     }
 
     public String getMealDrink(){
-        return this.drinkList.toString();
+
+        StringBuilder stringBuilder = new StringBuilder();
+
+        for(int i = 0; i < drinkList.size(); i++){
+            stringBuilder.append(drinkList.get(i).getName());
+        }
+        return stringBuilder.toString();
     }
 
     void updateCalories(int calorieCount) {

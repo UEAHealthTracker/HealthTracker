@@ -63,7 +63,7 @@ public class BaseController {
     }
 
     //Method to load pages using the base controller
-    private void loadPage(javafx.event.ActionEvent actionEvent, String filename) throws IOException {
+    public void loadPage(javafx.event.ActionEvent actionEvent, String filename) throws IOException {
 
         //Create new FXMLLoader object to create the page
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource(filename));

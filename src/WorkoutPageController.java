@@ -1,11 +1,13 @@
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 
+import java.io.IOException;
 import java.net.URL;
 import java.util.Arrays;
 import java.util.ResourceBundle;
@@ -56,7 +58,7 @@ public class WorkoutPageController extends BaseController implements Initializab
 
     }
 
-    public void addWorkout(){
+    public void addWorkout(ActionEvent actionEvent) throws IOException {
         int cal=0;
         WorkoutType newWorkoutType = null;
 
@@ -74,6 +76,8 @@ public class WorkoutPageController extends BaseController implements Initializab
         Workout newWorkout = new Workout(newWorkoutType,Integer.parseInt(durationTF.getText()), cal);
 
         user.addWorkout(newWorkout);
+
+        loadPage(actionEvent, "WorkoutPage.fxml");
     }
 
     //add data to workout table

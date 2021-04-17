@@ -177,6 +177,16 @@ public class User implements Serializable {
         goals.remove(goal);
     }
 
+    public void removeMeal(Meal meal){
+        for(int i = 0; i < dailyActivities.size(); i++){
+            for(int j = 0; j < dailyActivities.get(i).getMeals().size(); j++){
+                if(dailyActivities.get(i).getMeals().get(j).equals(meal)){
+                    dailyActivities.get(i).removeMeal(meal);
+                }
+            }
+        }
+    }
+
     public static void addTestData(User user){
         user.addGoal(new Goal("Goal 1", LocalDate.now(), LocalDate.now().plusDays(2), "N/A"));
         //user.addGroup(new Group("Group1", user, "password"));

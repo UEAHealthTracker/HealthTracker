@@ -86,7 +86,7 @@ public class GroupsPageController extends BaseController {
         return groups;
     }
 
-    public void createGroup() throws IOException {
+    public void createGroup(ActionEvent actionEvent) throws IOException {
 
         String nameOfGroup = groupNameTextField.getText();
         String groupMail = groupMembersEmail.getText();
@@ -101,6 +101,8 @@ public class GroupsPageController extends BaseController {
             user.addGroup(groupReference);
             //SendMail.sendMail(groupMail, nameOfGroup);
         }
+
+        loadPage(actionEvent, "GroupsPage.fxml");
 
     }
 
@@ -130,6 +132,8 @@ public class GroupsPageController extends BaseController {
 
             }
         }
+
+        loadPage(actionEvent, "GroupsPage.fxml");
     }
 
     public void joinGroup(ActionEvent actionEvent) throws IOException, ClassNotFoundException, SQLException {
@@ -195,6 +199,7 @@ public class GroupsPageController extends BaseController {
             System.out.println(e);
         }
 
+        loadPage(actionEvent, "GroupsPage.fxml");
 
     }
 }

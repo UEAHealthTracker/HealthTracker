@@ -65,6 +65,8 @@ public class AddWeightController extends BaseController implements Initializable
         Goal newGoal = new Goal(name, date, now, "Simple");
 
         user.addGoal(newGoal);
+
+        loadPage(actionEvent, "HomePage.fxml");
     }
 
     public Boolean Check(){

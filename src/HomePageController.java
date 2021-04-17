@@ -1,6 +1,7 @@
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -31,7 +32,7 @@ public class HomePageController extends BaseController implements Initializable 
     public TableColumn<Goal, String> goalStatus;
 
     //allow user to select a table item/row and delete it using the delete button
-    public void removeTableItem(){
+    public void removeTableItem(ActionEvent actionEvent) throws IOException {
         Goal data = goalTableView.getSelectionModel().getSelectedItem();
         if (data != null) {
             data = goalTableView.getSelectionModel().getSelectedItem();
@@ -42,6 +43,8 @@ public class HomePageController extends BaseController implements Initializable 
                 }
             }
         }
+
+        loadPage(actionEvent, "HomePage.fxml");
     }
 
     public void openSelectGoalTypePage(javafx.event.ActionEvent actionEvent) throws IOException {

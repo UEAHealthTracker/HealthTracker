@@ -93,7 +93,7 @@
                   <Image url="@img/delete.png" />
                </image>
             </ImageView>
-            <Button fx:id="deleteButton" graphicTextGap="0.0" layoutX="460.0" layoutY="10.0" mnemonicParsing="false" opacity="0.0" prefHeight="30.0" prefWidth="30.0" />
+            <Button fx:id="deleteButton" onAction="#removeTableItem" graphicTextGap="0.0" layoutX="460.0" layoutY="10.0" mnemonicParsing="false" opacity="0.0" prefHeight="30.0" prefWidth="30.0" />
          </children>
       </AnchorPane>
    </bottom>

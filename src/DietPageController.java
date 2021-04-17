@@ -1,14 +1,13 @@
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 
+import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
@@ -34,6 +33,7 @@ public class DietPageController extends BaseController implements Initializable 
 
     @FXML
     public TextField calorieCountTextField;
+    public Button deleteButton;
 
     @FXML
     private TableView<Meal> dietTable;
@@ -52,6 +52,7 @@ public class DietPageController extends BaseController implements Initializable 
     //add data to diet table
     public void populateDietTable(){
 
+        System.out.println(user);
         //Get the attributes for the table from default getters and setters
         mealTime.setCellValueFactory(new PropertyValueFactory<>("mealTime"));
         mealFood.setCellValueFactory(new PropertyValueFactory<>("mealFood"));
@@ -64,8 +65,19 @@ public class DietPageController extends BaseController implements Initializable 
     }
 
     //allow user to select a table item/row and delete it using the delete button
-    public void removeTableItem(){
+    public void removeTableItem(ActionEvent actionEvent) throws IOException {
+        Meal data = dietTable.getSelectionModel().getSelectedItem();
+        if (data != null) {
+            data = dietTable.getSelectionModel().getSelectedItem();
 
+            for(int i = 0; i < user.getMeals().size(); i++){
+                if(user.getMeals().get(i) == data){
+                    user.removeMeal(user.getMeals().get(i));
+                }
+            }
+        }
+
+        loadPage(actionEvent, "DietPage.fxml");
     }
 
     @Override
@@ -83,9 +95,7 @@ public class DietPageController extends BaseController implements Initializable 
         return meals;
     }
 
-    public void addItem(){
-        System.out.println("Here");
-        System.out.println(user.toString());
+    public void addItem(ActionEvent actionEvent) throws IOException {
         //Food
         if(mealTypeSelector.getSelectionModel().getSelectedItem().equals("Food")){
             Food food = new Food(Food.FoodType.REGULAR, itemNameTextField.getText(), Integer.parseInt(calorieCountTextField.getText()));
@@ -99,6 +109,9 @@ public class DietPageController extends BaseController implements Initializable 
             Meal meal = new Meal();
             meal.addDrink(drink);
             user.addMeal(meal);
+            System.out.println(user);
         }
+
+        loadPage(actionEvent, "DietPage.fxml");
     }
 }

@@ -105,6 +105,8 @@ public class UserLoginController extends BaseController{
                     //If the user exists, retrieve their object from the db
                     User newUser = (User) User.fromDatabaseString(rs.getString("userObject"));
 
+                    System.out.println("User collected from login : " + newUser);
+
                     //Load the home page for the selected user
                     FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("HomePage.fxml"));
 

@@ -13,12 +13,10 @@ public class User implements Serializable {
     private static final long serialVersionUID = 1L;
 
     //Initialise variables
-    Integer userid;
     String username;
     String password;
     String email;
     int age;
-    String name;
     double weight;
     double height;
     double BMI;
@@ -80,12 +78,6 @@ public class User implements Serializable {
     }
     public double getBMI() {
         return BMI;
-    }
-    public String getName() {
-        return name;
-    }
-    public void setName(String name) {
-        this.name = name;
     }
     public String getUsername() {
         return username;
@@ -156,12 +148,10 @@ public class User implements Serializable {
     @Override
     public String toString() {
         return "User{" +
-                "userid=" + userid +
                 ", username='" + username + '\'' +
                 ", password='" + password + '\'' +
                 ", email='" + email + '\'' +
                 ", age=" + age +
-                ", name='" + name + '\'' +
                 ", weight=" + weight +
                 ", height=" + height +
                 ", BMI=" + BMI +

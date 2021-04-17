@@ -79,12 +79,14 @@ public class BaseController {
             //Create a new db connection
             Connection connection = DatabaseConnect.connect();
 
+            System.out.println("Saving user : " + user);
+
             //SQL query to add user information to db
-            String SQL_INSERT="UPDATE users SET userObject = (?)";
+            String SQL_INSERT="UPDATE users SET userObject = (?) WHERE username = (?)";
             PreparedStatement pst = connection.prepareStatement(SQL_INSERT);
 
             pst.setString(1, User.toDatabaseString(user));
-
+            pst.setString(2, user.getUsername());
 
             pst.executeUpdate();
 

@@ -44,26 +44,23 @@ public class DietPageController extends BaseController {
         //diet page
         ObservableList<Meal> mealData = FXCollections.observableArrayList();
 
-        String SQL_QUERY = "SELECT mealid, timeconsumed, dietitem.itemname AS itemname, dietitem.caloriecount AS caloriecount \n" +
-                            "FROM meal JOIN dietitem ON meal.itemid = dietitem.itemid \n" +
-                            "WHERE userid = ? \n" +
-                            "GROUP BY mealid \n" +
-                            "ORDER BY timeconsumed";
-        //SELECT meal.mealid AS mealid, meal.timeconsumed AS timeconsumed, dietitem.itemname AS itemname, dietitem.caloriecount AS caloriecount
-        //FROM mealitem JOIN meal ON meal.mealid = mealitem.mealid JOIN dietitem ON dietitem.itemid = mealitem.itemid
-        //WHERE meal.userid = 1
-        //GROUP BY mealitem.mealid
-        //ORDER BY meal.timeconsumed
+        String SQL_QUERY_1 = "SELECT meal.mealid AS mealid, meal.timeconsumed AS timeconsumed, SUM(dietitem.caloriecount) AS caloriecount\n" +
+                            "FROM mealitem JOIN meal ON meal.mealid = mealitem.mealid JOIN dietitem ON dietitem.itemid = mealitem.itemid\n" +
+                            "WHERE meal.userid = ?\n" +
+                            "GROUP BY mealitem.mealid\n" +
+                            "ORDER BY meal.timeconsumed";
 
-        //SELECT meal.mealid AS mealid, meal.timeconsumed AS timeconsumed, STRING_AGG(dietitem.itemname, ',') AS itemname, SUM(dietitem.caloriecount) AS caloriecount
-        //FROM mealitem JOIN meal ON meal.mealid = mealitem.mealid JOIN dietitem ON dietitem.itemid = mealitem.itemid
-        //WHERE meal.userid = 1
-        //GROUP BY mealitem.mealid
-        //ORDER BY meal.timeconsumed
+        //with string aggregate:
+        //"SELECT meal.mealid AS mealid, meal.timeconsumed AS timeconsumed, STRING_AGG(dietitem.itemname, ',') AS itemname, SUM(dietitem.caloriecount) AS caloriecount\n" +
+        //"FROM mealitem JOIN meal ON meal.mealid = mealitem.mealid JOIN dietitem ON dietitem.itemid = mealitem.itemid\n" +
+        //"WHERE meal.userid = ?\n" +
+        //"GROUP BY mealitem.mealid\n" +
+        //"ORDER BY meal.timeconsumed";
+
         try {
-            PreparedStatement pst = DBsession.INSTANCE.OpenConnection().prepareStatement(SQL_QUERY);
-            pst.setString(1, Integer.toString(User.INSTANCE.getUserid()));
-            ResultSet rs = pst.executeQuery();
+            PreparedStatement pst1 = DBsession.INSTANCE.OpenConnection().prepareStatement(SQL_QUERY_1);
+            pst1.setString(1, Integer.toString(User.INSTANCE.getUserid()));
+            ResultSet rs = pst1.executeQuery();
 
             ArrayList<Food> food = new ArrayList<>();
             ArrayList<Drink> drink = new ArrayList<>();

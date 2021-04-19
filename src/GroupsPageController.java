@@ -19,7 +19,6 @@ import java.util.Date;
 
 
 import java.util.Properties;
-import javafx.scene.image.ImageView;
 import java.io.IOException;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -43,7 +42,6 @@ public class GroupsPageController extends BaseController {
             "^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@"
                     + "[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$";
     private static TextField groupNameText, groupMemberText;
-    private static ImageView imageViewstatic;
     private static Button createGroupbutton;
     //Textfields that correspond to Scene Builder elements
     private ObservableList<Group> data;
@@ -57,8 +55,6 @@ public class GroupsPageController extends BaseController {
     Button inviteMember;
     @FXML
     Button createGroupbtn;
-    @FXML
-    ImageView imageView;
     @FXML
     TextField groupPassword;
     @FXML
@@ -87,7 +83,6 @@ public class GroupsPageController extends BaseController {
         groupNameText = groupName;
         groupMemberText = groupMembersEmail;
         createGroupbutton = createGroupbtn;
-        imageViewstatic = imageView;
         //userLabel.setText("Hello "+User.INSTANCE.getUsername());
         populateGroupTables();
 
@@ -112,7 +107,6 @@ public class GroupsPageController extends BaseController {
         //Insert group details and create group:
         if (nameOfGroup.isEmpty() || groupMail.isEmpty() == true) {
             System.out.println("Please ensure that both group name and the group  mail is filled ");
-            imageView.setOpacity(0);
             createGroupbtn.setOpacity(1);
             createGroupbtn.setStyle("-fx-background-color:rgba(0,0,0,0);-fx-text-fill: #ff0000");
             createGroupbtn.setText("Please fill all the details");
@@ -169,7 +163,6 @@ public class GroupsPageController extends BaseController {
 
                     }
                 } else {
-                    imageView.setOpacity(0);
                     createGroupbtn.setOpacity(1);
                     createGroupbtn.setStyle("-fx-background-color:rgba(0,0,0,0);-fx-text-fill: #ff0000");
                     createGroupbtn.setText("User does not exist");
@@ -178,7 +171,6 @@ public class GroupsPageController extends BaseController {
                 }
             } else {
 
-                imageView.setOpacity(0);
                 createGroupbtn.setOpacity(1);
                 createGroupbtn.setStyle("-fx-background-color:rgba(0,0,0,0);-fx-text-fill: #ff0000");
                 createGroupbtn.setText("Group already exist");
@@ -202,6 +194,7 @@ public class GroupsPageController extends BaseController {
             while(idSet.next()){
                 //Insert the invite
                 String addInviteQuery= "INSERT INTO group_invites(group_id, group_name, group_admin, group_member)VALUES(?,?,?,?)";
+                PreparedStatement inviteStatement = DBsession.INSTANCE.OpenConnection().prepareStatement(addInviteQuery);
 
             }
         }catch(SQLException e){

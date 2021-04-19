@@ -190,74 +190,81 @@ public class GroupsPageController extends BaseController {
         DBsession.INSTANCE.OpenConnection().close();
         }
 
+//Add invite after sending the mail:
+    public void AddInvite(String receipient, String groupName, String groupPassword ) throws SQLException {
+        //Insert
+        try {
+            //Insert the admin as a member in the groupsmember group:
+            String getGroupId = "SELECT groupid FROM groups WHERE groupname =?";
+            PreparedStatement groupIdStatement = DBsession.INSTANCE.OpenConnection().prepareStatement(getGroupId);
+            groupIdStatement.setString(1, groupName);
+            ResultSet idSet = groupIdStatement.executeQuery();
+            while(idSet.next()){
+                //Insert the invite
+                String addInviteQuery= "INSERT INTO group_invites(group_id, group_name, group_admin, group_member)VALUES(?,?,?,?)";
+
+            }
+        }catch(SQLException e){
+            e.printStackTrace();
+        }
+    }
+
 
     public void JoinGroup() throws SQLException {
-        if(joinGroupExist()){
-            System.out.println("Group exist");
-            if(alreadyInGroup()){
-                System.out.println("You are already in Group");
+        if(!alreadyInGroup()) {
+            if(joinGroupsCredentials()){
+                System.out.println("You are invited and can join group. The group and password do match");
 
             }else{
-                System.out.println("You are not in the group");
-            }
-            if(passWordExist()){
+                System.out.println("The group and Password don't match");
 
-                //The group exist and the password is correct:
-            }else{
-                System.out.println("Password is incorrect.");
             }
+            System.out.println("You are not already in the group");
+
+
         }else{
-            System.out.println("Group does not exist");
+            System.out.println("You are already in group");
+
+
         }
+
+    }
+
+    //Check if user was invited to the group they are attempting to join
+    public boolean checkInvite() throws SQLException {
+        boolean wasUserInvited= false;
+        GroupInvites allInvites = new GroupInvites();
+        String groupAdminJoin;
+        String groupAdminQuery = "SELECT groupadmin FROM groups WHERE groupname=?";
+       try {
+           PreparedStatement pst = DBsession.INSTANCE.OpenConnection().prepareStatement(groupAdminQuery);
+           pst.setString(1, joinGroupName.getText());
+           ResultSet rs = pst.executeQuery();
+           while(rs.next()){
+                groupAdminJoin= rs.getString("groupadmin");
+               GroupInvites checkGroupInvites = new GroupInvites(groupAdminJoin, joinGroupName.getText(), User.INSTANCE.getUsername());
+               allInvites.getGroupInvites();
+
+           }
+
+
+       }catch(SQLException e){
+           e.printStackTrace();
+       }
+return wasUserInvited;
 
     }
 
 
 
         public void testQuery() throws SQLException {
-            //Getting all the groups the user is part of.
-            /*
-            String queryTest = "SELECT groupname, groupPassword FROM groups ";
-            try{
-                PreparedStatement pst= DBsession.INSTANCE.OpenConnection().prepareStatement(queryTest);
-                ResultSet rs = pst.executeQuery();
-                while(rs.next()){
+        GroupInvites allInvites = new GroupInvites();
+            System.out.println( allInvites.getGroupInvites().toString());
 
 
-                }
-
-            }catch(SQLException e){
-                e.printStackTrace();
-
-            }
-            DBsession.INSTANCE.OpenConnection().close();
-
-             */
 
         }
 
-        public void populateGroupTablesCreate() throws SQLException {
-            String nullName=null, nullAdmin=null, nullPassword = null;
-            data = FXCollections.observableArrayList();
-            // TableColumn<Group, String> groupname;
-            //Select all the groups that the user is admin to:
-            String groupAdminInsertQuery = "SELECT groupname, groupadmin FROM groups WHERE groupadmin =? ";
-            try {
-                PreparedStatement pst = DBsession.INSTANCE.OpenConnection().prepareStatement(groupAdminInsertQuery);
-                pst.setString(1, User.INSTANCE.getUsername());
-                ResultSet rs = pst.executeQuery();
-                while (rs.next()) {
-                    data.add(new Group(rs.getString("groupname"), rs.getString("groupadmin"), passwordGroup));
-                    groupname.setCellValueFactory(new PropertyValueFactory<>("groupName"));
-                    groupMembers.setCellValueFactory(new PropertyValueFactory<>("groupAdmin"));
-                    groupView.setItems(data);
-                }
-
-            }catch (Exception e){
-
-                }
-                DBsession.INSTANCE.OpenConnection().close();
-                }
 
 
     public void populateGroupTables() throws SQLException {
@@ -373,7 +380,7 @@ public class GroupsPageController extends BaseController {
     }
 
     //Method to check if the group exists for the join group method.
-    public boolean joinGroupExist() throws SQLException{
+    public boolean joinGroupCorrect() throws SQLException{
         String groupToJoin = joinGroupName.getText();
         String databaseGroups;
         boolean groupExist=false;
@@ -395,25 +402,31 @@ public class GroupsPageController extends BaseController {
         return groupExist;
     }
 
-    //Method to check if the group exists for the join group method.
-    public boolean passWordExist() throws SQLException{
-        String groupPassword= joinGroupPassword.getText();
-        String databasePassword;
-        boolean passwordExist=false;
+    //Method to check if the group and password match for user to be able to join group.
+    public boolean joinGroupsCredentials() throws SQLException{
+        String groupToJoin = joinGroupName.getText();
+        String groupPassword = joinGroupPassword.getText();
+        String databaseGroup, databasePasswords;
+        boolean joinGroupCredential=false;
         try {
-            ResultSet rs2 = DBsession.INSTANCE.Stmt().executeQuery("select groupPassword from groups");
+            String groupQuery="select groupname, groupPassword from groups where groupname=?";
+            PreparedStatement pst= DBsession.INSTANCE.OpenConnection().prepareStatement(groupQuery);
+            pst.setString(1, groupToJoin);
+            ResultSet rs2 = pst.executeQuery();
             while(rs2.next()) {
-                databasePassword = rs2.getString("groupPassword");
-                if (databasePassword.contentEquals(groupPassword)) {
-                    passwordExist = true;
+                databaseGroup = rs2.getString("groupname");
+                databasePasswords= rs2.getString("groupPassword");
+                if (databaseGroup.contentEquals(groupToJoin)&& databasePasswords.contentEquals(groupPassword)) {
+                    joinGroupCredential = true;
+                    System.out.println("You can join group called:" + databaseGroup);
                 }
             }
         }catch (SQLException e){
             e.printStackTrace();
-
         }
-        return passwordExist;
+        return joinGroupCredential;
     }
+
 
     //Method to check if the user has already  joined the group method.
     public boolean alreadyInGroup() throws SQLException{

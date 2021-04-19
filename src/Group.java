@@ -4,7 +4,7 @@ public class Group {
     private String groupName;
     private String groupAdmin;
     private String groupPassword;
-    String memberName;
+    private String memberName;
 
     public Group(String groupName, String groupAdmin, String groupPassword){
         this.groupName=groupName;
@@ -92,6 +92,10 @@ public class Group {
                 // Email.sendGroupGoalUpdate(email);
             }
     }
+
+
+
+
 
     public void deleteGroupGoal(){
         groupGoal = null;

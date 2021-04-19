@@ -1,4 +1,5 @@
 import java.io.File;
+import java.lang.reflect.Array;
 import java.util.*;
 import javax.mail.*;
 import javax.mail.internet.*;
@@ -8,10 +9,8 @@ import java.net.URI;
 
 public class SendMail {
     public static boolean sendMail(String receipient, String groupName, String groupPassword) throws MessagingException {
-
         String appSender = "team1.5healthtracker@gmail.com";
         String password = "ganttsucks123";
-
         //String Usersender=User.INSTANCE.getEmail();
         Properties props = new Properties();
         props.put("mail.smtp.host", "smtp.gmail.com");
@@ -33,6 +32,14 @@ public class SendMail {
 
         Message message = prepareMessage(session, appSender, receipient, groupName, groupPassword);
         Transport.send(message);
+
+        //Create a new Invite object as an invite is sent.
+        GroupInvites newInvites = new GroupInvites(User.INSTANCE.getUsername(), groupName,receipient);
+        // Add the new invite object to the end of the arrayList.
+        newInvites.addGroupInvites(newInvites);
+        System.out.println(newInvites.getGroupInvites().toString());
+        //System.out.println(newInvites.);
+
         return true;
     }
   private static Message prepareMessage(Session session, String appSender, String receipient,String groupName, String groupPassword){
@@ -60,6 +67,10 @@ public class SendMail {
 
 return null;
   }
+
+
+
+
 
 
 }

@@ -25,10 +25,9 @@ public class AddWeightController extends BaseController {
         kgtb.setToggleGroup(group);
         lbtb.setToggleGroup(group);
         kgtb.setSelected(true);
-        label=statuslbl;
         userLabel.setText("Hello "+User.INSTANCE.getUsername());
-        label.setText("");
-        label.setStyle("-fx-text-fill: white");
+
+
     }
 
 

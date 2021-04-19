@@ -7,6 +7,7 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 
+import java.awt.event.ActionEvent;
 import java.io.IOException;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -129,6 +130,13 @@ public class HomePageController extends BaseController {
             BaseController.Instance.filename="HomePage.fxml";
         }
 
+    }
+    public void logout(ActionEvent actionEvent){
+        root = FXMLLoader.load(getClass().getResource("HomePage.fxml"));
+        stage = (Stage)((Node)actionEvent.getSource()).getScene().getWindow();
+        scene = new Scene(root);
+        stage.setScene(scene);
+        stage.show();
     }
 
 }

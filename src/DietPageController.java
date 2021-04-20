@@ -13,10 +13,7 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
 
 import java.io.IOException;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.Time;
-import java.sql.Timestamp;
+import java.sql.*;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -25,8 +22,7 @@ public class DietPageController extends BaseController {
 
     @FXML TableView<Meal> dietTable;
     @FXML TableColumn<Meal, Timestamp> timeConsumed;
-    @FXML TableColumn<Meal, ArrayList<Food>> foods;
-    @FXML TableColumn<Meal, ArrayList<Drink>> drinks;
+    @FXML TableColumn<Meal, ArrayList<DietItem>> items;
     @FXML TableColumn<Meal, Integer> calorieCount;
 
     //add diet item page
@@ -41,41 +37,46 @@ public class DietPageController extends BaseController {
     //add data to diet table
     public void populateDietTable(){
 
+        //TODO add meal to User so it can be retrieved more easily?
+
         //diet page
         ObservableList<Meal> mealData = FXCollections.observableArrayList();
 
-        String SQL_QUERY_1 = "SELECT meal.mealid AS mealid, meal.timeconsumed AS timeconsumed, SUM(dietitem.caloriecount) AS caloriecount\n" +
-                            "FROM mealitem JOIN meal ON meal.mealid = mealitem.mealid JOIN dietitem ON dietitem.itemid = mealitem.itemid\n" +
-                            "WHERE meal.userid = ?\n" +
-                            "GROUP BY mealitem.mealid\n" +
-                            "ORDER BY meal.timeconsumed";
-
-        //with string aggregate:
-        //"SELECT meal.mealid AS mealid, meal.timeconsumed AS timeconsumed, STRING_AGG(dietitem.itemname, ',') AS itemname, SUM(dietitem.caloriecount) AS caloriecount\n" +
-        //"FROM mealitem JOIN meal ON meal.mealid = mealitem.mealid JOIN dietitem ON dietitem.itemid = mealitem.itemid\n" +
-        //"WHERE meal.userid = ?\n" +
-        //"GROUP BY mealitem.mealid\n" +
-        //"ORDER BY meal.timeconsumed";
+        String SQL_QUERY = """
+                SELECT meal.mealid AS mealid, meal.timeconsumed AS timeconsumed, GROUP_CONCAT(dietitem.itemname) AS itemname, GROUP_CONCAT(dietitem.itemtype) AS itemtype, SUM(dietitem.caloriecount) AS caloriecount
+                FROM mealitem JOIN meal ON meal.mealid = mealitem.mealid JOIN dietitem ON dietitem.itemid = mealitem.itemid
+                WHERE meal.userid = ?
+                GROUP BY mealitem.mealid
+                ORDER BY meal.timeconsumed""";
 
         try {
-            PreparedStatement pst1 = DBsession.INSTANCE.OpenConnection().prepareStatement(SQL_QUERY_1);
-            pst1.setString(1, Integer.toString(User.INSTANCE.getUserid()));
-            ResultSet rs = pst1.executeQuery();
+            PreparedStatement pst = DBsession.INSTANCE.OpenConnection().prepareStatement(SQL_QUERY);
+            pst.setString(1, Integer.toString(User.INSTANCE.getUserid()));
+            ResultSet rs = pst.executeQuery();
 
-            ArrayList<Food> food = new ArrayList<>();
-            ArrayList<Drink> drink = new ArrayList<>();
+            ArrayList<DietItem> dietItems = new ArrayList<>();
+            DietItem.Type itemtype;
+
             while(rs.next()){
 
-                LocalDateTime time = rs.getTimestamp("timeconsumed").toLocalDateTime().withSecond(0);
-                food.add(new Food(rs.getString("foodname")));
-                drink.add(new Drink(rs.getString("drinkname")));
+                if (rs.getString("itemtype").equals("food")){
+                    itemtype = DietItem.Type.FOOD;
+                }
+                else if (rs.getString("itemtype").equals("drink")){
+                    itemtype = DietItem.Type.DRINK;
+                }
+                else {
+                    itemtype = null;
+                }
 
-                mealData.add(new Meal(Integer.parseInt(rs.getString("mealid")), food, drink, time, rs.getInt("caloriecount")));
+                LocalDateTime time = rs.getTimestamp("timeconsumed").toLocalDateTime().withSecond(0);
+                dietItems.add(new DietItem(rs.getString("itemname"), rs.getInt("caloriecount"), itemtype));
+
+                mealData.add(new Meal(Integer.parseInt(rs.getString("mealid")), dietItems, time, rs.getInt("caloriecount")));
             }
 
             timeConsumed.setCellValueFactory(new PropertyValueFactory<>("timeConsumed"));
-            foods.setCellValueFactory(new PropertyValueFactory<>("foods"));
-            drinks.setCellValueFactory(new PropertyValueFactory<>("drinks"));
+            items.setCellValueFactory(new PropertyValueFactory<>("items"));
             calorieCount.setCellValueFactory(new PropertyValueFactory<>("calorieCount"));
 
             dietTable.setItems(mealData);
@@ -103,26 +104,74 @@ public class DietPageController extends BaseController {
 
     }
 
+    public void addMeal(){
+
+        Meal newMeal = new Meal();
+
+        try {
+            String SQL_QUERY = "INSERT INTO meal (timeconsumed, userid) VALUES (?, ?)";
+            Connection connection = DBsession.INSTANCE.OpenConnection();
+            PreparedStatement pst = connection.prepareStatement(SQL_QUERY, Statement.RETURN_GENERATED_KEYS);
+            pst.setTimestamp(1, Timestamp.valueOf(newMeal.getTimeConsumed()));
+            pst.setInt(2, User.INSTANCE.getUserid());
+            pst.executeQuery();
+            ResultSet generatedKey = pst.getGeneratedKeys();
+
+            newMeal.setMealid(generatedKey.getInt(1));
+        }
+        catch (Exception e){
+            System.out.println("error- meal could not be added.");
+        }
+
+    }
+
     public void addDietItem(){
-        //instantiate new food or drink item (if not already exists?) and insert it into corresponding database table eg food or drink table
-        //update selected meal to include item, both in the model and database
-        //food/drink array nd calories should be updated when returning to main page
-        //if a meal is selected from the table then just add the food item to that meal
-        //if not, add a new meal at the current time, with that item
-        String SQL_QUERY;
+
         if (dietTable.getSelectionModel().getSelectedItem() != null) {
+
             Meal selectedMeal = dietTable.getSelectionModel().getSelectedItem();
 
             //open add diet item page
-            if ("Food".equals(setItemType.getValue())) {
-                for (Food food : selectedMeal.getFoods()) {
-                    if (food.getName().equals(setItemName.getText())) {
-                        SQL_QUERY = "UPDATE meal \n" +
-                                "SET ";
-                    }
+
+            DietItem itemToAdd;
+            DietItem.Type itemType;
+
+            try{
+                if (setItemType.getValue().equals("Food")) {
+                    itemType = DietItem.Type.FOOD;
                 }
-                SQL_QUERY = "INSERT INTO food (foodName, caloriecount) VALUES (" + setItemName.getText() + "," + setCalorieCount.getText() + ")";
+                else {
+                    itemType = DietItem.Type.DRINK;
+                }
+
+                itemToAdd = new DietItem(setItemName.getText(), Integer.parseInt(setCalorieCount.getText()), itemType);
+                selectedMeal.addDietItem(itemToAdd);
+
+                String SQL_QUERY = "INSERT INTO dietitem (itemtype, itemname, caloriecount) VALUES (?, ?, ?)";
+                Connection connection = DBsession.INSTANCE.OpenConnection();
+                PreparedStatement pst = connection.prepareStatement(SQL_QUERY, Statement.RETURN_GENERATED_KEYS);
+                pst.setString(1, setItemName.getText());
+                pst.setInt(2, Integer.parseInt(setCalorieCount.getText()));
+                pst.setString(3, itemType.toString());
+                pst.executeQuery();
+                ResultSet generatedKey = pst.getGeneratedKeys();
+                pst.close();
+
+                SQL_QUERY = "INSERT INTO mealitem VALUES (?, ?)";
+                pst = connection.prepareStatement(SQL_QUERY);
+                pst.setInt(1, selectedMeal.getMealid());
+                pst.setInt(2, generatedKey.getInt(1));
+                pst.executeQuery();
+                pst.close();
+
             }
+            catch (Exception e){
+                System.out.println("Item cannot be added - some values may be empty.");
+            }
+
+        }
+        else {
+            addMeal();
         }
     }
 

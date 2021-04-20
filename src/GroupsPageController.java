@@ -61,6 +61,9 @@ public class GroupsPageController extends BaseController {
     TextField joinGroupName;
 
     @FXML
+    TextField GroupMessage;
+
+    @FXML
     TextField joinGroupPassword;
 
 
@@ -149,6 +152,11 @@ public class GroupsPageController extends BaseController {
                                 insertMemberStatement.executeUpdate();
 
                             }
+
+                            //Add the  invite details into the database.
+                            AddInvite(groupAdmin, groupMail, nameOfGroup);
+
+
                             root = FXMLLoader.load(getClass().getResource("GroupsPage.fxml"));
                             stage = (Stage)((Node)actionEvent.getSource()).getScene().getWindow();
                             scene = new Scene(root);
@@ -168,6 +176,8 @@ public class GroupsPageController extends BaseController {
                     createGroupbtn.setText("User does not exist");
                     System.out.println("User does not exist");
 
+
+
                 }
             } else {
 
@@ -176,6 +186,8 @@ public class GroupsPageController extends BaseController {
                 createGroupbtn.setText("Group already exist");
                 System.out.println("Group already exist");
 
+
+
             }
 
         }
@@ -183,7 +195,7 @@ public class GroupsPageController extends BaseController {
         }
 
 //Add invite after sending the mail:
-    public void AddInvite(String receipient, String groupName, String groupPassword ) throws SQLException {
+    public void AddInvite(String groupAdmin, String receipient, String groupName) throws SQLException {
         //Insert
         try {
             //Insert the admin as a member in the groupsmember group:
@@ -192,9 +204,19 @@ public class GroupsPageController extends BaseController {
             groupIdStatement.setString(1, groupName);
             ResultSet idSet = groupIdStatement.executeQuery();
             while(idSet.next()){
+                int groupId = idSet.getInt("groupid");
                 //Insert the invite
                 String addInviteQuery= "INSERT INTO group_invites(group_id, group_name, group_admin, group_member)VALUES(?,?,?,?)";
                 PreparedStatement inviteStatement = DBsession.INSTANCE.OpenConnection().prepareStatement(addInviteQuery);
+                inviteStatement.setInt(1,groupId);
+                inviteStatement.setString(2, groupName);
+                inviteStatement.setString(3, groupAdmin);
+                inviteStatement.setString(4, receipient);
+                inviteStatement.executeUpdate();
+                System.out.println("Invite sent  to " + receipient+" by " + groupAdmin);
+                System.out.println("Invite stored into the database.");
+
+
 
             }
         }catch(SQLException e){
@@ -203,10 +225,45 @@ public class GroupsPageController extends BaseController {
     }
 
 
-    public void JoinGroup() throws SQLException {
+
+
+    public void JoinGroup(ActionEvent actionEvent) throws SQLException, IOException {
         if(!alreadyInGroup()) {
             if(joinGroupsCredentials()){
                 System.out.println("You are invited and can join group. The group and password do match");
+                if(checkInvite()){
+                    String getGroupId = "SELECT groupid FROM groups WHERE groupname =?";
+                    PreparedStatement groupIdStatement = DBsession.INSTANCE.OpenConnection().prepareStatement(getGroupId);
+                    groupIdStatement.setString(1, joinGroupName.getText());
+                    ResultSet idSet = groupIdStatement.executeQuery();
+                    while(idSet.next()){
+                        int groupId = idSet.getInt("groupid");
+                        //Since the user is not in the group and the join group credentials are correct and the user was invited, now the user can join the group:
+                        String joinQuery= "INSERT INTO groupsmember(groupid, userid) VALUES(?,?)";
+                        PreparedStatement joinStatement = DBsession.INSTANCE.OpenConnection().prepareStatement(joinQuery);
+                        joinStatement.setInt(1, groupId);
+                        joinStatement.setInt(2, User.INSTANCE.getUserid());
+                        joinStatement.executeUpdate();
+                        System.out.println("Successfully joined the group "+ joinGroupName.getText());
+
+                        //Move to the groups page to show they have joined the group:
+                        root = FXMLLoader.load(getClass().getResource("GroupsPage.fxml"));
+                        stage = (Stage)((Node)actionEvent.getSource()).getScene().getWindow();
+                        scene = new Scene(root);
+                        stage.setScene(scene);
+                        stage.show();
+
+
+                    }
+
+
+
+
+
+
+                }else{
+
+                }
 
             }else{
                 System.out.println("The group and Password don't match");
@@ -226,25 +283,28 @@ public class GroupsPageController extends BaseController {
     //Check if user was invited to the group they are attempting to join
     public boolean checkInvite() throws SQLException {
         boolean wasUserInvited= false;
-        GroupInvites allInvites = new GroupInvites();
-        String groupAdminJoin;
-        String groupAdminQuery = "SELECT groupadmin FROM groups WHERE groupname=?";
-       try {
-           PreparedStatement pst = DBsession.INSTANCE.OpenConnection().prepareStatement(groupAdminQuery);
-           pst.setString(1, joinGroupName.getText());
-           ResultSet rs = pst.executeQuery();
-           while(rs.next()){
-                groupAdminJoin= rs.getString("groupadmin");
-               GroupInvites checkGroupInvites = new GroupInvites(groupAdminJoin, joinGroupName.getText(), User.INSTANCE.getUsername());
-               allInvites.getGroupInvites();
+        String groupName = joinGroupName.getText();
+        System.out.println(User.INSTANCE.getEmail());
+        String SQLQuery= "SELECT group_invites.group_name, group_invites.group_admin, group_invites.group_member FROM group_invites INNER JOIN  groups ON group_invites. group_id=groups.groupid WHERE group_invites.group_name =? AND group_invites.group_member=? AND groups.groupadmin= group_invites.group_admin";
+        PreparedStatement checkInvite = DBsession.INSTANCE.OpenConnection().prepareStatement(SQLQuery);
+        checkInvite.setString(1,groupName);
+        checkInvite.setString(2,User.INSTANCE.getEmail());
+        ResultSet result = checkInvite.executeQuery();
+        while(result.next()){
+            //Final validation. Just for extras.
+            if(groupName.contentEquals(result.getString("group_name")) && User.INSTANCE.getEmail().contentEquals(result.getString("group_member"))){
+                System.out.println(result.getString(1));
+                System.out.println(result.getString(2));
+                System.out.println(result.getString(3));
+                wasUserInvited= true;
+                System.out.println("You are invited to the group and thus can join the group!");
+            }
+        }
 
-           }
 
 
-       }catch(SQLException e){
-           e.printStackTrace();
-       }
-return wasUserInvited;
+
+        return wasUserInvited;
 
     }
 

@@ -4,56 +4,74 @@ import java.util.ArrayList;
 public class Meal {
 
     private int mealid;
-    private ArrayList<Food> foods = new ArrayList<>();
-    private ArrayList<Drink> drinks = new ArrayList<>();
+    private ArrayList<DietItem> items = new ArrayList<>();
     private final LocalDateTime timeConsumed;
     private int calorieCount;
 
     public Meal() {
-        this.timeConsumed = null;
+        this.mealid = -1;
+        this.items = null;
+        this.timeConsumed = LocalDateTime.now();
         this.calorieCount = 0;
     }
 
-    public Meal(int mealid, ArrayList<Food> foodList, ArrayList<Drink> drinkList, LocalDateTime timeConsumed, int calorieCount){
+    public Meal(int mealid, ArrayList<DietItem> items, LocalDateTime timeConsumed, int calorieCount){
         this.mealid = mealid;
-        this.foods = foodList;
-        this.drinks = drinkList;
+        this.items = items;
         this.timeConsumed = timeConsumed;
         this.calorieCount = calorieCount;
     }
 
-    public void addFood(Food food) {
-        this.calorieCount += food.getCalorieAmount();
-        this.foods.add(food);
+    public void setMealid(int mealid){
+        this.mealid = mealid;
     }
 
-    void addDrink(Drink drink) {
-        this.calorieCount += drink.getCalorieAmount();
-        this.drinks.add(drink);
+    public int getMealid(){
+        return mealid;
     }
 
-    void updateCalories(int calorieCount) {
-        this.calorieCount += calorieCount;
+    public void addDietItem(DietItem dietItem) {
+        this.calorieCount += dietItem.getCalorieCount();
+        this.items.add(dietItem);
+    }
+
+    public void removeDietItem(DietItem dietItem) {
+        if (items.contains(dietItem)){
+            this.calorieCount -= dietItem.getCalorieCount();
+            this.items.remove(dietItem);
+        }
+    }
+
+    public ArrayList<DietItem> getItems(){return items;}
+
+    public ArrayList<DietItem> getFoods(){
+        ArrayList<DietItem> foods = new ArrayList<>();
+
+        for(DietItem item : items){
+            if(item.getType() == DietItem.Type.FOOD){
+                foods.add(item);
+            }
+        }
+        return foods;
+    }
+
+    public ArrayList<DietItem>getDrinks(){
+        ArrayList<DietItem> drinks = new ArrayList<>();
+
+        for(DietItem item : items){
+            if(item.getType() == DietItem.Type.DRINK){
+                drinks.add(item);
+            }
+        }
+        return drinks;
     }
 
     public int getCalorieCount() {
         return calorieCount;
     }
 
-    public ArrayList<Food> getFoods() {
-        return foods;
-    }
-
-    public ArrayList<Drink> getDrinks() {
-        return drinks;
-    }
-
     public LocalDateTime getTimeConsumed() {
         return timeConsumed;
-    }
-
-    public int getMealid(){
-        return mealid;
     }
 
     public String toString() {
@@ -62,11 +80,13 @@ public class Meal {
 
         result.append("Meal consists of : \n");
 
-        for (Drink drink : this.drinks) {
-            result.append("Drink : ").append(drink.getName()).append("\n");
-        }
-        for (Food food : this.foods) {
-            result.append("Food : ").append(food.getName()).append("\n");
+        for(DietItem item : items){
+            if(item.getType() == DietItem.Type.FOOD){
+                result.append("Food : ").append(item.getName());
+            }
+            else if(item.getType() == DietItem.Type.DRINK){
+                result.append("Drink : ").append(item.getName());
+            }
         }
 
         result.append("Time consumed : ").append(timeConsumed).append("\n");
@@ -82,17 +102,19 @@ public class Meal {
         Meal meal = new Meal();
 
         //Add some foods and drinks
-        meal.addDrink(new Drink(Drink.DrinkType.JUICE, "Orange", 45));
-        meal.addFood(new Food(Food.FoodType.VEGAN, "Banana", 89));
-        meal.addDrink(new Drink(Drink.DrinkType.JUICE, "Apple", 46));
-        meal.addFood(new Food(Food.FoodType.VEGAN, "Vegan Cake", 257));
+        meal.addDietItem(new DietItem("Apple", 81, DietItem.Type.FOOD));
+        meal.addDietItem(new DietItem("Banana", 105, DietItem.Type.FOOD));
+        meal.addDietItem(new DietItem("Orange juice", 111, DietItem.Type.DRINK));
+        meal.addDietItem(new DietItem("Cola classic", 140, DietItem.Type.DRINK));
 
         //Print all food and drinks in the meal
-        for (int i = 0; i < meal.getDrinks().size(); i++) {
-            System.out.println("Drink : " + meal.getDrinks().get(i).getName());
-        }
-        for (int i = 0; i < meal.getFoods().size(); i++) {
-            System.out.println("Food : " + meal.getFoods().get(i).getName());
+        for (int i = 0; i < meal.getItems().size(); i++) {
+            if (meal.getItems().get(i).getType() == DietItem.Type.FOOD){
+                System.out.println("Food : " + meal.getItems().get(i).getName());
+            }
+            else if (meal.getItems().get(i).getType() == DietItem.Type.DRINK){
+                System.out.println("Drink : " + meal.getItems().get(i).getName());
+            }
         }
 
         //print calories and time consumed

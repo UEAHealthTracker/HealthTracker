@@ -30,6 +30,14 @@ public class AddWeightController extends BaseController {
 
     }
 
+    public void toggles(javafx.event.ActionEvent actionEvent){
+        if(lbtb.isSelected()==true){
+
+        }else if(kgtb.isSelected()==true){
+
+        }
+    }
+
 
     public void AddWeightGoal(javafx.event.ActionEvent actionEvent) throws IOException {
         LocalDate now = LocalDate.now();
@@ -57,15 +65,16 @@ public class AddWeightController extends BaseController {
                 pst.setString(5, "Simple");
             ;
                 pst.executeUpdate();
-//            }else{ thread.start();
-//                label.setText("");
-//            }
             DBsession.INSTANCE.OpenConnection().close();
         }catch(Exception e){System.out.println(e);}
-//        if (Check() == true) {
             BaseController.Instance.Switch(actionEvent,"HomePage.fxml");
-      //  }
+
     }
+    public void CustomGoal(javafx.event.ActionEvent actionEvent) throws IOException {
+        BaseController.Instance.Switch(actionEvent,"AddWorkoutGoal.fxml");
+
+    }
+
 
     public Boolean Check(){
         if(Nametf.getText()=="" && Weightgtf.getText()=="" || enddate.getValue().toString()==""){

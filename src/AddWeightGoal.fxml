@@ -61,7 +61,7 @@
             <DatePicker fx:id="enddate" layoutX="123.0" layoutY="200.0" promptText="Date" style="-fx-background-color: #ffffff;" />
             <TextField fx:id="Nametf" layoutX="123.0" layoutY="91.0" promptText="Name" style="-fx-background-color: #ffffff;" />
             <ToggleButton fx:id="kgtb" layoutX="282.0" layoutY="150.0" mnemonicParsing="false" style="-fx-background-color: transparent; -fx-text-fill: #aa80ff;" text="Kg" />
-            <ToggleButton fx:id="lbtb" layoutX="313.0" layoutY="150.0" mnemonicParsing="false" style="-fx-background-color: transparent; -fx-text-fill: #aa80ff;" text="Lbs" />
+            <ToggleButton fx:id="lbtb" layoutX="313.0" layoutY="150.0" mnemonicParsing="false" style="-fx-background-color: transparent; -fx-text-fill: #cab0ff;" text="Lbs" />
             <Label layoutX="311.0" layoutY="154.0" text="/" textFill="#aa80ff" />
          </children>
       </AnchorPane>
@@ -75,6 +75,12 @@
                </image>
             </ImageView>
             <Button graphicTextGap="0.0" layoutX="380.0" layoutY="10.0" mnemonicParsing="false" onAction="#AddWeightGoal" opacity="0.0" prefHeight="30.0" prefWidth="30.0" />
+            <ImageView fitHeight="30.0" fitWidth="30.0" layoutX="450.0" layoutY="10.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@img/settings.png" />
+               </image>
+            </ImageView>
+            <Button graphicTextGap="0.0" layoutX="450.0" layoutY="10.0" mnemonicParsing="false" onAction="#CustomGoal" opacity="0.0" prefHeight="30.0" prefWidth="30.0" />
          </children>
       </AnchorPane>
    </bottom>

@@ -2,6 +2,7 @@ import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 
+import java.awt.event.ActionEvent;
 import java.io.IOException;
 import java.sql.PreparedStatement;
 import java.time.LocalDate;
@@ -31,12 +32,16 @@ public class AddWeightController extends BaseController {
     }
 
     public void toggles(javafx.event.ActionEvent actionEvent){
-        if(lbtb.isSelected()==true){
-
-        }else if(kgtb.isSelected()==true){
+        if(lbtb.isSelected()==true && kgtb.isSelected()==false){
+            lbtb.setStyle("-fx-text-fill:#aa80ff;-fx-background-color: transparent");
+            kgtb.setStyle("-fx-text-fill:#cab0ff;-fx-background-color: transparent");
+        }else if(kgtb.isSelected()==true && lbtb.isSelected()==false){
+            kgtb.setStyle("-fx-text-fill:#aa80ff; -fx-background-color: transparent");
+            lbtb.setStyle("-fx-text-fill:#cab0ff;-fx-background-color: transparent");
 
         }
     }
+
 
 
     public void AddWeightGoal(javafx.event.ActionEvent actionEvent) throws IOException {
@@ -83,27 +88,6 @@ public class AddWeightController extends BaseController {
         return true;
     }
 
-//    Thread thread = new Thread(new Runnable() {
-//        @Override
-//        public void run() {
-//            Runnable updater = new Runnable() {
-//                @Override
-//                public void run() {
-//                    label.setStyle("-fx-text-fill: red");
-//                    label.setText("Incorrect Values");
-//
-//                }
-//            };
-//            while (true) {
-//                try {
-//                    Thread.sleep(3000);
-//                } catch (InterruptedException ex) {
-//                }
-//                // UI update is run on the Application thread
-//                Platform.runLater(updater);
-//            }
-//        }
-//
-//    });
+
 
 }

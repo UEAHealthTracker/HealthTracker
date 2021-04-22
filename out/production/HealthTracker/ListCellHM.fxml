@@ -5,7 +5,7 @@
 
 <AnchorPane prefHeight="100.0" prefWidth="360.0" stylesheets="style.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
    <children>
-      <Label layoutX="14.0" layoutY="6.0" text="Status" />
+      <Label fx:id="StatusLbl" layoutX="14.0" layoutY="6.0" text="Status" />
       <Label fx:id="NameLbl" layoutX="15.0" layoutY="42.0" text="Name" />
       <Label fx:id="DateLbl" layoutX="305.0" layoutY="42.0" text="Date" />
       <Label fx:id="GroupsLbl" layoutX="11.0" layoutY="78.0" text="Groups" />

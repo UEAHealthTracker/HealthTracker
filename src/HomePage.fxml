@@ -65,6 +65,7 @@
                   <Insets bottom="10.0" left="10.0" right="25.0" top="10.0" />
                </padding>
             </Label>
+            <ListView fx:id="listView" layoutX="12.0" layoutY="102.0" prefHeight="200.0" prefWidth="360.0" />
 <!--            <TableView fx:id="goalview" layoutX="14.0" layoutY="102.0" prefHeight="200.0" prefWidth="360.0" style="-fx-background-color: #ffffff;">-->
 <!--              <columns>-->
 <!--                  <TableColumn fx:id="goalid" minWidth="0.0" prefWidth="0.0" text="ID" />-->

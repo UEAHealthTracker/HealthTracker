@@ -1,13 +1,17 @@
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.*;
+import javafx.scene.layout.AnchorPane;
 import javafx.util.Callback;
 
 import java.io.IOException;
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
 
-public class ListController extends ListCell<Goal> {
+public class GoalCell extends ListCell<Goal> {
+    FXMLLoader mLLoader;
+    @FXML
+    AnchorPane ap;
     @FXML
     Label StatusLbl;
     @FXML
@@ -18,21 +22,7 @@ public class ListController extends ListCell<Goal> {
     Label GroupsLbl;
     @FXML
     ProgressBar Progress;
-    public ListController() {
-        loadFXML();
-    }
 
-    private void loadFXML() {
-        try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("task_cell.fxml"));
-            loader.setController(this);
-            loader.setRoot(this);
-            loader.load();
-        }
-        catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-    }
 
 
     @Override
@@ -44,15 +34,26 @@ public class ListController extends ListCell<Goal> {
 
         if(empty || item == null) {
             setText(null);
-            setContentDisplay(ContentDisplay.TEXT_ONLY);
+            setContentDisplay(null);
         }
         else {
+            if ( mLLoader == null) {
+                mLLoader = new FXMLLoader(getClass().getResource("ListCellHM.fxml"));
+                mLLoader.setController(this);
+
+                try {
+                    mLLoader.load();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+
+            }
             StatusLbl.setText(item.getGoalstatus());
             NameLbl.setText(item.getGoalname());
             DateLbl.setText(item.getGoaldate());
             GroupsLbl.setText(item.getGoalgroups());
             //=(B2 - TODAY()) / (B2 - A2)
-            if(item.getGoalstatus()=="Comlete"){
+            if(item.getGoalstatus()=="Complete"){
                 Progress.setProgress(1);
 
             }else if(item.getGoalstatus()=="Active"){
@@ -60,9 +61,13 @@ public class ListController extends ListCell<Goal> {
                 Progress.setProgress(percent);
             }
 
-            setContentDisplay(ContentDisplay.GRAPHIC_ONLY);
+            setText(null);
+            setGraphic(ap);
         }
     }
+
+
+
 }
 
 

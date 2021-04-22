@@ -1,33 +1,23 @@
-import com.sun.media.jfxmedia.events.PlayerEvent;
-import com.sun.media.jfxmedia.events.PlayerStateEvent;
-import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Node;
-import javafx.scene.Scene;
+import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.stage.Stage;
 
 
-import javax.xml.soap.Text;
 import java.io.IOException;
+import java.net.URL;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.text.SimpleDateFormat;
-import java.time.Duration;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.Period;
-import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
 import java.util.Date;
+import java.util.ResourceBundle;
 
-public class HomePageController extends BaseController {
+public class HomePageController extends BaseController{
     private ObservableList<Goal> data;
-    ListView<Goal> listView = new ListView<>();
+    @FXML ListView<Goal> listView = new ListView<>();
     public boolean hm=false;
     @FXML Label userLabel;
     @FXML  TableView <Goal>  goalview;
@@ -37,10 +27,17 @@ public class HomePageController extends BaseController {
     @FXML TableColumn<Goal,String> goalstatus;
     @FXML TableColumn<Goal, Integer> goalgroups;
     int items=0;
+
+
     public void initialize() {
         userLabel.setText("Hello "+User.INSTANCE.getUsername());
         Check();
         populateGoalsTable();
+
+
+
+
+
     }
     //add data to goal table
     public void populateGoalsTable(){
@@ -74,12 +71,18 @@ public class HomePageController extends BaseController {
 //            goalgroups.setCellValueFactory(new PropertyValueFactory<>("goalgroups"));
 //            goalview.setItems(data);
 
-            listView.setCellFactory(new TaskCellFactory());
+            listView.setItems(data);
+            listView.setCellFactory(param -> new GoalCell());
+
+
+
             DBsession.INSTANCE.OpenConnection().close();
         } catch (Exception e) {
             System.out.println(e);
         }
     }
+
+
 
     public void Check(){
 
@@ -138,5 +141,6 @@ public class HomePageController extends BaseController {
         }
 
     }
+
 
 }

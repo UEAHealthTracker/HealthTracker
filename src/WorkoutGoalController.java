@@ -34,7 +34,6 @@ public class WorkoutGoalController extends BaseController {
             pst.setInt(3, User.INSTANCE.getUserid());
             pst.setString(4, String.valueOf(now));
             pst.setString(5, "Complex");
-            ;
             pst.executeUpdate();
 //            }else{ thread.start();
 //                label.setText("");

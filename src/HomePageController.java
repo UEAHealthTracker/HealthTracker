@@ -1,23 +1,23 @@
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
-import javafx.scene.control.Label;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
-import javafx.scene.control.TextField;
+import javafx.fxml.Initializable;
+import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 
+
 import java.io.IOException;
+import java.net.URL;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
 import java.util.Date;
+import java.util.ResourceBundle;
 
-public class HomePageController extends BaseController {
+public class HomePageController extends BaseController{
     private ObservableList<Goal> data;
-    ListView<Goal> listView = new ListView<>();
+    @FXML ListView<Goal> listView = new ListView<>();
     public boolean hm=false;
     @FXML Label userLabel;
     @FXML  TableView <Goal>  goalview;
@@ -27,10 +27,17 @@ public class HomePageController extends BaseController {
     @FXML TableColumn<Goal,String> goalstatus;
     @FXML TableColumn<Goal, Integer> goalgroups;
     int items=0;
+
+
     public void initialize() {
         userLabel.setText("Hello "+User.INSTANCE.getUsername());
         Check();
         populateGoalsTable();
+
+
+
+
+
     }
     //add data to goal table
     public void populateGoalsTable(){
@@ -40,7 +47,7 @@ public class HomePageController extends BaseController {
         String SQL_QUERY = "select goalname,startdate,enddate,Goal.goalid as goalid,COUNT(groupgoal.groupgoalid) as total from Goal JOIN Users ON Users.userid=Goal.userid left JOIN groupgoal on Goal.goalid = groupgoal.goalid where Users.userid=? GROUP BY Goal.goalid";
         try {
             PreparedStatement pst = DBsession.INSTANCE.OpenConnection().prepareStatement(SQL_QUERY);
-            pst.setInt(1, User.INSTANCE.getUserid());
+            pst.setString(1, User.INSTANCE.getUserid().toString());
             ResultSet rs = pst.executeQuery();
             String status = null;
             while (rs.next()) {
@@ -64,12 +71,18 @@ public class HomePageController extends BaseController {
 //            goalgroups.setCellValueFactory(new PropertyValueFactory<>("goalgroups"));
 //            goalview.setItems(data);
 
-            listView.setCellFactory(new TaskCellFactory());
+            listView.setItems(data);
+            listView.setCellFactory(param -> new GoalCell());
+
+
+
             DBsession.INSTANCE.OpenConnection().close();
         } catch (Exception e) {
             System.out.println(e);
         }
     }
+
+
 
     public void Check(){
 
@@ -128,5 +141,6 @@ public class HomePageController extends BaseController {
         }
 
     }
+
 
 }

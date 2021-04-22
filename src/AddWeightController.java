@@ -68,8 +68,7 @@ public class AddWeightController extends BaseController {
                 pst.setInt(3, User.INSTANCE.getUserid());
                 pst.setString(4, String.valueOf(now));
                 pst.setString(5, "Simple");
-            ;
-                pst.executeUpdate();
+            pst.executeUpdate();
             DBsession.INSTANCE.OpenConnection().close();
         }catch(Exception e){System.out.println(e);}
             BaseController.Instance.Switch(actionEvent,"HomePage.fxml");
@@ -82,10 +81,7 @@ public class AddWeightController extends BaseController {
 
 
     public Boolean Check(){
-        if(Nametf.getText()=="" && Weightgtf.getText()=="" || enddate.getValue().toString()==""){
-            return false;
-        }
-        return true;
+        return (Nametf.getText() != "" || Weightgtf.getText() != "") && enddate.getValue().toString() != "";
     }
 
 

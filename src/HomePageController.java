@@ -27,20 +27,16 @@ public class HomePageController extends BaseController {
     @FXML TableColumn<Goal,String> goalstatus;
     @FXML TableColumn<Goal, Integer> goalgroups;
     int items=0;
-    TextField en;
     public void initialize() {
         userLabel.setText("Hello "+User.INSTANCE.getUsername());
         Check();
         populateGoalsTable();
-
-
     }
     //add data to goal table
     public void populateGoalsTable(){
-
-        SimpleDateFormat sdate = new SimpleDateFormat("yyyy-MM-dd");
-        SimpleDateFormat edate = new SimpleDateFormat("yyyy-MM-dd");
         data = FXCollections.observableArrayList();
+
+
         String SQL_QUERY = "select goalname,startdate,enddate,Goal.goalid as goalid,COUNT(groupgoal.groupgoalid) as total from Goal JOIN Users ON Users.userid=Goal.userid left JOIN groupgoal on Goal.goalid = groupgoal.goalid where Users.userid=? GROUP BY Goal.goalid";
         try {
             PreparedStatement pst = DBsession.INSTANCE.OpenConnection().prepareStatement(SQL_QUERY);
@@ -55,18 +51,20 @@ public class HomePageController extends BaseController {
                 long days = ChronoUnit.DAYS.between(now, ed);
                 if (days > 0) {
                     status = "Active";
-                    data.add(new Goal(Integer.parseInt(rs.getString("goalid")), rs.getString("goalname"), ed.toString(), status, rs.getString("total")+"/"+items));
+                    data.add(new Goal(Integer.parseInt(rs.getString("goalid")), rs.getString("goalname"), ed.toString(), status, rs.getString("total")+"/"+items,sd.toString()));
                 } else {
-                    status = "Expired";
-                    data.add(new Goal(Integer.parseInt(rs.getString("goalid")), rs.getString("goalname"), ed.toString(), status, rs.getString("total")+"/"+items));
+                    status = "Complete";
+                    data.add(new Goal(Integer.parseInt(rs.getString("goalid")), rs.getString("goalname"), ed.toString(), status, rs.getString("total")+"/"+items,sd.toString()));
                 }
             }
-            goalid.setCellValueFactory(new PropertyValueFactory<>("goalid"));
-            goalname.setCellValueFactory(new PropertyValueFactory<>("goalname"));
-            goaldate.setCellValueFactory(new PropertyValueFactory<>("goaldate"));
-            goalstatus.setCellValueFactory(new PropertyValueFactory<>("goalstatus"));
-            goalgroups.setCellValueFactory(new PropertyValueFactory<>("goalgroups"));
-            goalview.setItems(data);
+//            goalid.setCellValueFactory(new PropertyValueFactory<>("goalid"));
+//            goalname.setCellValueFactory(new PropertyValueFactory<>("goalname"));
+//            goaldate.setCellValueFactory(new PropertyValueFactory<>("goaldate"));
+//            goalstatus.setCellValueFactory(new PropertyValueFactory<>("goalstatus"));
+//            goalgroups.setCellValueFactory(new PropertyValueFactory<>("goalgroups"));
+//            goalview.setItems(data);
+
+            listView.setCellFactory(new TaskCellFactory());
             DBsession.INSTANCE.OpenConnection().close();
         } catch (Exception e) {
             System.out.println(e);

@@ -17,7 +17,7 @@ import java.util.Date;
 
 public class HomePageController extends BaseController {
     private ObservableList<Goal> data;
-
+    ListView<Goal> listView = new ListView<>();
     public boolean hm=false;
     @FXML Label userLabel;
     @FXML  TableView <Goal>  goalview;
@@ -126,7 +126,7 @@ public class HomePageController extends BaseController {
                 DBsession.INSTANCE.OpenConnection().close();
             }catch(Exception e){System.out.println(e);}
 
-            BaseController.Instance.filename="HomePage.fxml";
+            BaseController.Instance.Switch(actionEvent,"HomePage.fxml");
         }
 
     }

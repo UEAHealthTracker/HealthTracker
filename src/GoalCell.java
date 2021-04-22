@@ -28,9 +28,7 @@ public class GoalCell extends ListCell<Goal> {
     @Override
     protected void updateItem(Goal item, boolean empty) {
         super.updateItem(item, empty);
-        LocalDate sd=LocalDate.parse(item.getGoalstartdate());
-        LocalDate now = LocalDate.now();
-        LocalDate ed = LocalDate.parse(item.getGoaldate());
+
 
         if(empty || item == null) {
             setText(null);
@@ -48,18 +46,26 @@ public class GoalCell extends ListCell<Goal> {
                 }
 
             }
+            LocalDate sd=LocalDate.parse(item.getGoalstartdate());
+            LocalDate now = LocalDate.now();
+            LocalDate ed = LocalDate.parse(item.getGoaldate());
             StatusLbl.setText(item.getGoalstatus());
             NameLbl.setText(item.getGoalname());
             DateLbl.setText(item.getGoaldate());
-            GroupsLbl.setText(item.getGoalgroups());
-            //=(B2 - TODAY()) / (B2 - A2)
+            GroupsLbl.setText("Groups: "+item.getGoalgroups());
+            NameLbl.setStyle("-fx-text-fill: Black;-fx-font-weight: bold");
+
             if(item.getGoalstatus()=="Complete"){
+                StatusLbl.setStyle("-fx-text-fill: #8D0000;-fx-font-weight: bold");
                 Progress.setProgress(1);
+                Progress.setId("completed");
 
             }else if(item.getGoalstatus()=="Active"){
-                float percent=ChronoUnit.DAYS.between(ed,now)/ChronoUnit.DAYS.between(ed,sd);
-                Progress.setProgress(percent);
+                StatusLbl.setStyle("-fx-text-fill: green;-fx-font-weight: bold");
+                float percent=100*ChronoUnit.DAYS.between(now,sd)/ChronoUnit.DAYS.between(ed,sd);
+                Progress.setProgress(percent/100);
             }
+           // Progress.setProgress(0.5);
 
             setText(null);
             setGraphic(ap);

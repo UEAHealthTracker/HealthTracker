@@ -3,12 +3,12 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<AnchorPane fx:id="ap" prefHeight="100.0" prefWidth="360.0" stylesheets="style.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" >
+<AnchorPane fx:id="ap" prefHeight="90.0" prefWidth="330.0" stylesheets="style.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
    <children>
-      <Label fx:id="StatusLbl" layoutX="14.0" layoutY="6.0" text="Status" />
-      <Label fx:id="NameLbl" layoutX="15.0" layoutY="42.0" text="Name" />
-      <Label fx:id="DateLbl" layoutX="305.0" layoutY="42.0" text="Date" />
-      <Label fx:id="GroupsLbl" layoutX="11.0" layoutY="78.0" text="Groups" />
-      <ProgressBar fx:id="Progress" prefHeight="100.0" prefWidth="360.0" progress="0.0" />
+      <Label fx:id="StatusLbl" layoutX="15.0" layoutY="6.0" text="Status" />
+      <Label fx:id="NameLbl" layoutX="15.0" layoutY="35.0" text="Name" />
+      <Label fx:id="GroupsLbl" layoutX="15.0" layoutY="60.0" text="Groups" />
+      <Label fx:id="DateLbl" layoutX="250.0" layoutY="30.0" text="Date" />
+      <ProgressBar fx:id="Progress" disable="true" prefHeight="90.0" prefWidth="330.0" progress="0.0" />
    </children>
 </AnchorPane>

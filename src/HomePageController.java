@@ -117,8 +117,8 @@ public class HomePageController extends BaseController{
 
     public void onEdit(javafx.event.ActionEvent actionEvent) throws IOException {
 
-            if (goalview.getSelectionModel().getSelectedItem() != null) {
-                Goal selectedGoal = goalview.getSelectionModel().getSelectedItem();
+            if (listView.getSelectionModel().getSelectedItem() != null) {
+                Goal selectedGoal = listView.getSelectionModel().getSelectedItem();
                 Goal.Instance.setGoalid(selectedGoal.getGoalid());
                 openEditGoalPage(actionEvent);
 
@@ -126,8 +126,8 @@ public class HomePageController extends BaseController{
     }
     //allow user to select a table item/row and delete it using the delete button
     public void onDelete(javafx.event.ActionEvent actionEvent) throws IOException{
-        if (goalview.getSelectionModel().getSelectedItem() != null) {
-            Goal selectedGoal = goalview.getSelectionModel().getSelectedItem();
+        if (listView.getSelectionModel().getSelectedItem() != null) {
+            Goal selectedGoal = listView.getSelectionModel().getSelectedItem();
             Goal.Instance.setGoalid(selectedGoal.getGoalid());
             String SQL_query="DELETE FROM Goal WHERE goalid=?;";
             try{

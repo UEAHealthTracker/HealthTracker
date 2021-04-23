@@ -48,7 +48,7 @@ public class UserLoginController {
 
     }
     public void openSignUpPage(javafx.event.ActionEvent actionEvent) throws IOException {
-        root = FXMLLoader.load(getClass().getResource("CreateAccountPage.fxml"));
+        root = FXMLLoader.load(getClass().getResource("FXML/CreateAccountPage.fxml"));
         stage = (Stage)((Node)actionEvent.getSource()).getScene().getWindow();
         scene = new Scene(root);
         stage.setScene(scene);
@@ -56,7 +56,7 @@ public class UserLoginController {
     }
 
     public void openLoginPage(javafx.event.ActionEvent actionEvent) throws IOException {
-        root = FXMLLoader.load(getClass().getResource("LoginPage.fxml"));
+        root = FXMLLoader.load(getClass().getResource("FXML/LoginPage.fxml"));
         stage = (Stage)((Node)actionEvent.getSource()).getScene().getWindow();
         scene = new Scene(root);
         stage.setScene(scene);
@@ -86,7 +86,7 @@ public void login(javafx.event.ActionEvent actionEvent) throws IOException {
                     User.INSTANCE.setEmail(rs.getString("email"));
                     User.INSTANCE.setHeight(Double.parseDouble(rs.getString("height")));
                     User.INSTANCE.setWeight(Integer.parseInt(rs.getString("weight")));
-                    root = FXMLLoader.load(getClass().getResource("HomePage.fxml"));
+                    root = FXMLLoader.load(getClass().getResource("FXML/HomePage.fxml"));
                     stage = (Stage)((Node)actionEvent.getSource()).getScene().getWindow();
                     scene = new Scene(root);
                     stage.setScene(scene);
@@ -154,7 +154,7 @@ public void login(javafx.event.ActionEvent actionEvent) throws IOException {
                     pst.executeUpdate();
                     User.INSTANCE.setUsername(usernameTF.getText());
                     User.INSTANCE.setPassword(passwordTF.getText());
-                    root = FXMLLoader.load(getClass().getResource("HomePage.fxml"));
+                    root = FXMLLoader.load(getClass().getResource("FXML/HomePage.fxml"));
                     stage = (Stage)((Node)event.getSource()).getScene().getWindow();
                     scene = new Scene(root);
                     stage.setScene(scene);

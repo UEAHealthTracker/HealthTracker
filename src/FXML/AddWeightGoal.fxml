@@ -71,13 +71,13 @@
          <children>
             <ImageView fitHeight="30.0" fitWidth="30.0" layoutX="380.0" layoutY="10.0" pickOnBounds="true" preserveRatio="true">
                <image>
-                  <Image url="@img/add_box.png" />
+                  <Image url="@../img/add_box.png" />
                </image>
             </ImageView>
             <Button graphicTextGap="0.0" layoutX="380.0" layoutY="10.0" mnemonicParsing="false" onAction="#AddWeightGoal" opacity="0.0" prefHeight="30.0" prefWidth="30.0" />
             <ImageView fitHeight="30.0" fitWidth="30.0" layoutX="450.0" layoutY="10.0" pickOnBounds="true" preserveRatio="true">
                <image>
-                  <Image url="@img/settings.png" />
+                  <Image url="@../img/settings.png" />
                </image>
             </ImageView>
             <Button graphicTextGap="0.0" layoutX="450.0" layoutY="10.0" mnemonicParsing="false" onAction="#CustomGoal" opacity="0.0" prefHeight="30.0" prefWidth="30.0" />

@@ -1,5 +1,4 @@
 import javafx.fxml.FXMLLoader;
-import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -8,8 +7,6 @@ import javafx.scene.control.Label;
 import javafx.stage.Stage;
 
 import java.io.IOException;
-import java.net.URL;
-import java.util.ResourceBundle;
 
 public class BaseController {
     public static final BaseController Instance= new BaseController();
@@ -29,32 +26,32 @@ public class BaseController {
 
         switch(text){
             case "Home":
-                filename="HomePage.fxml";break;
+                filename= "FXML/HomePage.fxml";break;
             case "Diet":
-                filename="DietPage.fxml";break;
+                filename= "FXML/DietPage.fxml";break;
             case "Workout":
-                filename="WorkoutPage.fxml";break;
+                filename= "FXML/WorkoutPage.fxml";break;
             case "Groups":
-                filename="GroupsPage.fxml";break;
+                filename= "FXML/GroupsPage.fxml";break;
             case "User Information":
-                filename="UserPage.fxml";break;
+                filename= "FXML/UserPage.fxml";break;
             case "Edit group":
-                filename="EditGroupPage.fxml"; break;
+                filename= "FXML/EditGroupPage.fxml"; break;
             case "Create group":
-                filename="CreateGroupPage.fxml";break;
+                filename= "FXML/CreateGroupPage.fxml";break;
             case "Add Diet Item":
-                filename="AddDietItemPage.fxml"; break;
+                filename= "FXML/AddDietItemPage.fxml"; break;
             case "EditWorkoutPage":
-                filename="EditWorkoutPage.fxml";break;
+                filename= "FXML/EditWorkoutPage.fxml";break;
             case "AddWorkoutPage":
-                filename="AddWorkoutPage.fxml";
+                filename= "FXML/AddWorkoutPage.fxml";
                 break;
             case "EditUserPage":
-                filename="EditUserPage.fxml";break;
+                filename= "FXML/EditUserPage.fxml";break;
             case "Join Group":
-                filename="JoinGroup.fxml";break;
+                filename= "FXML/JoinGroup.fxml";break;
         }
-        root = FXMLLoader.load(getClass().getResource(filename));
+        root = FXMLLoader.load(getClass().getClassLoader().getResource(filename));
         stage = (Stage)((Node)actionEvent.getSource()).getScene().getWindow();
         scene = new Scene(root);
         stage.setScene(scene);
@@ -62,7 +59,7 @@ public class BaseController {
     }
 
     public void Switch(javafx.event.ActionEvent actionEvent,String filename) throws IOException{
-        root = FXMLLoader.load(getClass().getResource(filename));
+        root = FXMLLoader.load(getClass().getClassLoader().getResource(filename));
         stage = (Stage)((Node)actionEvent.getSource()).getScene().getWindow();
         scene = new Scene(root);
         stage.setScene(scene);

@@ -43,7 +43,7 @@ public class SelectGoalController extends BaseController {
                 DBsession.INSTANCE.OpenConnection().close();
             }catch(Exception e){System.out.println(e);}
 
-            BaseController.Instance.filename="HomePage.fxml";
+            BaseController.Instance.filename= "FXML/HomePage.fxml";
     }
 
 }

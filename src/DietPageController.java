@@ -42,12 +42,7 @@ public class DietPageController extends BaseController {
         //diet page
         ObservableList<Meal> mealData = FXCollections.observableArrayList();
 
-        String SQL_QUERY = """
-                SELECT meal.mealid AS mealid, meal.timeconsumed AS timeconsumed, GROUP_CONCAT(dietitem.itemname) AS itemname, GROUP_CONCAT(dietitem.itemtype) AS itemtype, SUM(dietitem.caloriecount) AS caloriecount
-                FROM mealitem JOIN meal ON meal.mealid = mealitem.mealid JOIN dietitem ON dietitem.itemid = mealitem.itemid
-                WHERE meal.userid = ?
-                GROUP BY mealitem.mealid
-                ORDER BY meal.timeconsumed""";
+        String SQL_QUERY = "SELECT meal.mealid AS mealid, meal.timeconsumed AS timeconsumed, GROUP_CONCAT(dietitem.itemname) AS itemname, GROUP_CONCAT(dietitem.itemtype) AS itemtype, SUM(dietitem.caloriecount) AS caloriecount FROM mealitem JOIN meal ON meal.mealid = mealitem.mealid JOIN dietitem ON dietitem.itemid = mealitem.itemid WHERE meal.userid = ? GROUP BY mealitem.mealid ORDER BY meal.timeconsumed";
 
         try {
             PreparedStatement pst = DBsession.INSTANCE.OpenConnection().prepareStatement(SQL_QUERY);

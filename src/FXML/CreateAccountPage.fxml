@@ -31,11 +31,11 @@
             </Label>
             <TextField fx:id="usernameTF" layoutX="124.0" layoutY="75.0" promptText="Username" style="-fx-background-color: #ffffff;" />
             <ImageView fitHeight="25.0" fitWidth="25.0" layoutX="97.0" layoutY="75.0" pickOnBounds="true" preserveRatio="true">
-                <Image url="@img/face.png" />
+                <Image url="@../img/face.png" />
             </ImageView>
             <PasswordField fx:id="passwordTF" layoutX="123.0" layoutY="125.0" promptText="Password" style="-fx-background-color: #ffffff;" />
             <ImageView fitHeight="25.0" fitWidth="25.0" layoutX="97.0" layoutY="125.0" pickOnBounds="true" preserveRatio="true">
-                <Image url="@img/password.png" />
+                <Image url="@../img/password.png" />
             </ImageView>
             <Button fx:id="loginbtn" layoutX="123.0" layoutY="329.0" mnemonicParsing="false" onAction="#CreateAccount" prefWidth="150.0" style="-fx-background-color: #aa80ff;" text="Sign in" textFill="WHITE" />
             <Label layoutX="109.0" layoutY="361.0" text="Already have an account? Log in" textFill="#aa80ff" />
@@ -45,7 +45,7 @@
          <TextField fx:id="weightTF" layoutX="124.0" layoutY="266.0" promptText="Weight" style="-fx-background-color: #ffffff;" />
          <ImageView fitHeight="25.0" fitWidth="25.0" layoutX="97.0" layoutY="175.0" pickOnBounds="true" preserveRatio="true">
             <image>
-               <Image url="@img/email.png" />
+               <Image url="@../img/email.png" />
             </image>
          </ImageView>
         </AnchorPane>

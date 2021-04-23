@@ -1,24 +1,19 @@
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
-import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
-import javafx.scene.control.cell.PropertyValueFactory;
 
 
 import java.io.IOException;
-import java.net.URL;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
 import java.util.Date;
-import java.util.ResourceBundle;
 
 public class HomePageController extends BaseController{
     private ObservableList<Goal> data;
@@ -34,7 +29,7 @@ public class HomePageController extends BaseController{
     @FXML TextField editgoalname;
     @FXML DatePicker editgoaldate;
     @FXML ComboBox editgoalgroup;
-
+    int items=0;
     public void initialize() {
         userLabel.setText("Hello "+User.INSTANCE.getUsername());
         Check();
@@ -62,11 +57,11 @@ public class HomePageController extends BaseController{
                 if(days>0) {
                     String d=Long.toString(days);
                     status="Incomplete";
-                    data.add(new Goal(rs.getString("goalname"),d,status ,Integer.parseInt(rs.getString("goalid"))));
+                    data.add(new Goal(Integer.parseInt(rs.getString("goalid")), rs.getString("goalname"), ed.toString(), status, rs.getString("total")+"/"+items,sd.toString()));
                 }else{
                     String d=Long.toString(days);
                     status="Complete";
-                    data.add(new Goal(rs.getString("goalname"),d,status ,Integer.parseInt(rs.getString("goalid"))));
+                    data.add(new Goal(Integer.parseInt(rs.getString("goalid")), rs.getString("goalname"), ed.toString(), status, rs.getString("total")+"/"+items,sd.toString()));
                 }
             }
 //            goalid.setCellValueFactory(new PropertyValueFactory<>("goalid"));
@@ -107,15 +102,15 @@ public class HomePageController extends BaseController{
 
 
     public void openSelectGoalTypePage(javafx.event.ActionEvent actionEvent) throws IOException {
-        BaseController.Instance.Switch(actionEvent,"SelectGoalType.fxml");
+        BaseController.Instance.Switch(actionEvent, "FXML/SelectGoalType.fxml");
     }
 
     public void openAddGoalPage(javafx.event.ActionEvent actionEvent) throws IOException {
-        BaseController.Instance.Switch(actionEvent,"AddWeightGoal.fxml");
+        BaseController.Instance.Switch(actionEvent, "FXML/AddWeightGoal.fxml");
     }
     @FXML
     public void openEditGoalPage(javafx.event.ActionEvent actionEvent) throws IOException {
-        BaseController.Instance.Switch(actionEvent,"EditGoal.fxml");
+        BaseController.Instance.Switch(actionEvent, "FXML/EditGoal.fxml");
 
 
     }
@@ -142,7 +137,7 @@ public class HomePageController extends BaseController{
                 DBsession.INSTANCE.OpenConnection().close();
             }catch(Exception e){System.out.println(e);}
 
-            BaseController.Instance.Switch(actionEvent,"HomePage.fxml");
+            BaseController.Instance.Switch(actionEvent, "FXML/HomePage.fxml");
         }
 
     }

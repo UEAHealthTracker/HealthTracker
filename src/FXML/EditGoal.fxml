@@ -75,7 +75,7 @@
                   BorderPane.alignment="CENTER">
          <ImageView fitHeight="30.0" fitWidth="30.0" layoutX="380.0" layoutY="10.0" pickOnBounds="true"
                     preserveRatio="true">
-            <Image url="@img/add_box.png"/>
+            <Image url="@../img/add_box.png"/>
          </ImageView>
          <Button onAction="#Update" graphicTextGap="0.0" layoutX="380.0" layoutY="10.0" mnemonicParsing="false" opacity="0.0"
                  prefHeight="30.0" prefWidth="30.0"/>

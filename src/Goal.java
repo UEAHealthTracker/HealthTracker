@@ -1,5 +1,3 @@
-import java.util.Date;
-
 public class Goal {
     public static final Goal Instance=new Goal();
     public String getGoalname() {

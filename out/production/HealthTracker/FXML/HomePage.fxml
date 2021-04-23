@@ -6,12 +6,11 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<BorderPane stylesheets="style.css" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/15.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="HomePageController">
+<BorderPane stylesheets="@style.css" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="HomePageController">
    <left>
       <AnchorPane prefHeight="400.0" prefWidth="200.0" style="-fx-background-color: #c7a4ff;" BorderPane.alignment="CENTER">
          <children>
-            <Label alignment="TOP_CENTER" contentDisplay="CENTER" text="Hello &lt;User&gt;" textAlignment="CENTER" textFill="WHITE">
-             <!--  fx:id="#userLabel"-->
+            <Label fx:id="userLabel" alignment="TOP_CENTER" contentDisplay="CENTER" text="Hello &lt;User&gt;" textAlignment="CENTER" textFill="WHITE">
                <font>
                   <Font name="Segoe UI Semilight" size="24.0" />
                </font>
@@ -67,15 +66,15 @@
                </padding>
             </Label>
             <ListView fx:id="listView" layoutX="12.0" layoutY="102.0" prefHeight="200.0" prefWidth="360.0" style="-fx-background-color: transparent;" />
-<!--            <TableView fx:id="goalview" layoutX="14.0" layoutY="102.0" prefHeight="200.0" prefWidth="360.0" style="-fx-background-color: #ffffff;">-->
-<!--              <columns>-->
-<!--                  <TableColumn fx:id="goalid" minWidth="0.0" prefWidth="0.0" text="ID" />-->
-<!--                <TableColumn fx:id="goalname" prefWidth="115.0" text="Name" />-->
-<!--                  <TableColumn fx:id="goaldate" prefWidth="112.0" text="Date" />-->
-<!--                  <TableColumn fx:id="goalstatus" minWidth="0.0" prefWidth="74.0" text="Status" />-->
-<!--                  <TableColumn fx:id="goalgroups" prefWidth="57.0" text="Groups" />-->
-<!--              </columns>-->
-<!--            </TableView>-->
+            <!--            <TableView fx:id="goalview" layoutX="14.0" layoutY="102.0" prefHeight="200.0" prefWidth="360.0" style="-fx-background-color: #ffffff;">-->
+            <!--              <columns>-->
+            <!--                  <TableColumn fx:id="goalid" minWidth="0.0" prefWidth="0.0" text="ID" />-->
+            <!--                <TableColumn fx:id="goalname" prefWidth="115.0" text="Name" />-->
+            <!--                  <TableColumn fx:id="goaldate" prefWidth="112.0" text="Date" />-->
+            <!--                  <TableColumn fx:id="goalstatus" minWidth="0.0" prefWidth="74.0" text="Status" />-->
+            <!--                  <TableColumn fx:id="goalgroups" prefWidth="57.0" text="Groups" />-->
+            <!--              </columns>-->
+            <!--            </TableView>-->
          </children>
       </AnchorPane>
    </right>
@@ -84,19 +83,19 @@
          <children>
             <ImageView fitHeight="30.0" fitWidth="30.0" layoutX="380.0" layoutY="10.0" pickOnBounds="true" preserveRatio="true">
                <image>
-                  <Image url="@../img/add_box.png" />
+                  <Image url="@/img/add_box.png" />
                </image>
             </ImageView>
             <Button graphicTextGap="0.0" layoutX="380.0" layoutY="10.0" mnemonicParsing="false" onAction="#openAddGoalPage" opacity="0.0" prefHeight="30.0" prefWidth="30.0" />
             <ImageView fitHeight="30.0" fitWidth="30.0" layoutX="300.0" layoutY="10.0" pickOnBounds="true" preserveRatio="true">
                <image>
-                  <Image url="@../img/mode_edit.png" />
+                  <Image url="@/img/mode_edit.png" />
                </image>
             </ImageView>
             <Button graphicTextGap="0.0" layoutX="300.0" layoutY="10.0" mnemonicParsing="false" onAction="#onEdit" opacity="0.0" prefHeight="30.0" prefWidth="30.0" />
             <ImageView fitHeight="30.0" fitWidth="30.0" layoutX="460.0" layoutY="10.0" pickOnBounds="true" preserveRatio="true">
                <image>
-                  <Image url="@../img/delete.png" />
+                  <Image url="@/img/delete.png" />
                </image>
             </ImageView>
             <Button graphicTextGap="0.0" layoutX="460.0" layoutY="10.0" mnemonicParsing="false" onAction="#onDelete" opacity="0.0" prefHeight="30.0" prefWidth="30.0" />

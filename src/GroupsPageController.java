@@ -1,4 +1,3 @@
-import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -10,25 +9,16 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
-import java.io.UnsupportedEncodingException;
-import java.sql.SQLOutput;
-import java.util.Date;
 
 
 //import javax.mail.internet.MimeMessage;
 
 
-import java.util.Properties;
 import java.io.IOException;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.Timer;
-import java.util.TimerTask;
 import java.util.*;
-import javax.mail.*;
-import javax.mail.internet.*;
-import javax.activation.*;
 //import javax.mail.Session;
 
 
@@ -157,7 +147,7 @@ public class GroupsPageController extends BaseController {
                             AddInvite(groupAdmin, groupMail, nameOfGroup);
 
 
-                            root = FXMLLoader.load(getClass().getResource("GroupsPage.fxml"));
+                            root = FXMLLoader.load(getClass().getResource("FXML/GroupsPage.fxml"));
                             stage = (Stage)((Node)actionEvent.getSource()).getScene().getWindow();
                             scene = new Scene(root);
                             stage.setScene(scene);
@@ -247,7 +237,7 @@ public class GroupsPageController extends BaseController {
                         System.out.println("Successfully joined the group "+ joinGroupName.getText());
 
                         //Move to the groups page to show they have joined the group:
-                        root = FXMLLoader.load(getClass().getResource("GroupsPage.fxml"));
+                        root = FXMLLoader.load(getClass().getResource("FXML/GroupsPage.fxml"));
                         stage = (Stage)((Node)actionEvent.getSource()).getScene().getWindow();
                         scene = new Scene(root);
                         stage.setScene(scene);

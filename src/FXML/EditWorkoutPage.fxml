@@ -6,7 +6,7 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="UserPageController">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="WorkoutPageController">
    <left>
       <AnchorPane prefHeight="400.0" prefWidth="200.0" style="-fx-background-color: #c7a4ff;" BorderPane.alignment="CENTER">
          <children>
@@ -49,7 +49,7 @@
    <right>
       <AnchorPane prefHeight="400.0" prefWidth="394.0" BorderPane.alignment="CENTER">
          <children>
-            <Label alignment="TOP_CENTER" contentDisplay="CENTER" layoutX="97.0" text="Edit Information" textAlignment="CENTER" textFill="#aa80ff">
+            <Label alignment="TOP_CENTER" contentDisplay="CENTER" layoutX="112.0" text="Edit Workout" textAlignment="CENTER" textFill="#aa80ff">
                <font>
                   <Font name="Segoe UI Semilight" size="24.0" />
                </font>
@@ -57,33 +57,28 @@
                   <Insets bottom="10.0" left="10.0" right="25.0" top="10.0" />
                </padding>
             </Label>
-            <TextField layoutX="123.0" layoutY="60.0" promptText="Edit first name" style="-fx-background-color: #ffffff;" />
-            <TextField layoutX="123.0" layoutY="110.0" promptText="Edit surname" style="-fx-background-color: #ffffff;" />
-            <TextField layoutX="123.0" layoutY="160.0" promptText="Edit email" style="-fx-background-color: #ffffff;" />
-            <TextField layoutX="123.0" layoutY="210.0" promptText="Edit height" style="-fx-background-color: #ffffff;" />
-            <Label layoutX="276.0" layoutY="215.0" prefHeight="18.0" prefWidth="21.0" text="cm" textFill="#aa80ff">
+            <ComboBox fx:id="WorkoutTypeSelector2" layoutX="122.0" layoutY="175.0" prefWidth="150.0" promptText="Workout type" style="-fx-background-color: #ffffff;" />
+            <TextField fx:id="duration2" layoutX="123.0" layoutY="213.0" promptText="Duration" style="-fx-background-color: #ffffff;" />
+            <Label layoutX="267.0" layoutY="216.0" prefHeight="20.0" prefWidth="33.0" text="mins" textFill="#aa80ff">
                <font>
                   <Font size="14.0" />
                </font>
             </Label>
-            <TextField layoutX="123.0" layoutY="260.0" promptText="Edit weight" style="-fx-background-color: #ffffff;" />
-            <Label layoutX="276.0" layoutY="265.0" prefHeight="18.0" prefWidth="21.0" text="kg" textFill="#aa80ff">
-               <font>
-                  <Font size="14.0" />
-               </font>
-            </Label>
+            <ComboBox fx:id="ID" layoutX="122.0" layoutY="94.0" onMouseClicked="#fillID" prefWidth="150.0" promptText="ID" />
+            <Label fx:id="workoutTypelable" layoutX="117.0" layoutY="136.0" prefHeight="17.0" prefWidth="141.0" text="Label" />
          </children>
       </AnchorPane>
    </right>
    <bottom>
       <AnchorPane prefHeight="50.0" prefWidth="600.0" style="-fx-background-color: #c7a4ff;" BorderPane.alignment="CENTER">
          <children>
-            <Button graphicTextGap="0.0" layoutX="380.0" layoutY="10.0" mnemonicParsing="false" opacity="0.0" prefHeight="30.0" prefWidth="30.0" />
             <ImageView fitHeight="30.0" fitWidth="30.0" layoutX="380.0" layoutY="10.0" pickOnBounds="true" preserveRatio="true">
                <image>
-                  <Image url="@img/mode_edit.png" />
+                  <Image url="@../img/add_box.png" />
                </image>
             </ImageView>
+            <Button graphicTextGap="0.0" layoutX="380.0" layoutY="10.0" mnemonicParsing="false" opacity="0.0" prefHeight="30.0" prefWidth="30.0" />
+            <Button layoutX="328.0" layoutY="13.0" mnemonicParsing="false" text="Update Workout" />
          </children>
       </AnchorPane>
    </bottom>

@@ -2,7 +2,6 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.*;
 import javafx.scene.layout.AnchorPane;
-import javafx.util.Callback;
 
 import java.io.IOException;
 import java.time.LocalDate;
@@ -36,7 +35,7 @@ public class GoalCell extends ListCell<Goal> {
         }
         else {
             if ( mLLoader == null) {
-                mLLoader = new FXMLLoader(getClass().getResource("ListCellHM.fxml"));
+                mLLoader = new FXMLLoader(getClass().getResource("FXML/ListCellHM.fxml"));
                 mLLoader.setController(this);
 
                 try {

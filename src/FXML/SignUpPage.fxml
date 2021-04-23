@@ -31,15 +31,15 @@
          </Label>
          <TextField fx:id="usernameTF" layoutX="123.0" layoutY="60.0" promptText="Username" style="-fx-background-color: #ffffff;" />
          <ImageView fitHeight="25.0" fitWidth="25.0" layoutX="95.0" layoutY="60.0" pickOnBounds="true" preserveRatio="true">
-            <Image url="@img/face.png" />
+            <Image url="@../img/face.png" />
          </ImageView>
          <PasswordField fx:id="passwordTF" layoutX="123.0" layoutY="100.0" promptText="Password" style="-fx-background-color: #ffffff;" />
          <ImageView fitHeight="25.0" fitWidth="25.0" layoutX="95.0" layoutY="100.0" pickOnBounds="true" preserveRatio="true">
-            <Image url="@img/password.png" />
+            <Image url="@../img/password.png" />
          </ImageView>
          <ImageView fitHeight="25.0" fitWidth="25.0" layoutX="95.0" layoutY="150.0" pickOnBounds="true" preserveRatio="true">
 
-               <Image url="@img/email.png" />
+               <Image url="@../img/email.png" />
          </ImageView>
          <Label layoutX="275.0" layoutY="205.0" text="cm" textFill="#aa80ff" />
          <Label layoutX="275.0" layoutY="255.0" text="kg" textFill="#aa80ff" />

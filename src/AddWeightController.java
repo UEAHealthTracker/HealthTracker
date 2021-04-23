@@ -1,8 +1,6 @@
-import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 
-import java.awt.event.ActionEvent;
 import java.io.IOException;
 import java.sql.PreparedStatement;
 import java.time.LocalDate;
@@ -71,11 +69,11 @@ public class AddWeightController extends BaseController {
             pst.executeUpdate();
             DBsession.INSTANCE.OpenConnection().close();
         }catch(Exception e){System.out.println(e);}
-            BaseController.Instance.Switch(actionEvent,"HomePage.fxml");
+            BaseController.Instance.Switch(actionEvent, "FXML/HomePage.fxml");
 
     }
     public void CustomGoal(javafx.event.ActionEvent actionEvent) throws IOException {
-        BaseController.Instance.Switch(actionEvent,"AddWorkoutGoal.fxml");
+        BaseController.Instance.Switch(actionEvent, "FXML/AddWorkoutGoal.fxml");
 
     }
 

@@ -75,7 +75,8 @@
                   <Image url="@img/addbutton.png" />
                </image>
             </ImageView>
-            <Button  graphicTextGap="0.0" layoutX="380.0" layoutY="10.0" mnemonicParsing="false" onAction="#populateWorkoutTable" opacity="0.0" prefHeight="30.0" prefWidth="30.0" />
+            <Button graphicTextGap="0.0" layoutX="380.0" layoutY="10.0" mnemonicParsing="false" onAction="#populateWorkoutTable" opacity="0.0" prefHeight="30.0" prefWidth="30.0" />
+            <Button layoutX="351.0" layoutY="13.0" mnemonicParsing="false" onAction="#populateWorkoutTable" text="Add Workout" />
          </children>
       </AnchorPane>
    </bottom>

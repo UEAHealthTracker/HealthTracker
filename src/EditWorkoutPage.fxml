@@ -57,14 +57,15 @@
                   <Insets bottom="10.0" left="10.0" right="25.0" top="10.0" />
                </padding>
             </Label>
-            <ComboBox  fx:id="WorkoutTypeSelector"  layoutX="122.0" layoutY="138.0" prefWidth="150.0" promptText="Workout type" style="-fx-background-color: #ffffff;" />
-            <TextField layoutX="123.0" layoutY="190.0" promptText="Duration" style="-fx-background-color: #ffffff;" />
-            <Label layoutX="273.0" layoutY="193.0" prefHeight="20.0" prefWidth="33.0" text="mins" textFill="#aa80ff">
+            <ComboBox fx:id="WorkoutTypeSelector2" layoutX="122.0" layoutY="175.0" prefWidth="150.0" promptText="Workout type" style="-fx-background-color: #ffffff;" />
+            <TextField fx:id="duration2" layoutX="123.0" layoutY="213.0" promptText="Duration" style="-fx-background-color: #ffffff;" />
+            <Label layoutX="267.0" layoutY="216.0" prefHeight="20.0" prefWidth="33.0" text="mins" textFill="#aa80ff">
                <font>
                   <Font size="14.0" />
                </font>
             </Label>
-            <ComboBox  fx:id="ID" onMouseClicked="#fillID" layoutX="122.0" layoutY="94.0" prefWidth="150.0" promptText="ID" />
+            <ComboBox fx:id="ID" layoutX="122.0" layoutY="94.0" onMouseClicked="#fillID" prefWidth="150.0" promptText="ID" />
+            <Label fx:id="workoutTypelable" layoutX="117.0" layoutY="136.0" prefHeight="17.0" prefWidth="141.0" text="Label" />
          </children>
       </AnchorPane>
    </right>
@@ -77,6 +78,7 @@
                </image>
             </ImageView>
             <Button graphicTextGap="0.0" layoutX="380.0" layoutY="10.0" mnemonicParsing="false" opacity="0.0" prefHeight="30.0" prefWidth="30.0" />
+            <Button layoutX="328.0" layoutY="13.0" mnemonicParsing="false" text="Update Workout" />
          </children>
       </AnchorPane>
    </bottom>

@@ -11,5 +11,7 @@
     <orderEntry type="library" name="mysql-connector-java-5.1.40" level="project" />
     <orderEntry type="library" name="scenebuilder-kit-15.0.1" level="project" />
     <orderEntry type="library" name="materialfx-11.7.1" level="project" />
+    <orderEntry type="library" name="activation-1.1" level="project" />
+    <orderEntry type="library" name="javax.mail" level="project" />
   </component>
 </module>

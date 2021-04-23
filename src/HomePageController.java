@@ -31,15 +31,16 @@ public class HomePageController extends BaseController {
     @FXML TextField editgoalname;
     @FXML DatePicker editgoaldate;
     @FXML ComboBox editgoalgroup;
+
     public void initialize() {
         SimpleDateFormat sdate = new SimpleDateFormat("yyyy-MM-dd");
         SimpleDateFormat edate = new SimpleDateFormat("yyyy-MM-dd");
         data = FXCollections.observableArrayList();
-        String SQL_QUERY="select goalname,startdate,enddate,Users.goalid from Users JOIN Goal ON Users.goalid=Goal.goalid and username=?;";
+        String SQL_QUERY= "select goalname,startdate,enddate,Goal.goalid as goalid,COUNT(groupgoal.groupgoalid) as total from Goal JOIN Users ON Users.userid=Goal.userid left JOIN groupgoal on Goal.goalid = groupgoal.goalid where Users.userid=? GROUP BY Goal.goalid;";
         try{
             PreparedStatement pst = DBsession.INSTANCE.OpenConnection().prepareStatement(SQL_QUERY);
             pst.setString(1, User.INSTANCE.getUsername().toString());
-            ResultSet rs=pst.executeQuery();
+            ResultSet rs = pst.executeQuery();
             String status=null;
             while(rs.next()) {
                LocalDate sd=LocalDate.parse(rs.getString("startdate"));

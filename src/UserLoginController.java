@@ -87,7 +87,7 @@ public class UserLoginController extends BaseController {
                     User.INSTANCE.setEmail(rs.getString("email"));
                     User.INSTANCE.setHeight(Double.parseDouble(rs.getString("height")));
                     User.INSTANCE.setWeight(Double.parseDouble(rs.getString("weight")));
-                    BaseController.Instance.Switch(actionEvent,"FXML/HomePage.fxml");
+                    BaseController.Instance.Switch(actionEvent, "FXML/HomePage.fxml");
 
                 } else {
                     String s=null;

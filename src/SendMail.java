@@ -1,11 +1,6 @@
-import java.io.File;
-import java.lang.reflect.Array;
 import java.util.*;
 import javax.mail.*;
 import javax.mail.internet.*;
-import javax.activation.*;
-import java.awt.Desktop;
-import java.net.URI;
 
 public class SendMail {
     public static boolean sendMail(String receipient, String groupName, String groupPassword) throws MessagingException {

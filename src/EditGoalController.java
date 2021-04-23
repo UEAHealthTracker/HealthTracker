@@ -81,7 +81,7 @@ public class EditGoalController extends BaseController{
             }
             DBsession.INSTANCE.OpenConnection().close();
         }catch(Exception e){System.out.println(e);}
-        BaseController.Instance.Switch(actionEvent, "FXML/HomePage.fxml");
+        Instance.Switch(actionEvent, "FXML/HomePage.fxml");
 
     }
 }

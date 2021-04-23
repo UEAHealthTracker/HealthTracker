@@ -41,7 +41,7 @@ public class WorkoutGoalController extends BaseController {
             DBsession.INSTANCE.OpenConnection().close();
         }catch(Exception e){System.out.println(e);}
 //        if (Check() == true) {
-        BaseController.Instance.Switch(actionEvent, "FXML/HomePage.fxml");
+        Instance.Switch(actionEvent, "FXML/HomePage.fxml");
         //  }
     }
 

@@ -15,7 +15,7 @@ import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
 import java.util.Date;
 
-public class HomePageController extends BaseController{
+public class HomePageController extends BaseController {
     private ObservableList<Goal> data;
     @FXML ListView<Goal> listView = new ListView<>();
     public boolean hm=false;
@@ -31,7 +31,7 @@ public class HomePageController extends BaseController{
     @FXML ComboBox editgoalgroup;
     int items=0;
     public void initialize() {
-        userLabel.setText("Hello "+User.INSTANCE.getUsername());
+        userLabel.setText("Hello "+ User.INSTANCE.getUsername());
         Check();
         populateGoalsTable();
 
@@ -102,15 +102,15 @@ public class HomePageController extends BaseController{
 
 
     public void openSelectGoalTypePage(javafx.event.ActionEvent actionEvent) throws IOException {
-        BaseController.Instance.Switch(actionEvent, "FXML/SelectGoalType.fxml");
+        Instance.Switch(actionEvent, "FXML/SelectGoalType.fxml");
     }
 
     public void openAddGoalPage(javafx.event.ActionEvent actionEvent) throws IOException {
-        BaseController.Instance.Switch(actionEvent, "FXML/AddWeightGoal.fxml");
+        Instance.Switch(actionEvent, "FXML/AddWeightGoal.fxml");
     }
     @FXML
     public void openEditGoalPage(javafx.event.ActionEvent actionEvent) throws IOException {
-        BaseController.Instance.Switch(actionEvent, "FXML/EditGoal.fxml");
+        Instance.Switch(actionEvent, "FXML/EditGoal.fxml");
 
 
     }
@@ -137,7 +137,7 @@ public class HomePageController extends BaseController{
                 DBsession.INSTANCE.OpenConnection().close();
             }catch(Exception e){System.out.println(e);}
 
-            BaseController.Instance.Switch(actionEvent, "FXML/HomePage.fxml");
+            Instance.Switch(actionEvent, "FXML/HomePage.fxml");
         }
 
     }

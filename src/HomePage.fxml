@@ -11,7 +11,7 @@
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/15.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="HomePageController">
+<BorderPane stylesheets="style.css" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="HomePageController">
    <left>
       <AnchorPane prefHeight="400.0" prefWidth="200.0" style="-fx-background-color: #c7a4ff;" BorderPane.alignment="CENTER">
          <children>
@@ -70,15 +70,16 @@
                   <Insets bottom="10.0" left="10.0" right="25.0" top="10.0" />
                </padding>
             </Label>
-            <TableView fx:id="goalview" layoutX="14.0" layoutY="102.0" prefHeight="200.0" prefWidth="360.0" style="-fx-background-color: #ffffff;">
-              <columns>
-                  <TableColumn fx:id="goalid" minWidth="0.0" prefWidth="0.0" text="ID" />
-                <TableColumn fx:id="goalname" prefWidth="115.0" text="Name" />
-                  <TableColumn fx:id="goaldate" prefWidth="112.0" text="Date" />
-                  <TableColumn fx:id="goalstatus" minWidth="0.0" prefWidth="74.0" text="Status" />
-                  <TableColumn fx:id="goalgroups" prefWidth="57.0" text="Groups" />
-              </columns>
-            </TableView>
+            <ListView fx:id="listView" layoutX="12.0" layoutY="102.0" prefHeight="200.0" prefWidth="360.0" style="-fx-background-color: transparent;" />
+<!--            <TableView fx:id="goalview" layoutX="14.0" layoutY="102.0" prefHeight="200.0" prefWidth="360.0" style="-fx-background-color: #ffffff;">-->
+<!--              <columns>-->
+<!--                  <TableColumn fx:id="goalid" minWidth="0.0" prefWidth="0.0" text="ID" />-->
+<!--                <TableColumn fx:id="goalname" prefWidth="115.0" text="Name" />-->
+<!--                  <TableColumn fx:id="goaldate" prefWidth="112.0" text="Date" />-->
+<!--                  <TableColumn fx:id="goalstatus" minWidth="0.0" prefWidth="74.0" text="Status" />-->
+<!--                  <TableColumn fx:id="goalgroups" prefWidth="57.0" text="Groups" />-->
+<!--              </columns>-->
+<!--            </TableView>-->
          </children>
       </AnchorPane>
    </right>

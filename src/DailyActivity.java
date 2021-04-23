@@ -4,9 +4,9 @@ import java.util.ArrayList;
 
 public class  DailyActivity implements Serializable {
 
-    private LocalDate date;
-    private ArrayList<Meal> meals = new ArrayList<Meal>();
-    private ArrayList<Workout> workout = new ArrayList<Workout>();
+    private final LocalDate date;
+    private final ArrayList<Meal> meals = new ArrayList<Meal>();
+    private final ArrayList<Workout> workout = new ArrayList<Workout>();
 
     public DailyActivity(LocalDate date) {
         this.date = date;

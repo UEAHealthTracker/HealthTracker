@@ -36,12 +36,13 @@ public class Goal {
         this.goalgroups = goalgroups;
     }
 
-    public Goal(Integer goalid,String goalname, String goaldate, String goalstatus, String goalgroups) {
+    public Goal(Integer goalid,String goalname, String goaldate, String goalstatus, String goalgroups,String goalstartdate) {
         this.goalid = goalid;
         this.goalname = goalname;
         this.goaldate = goaldate;
         this.goalstatus = goalstatus;
         this.goalgroups = goalgroups;
+        this.goalstartdate = goalstartdate;
     }
     public Goal() { }
 
@@ -53,6 +54,15 @@ public class Goal {
         this.goalid = goalid;
     }
 
+    public String getGoalstartdate() {
+        return goalstartdate;
+    }
+
+    public void setGoalstartdate(String goalstartdate) {
+        this.goalstartdate = goalstartdate;
+    }
+
+    String goalstartdate;
     Integer goalid;
     String goalname;
     String goaldate;

@@ -1,11 +1,18 @@
 
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
 import javafx.scene.control.ChoiceBox;
+
+import javax.swing.*;
 import java.io.IOException;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -58,16 +65,96 @@ enum WorkoutType {
     }
 }
 
-public class WorkoutPageController extends BaseController{
+public class WorkoutPageController extends BaseController {
     public final static  WorkoutPageController Instance= new WorkoutPageController();
-    public TableView workoutTable;
+
 
     private static Button addWorkoutbtn;
    // private static final String SQL_Insert ="INSERT INTO workout (workoutid, sets, reps, calories, weekday) VALUES ('4','3','20','150 calories','Wednesday')";
     @FXML ComboBox WorkoutTypeSelector;
     @FXML TextField durationTF;
+    @FXML TextField duration2;
+    @FXML ComboBox WorkoutTypeSelector2;
     @FXML ComboBox ID;
+    @FXML Label workoutTypelable;
+
+    @FXML TableView workoutTableView;
+    @FXML TableColumn<Workout,Integer> workoutid ;
+    @FXML TableColumn<Workout,Integer> caloriesBurned ;
+    @FXML TableColumn<Workout,Integer> durationMinutes;
+    @FXML TableColumn<Workout,String> workoutTypestr ;
+
+    ObservableList<Workout> workouts = FXCollections.observableArrayList();
+
+    public void initialize(){
+        workouts = FXCollections.observableArrayList();
+        String SQL_SELECT="Select workout.workoutid as WorkoutID, workout.calories as Calories, workout.duration as Duration, workout.workouttype as WorkoutType " +
+                "FROM workout JOIN day ON day.workoutid=workout.workoutid JOIN Users ON day.userid=Users.userid and Users.userid=?";
+        try {
+            PreparedStatement seltb = DBsession.INSTANCE.OpenConnection().prepareStatement(SQL_SELECT);
+            seltb.setInt(1,User.INSTANCE.getUserid());
+            ResultSet wid = seltb.executeQuery();
+            while(wid.next()){
+               /* workouts.add(new Workout(Integer.parseInt(wid.getString("WorkoutID"),
+                        Integer.parseInt(wid.getString("Calories"),
+                                Integer.parseInt(wid.getString("Duration"),
+                                        wid.getString("WorkoutType"))))));
+*/
+                workouts.add(new Workout(Integer.parseInt(wid.getString("WorkoutID")), Integer.parseInt( wid.getString("Calories")),Integer.parseInt( wid.getString("Duration")), wid.getString("WorkoutType")));
+
+                /*workouts.add(new Workout(String.valueOf(Integer.parseInt(wid.getString("WorkoutID"),Integer.parseInt(wid.getString("Calories"),
+                       Integer.parseInt(wid.getString("Duration"),
+                               Integer.parseInt(String.valueOf(Integer.parseInt(wid.getString("WorkoutType"))))))))));*/
+            }
+            workoutid.setCellValueFactory(new PropertyValueFactory<>("workoutid"));
+            caloriesBurned.setCellValueFactory(new PropertyValueFactory<>("caloriesBurned"));
+            durationMinutes.setCellValueFactory(new PropertyValueFactory<>("durationMinutes"));
+            workoutTypestr.setCellValueFactory(new PropertyValueFactory<>("workoutTypestr"));
+            workoutTableView.setItems(workouts);
+            DBsession.INSTANCE.OpenConnection().close();
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+
+    }
+
+
+    /*public void initialize(){
+        String SQL_Select = " Select workout.workoutid as WorkoutID, workout.calories as Calories, workout.duration as Duration, workout.workouttype as WorkoutType FROM workout JOIN day ON day.workoutid=workout.workoutid JOIN Users ON day.userid=Users.userid and Users.userid=1";
+       // String SQL_Select="Select workout.workoutid as WorkoutID, workout.calories as Calories, workout.duration as Duration, workout.workouttype as WorkoutType FROM workout JOIN day ON day.workoutid=workout.workoutid JOIN Users ON day.userid=Users.userid and Users.userid=?";
+        //Select workout.workoutid as WorkoutID, workout.calories as Calories, workout.duration as Duration, workout.workouttype as WorkoutType FROM workout
+        // JOIN day ON day.workoutid=workout.workoutid JOIN Users ON day.userid=Users.userid and Users.userid=1
+        try {
+            PreparedStatement selTB = DBsession.INSTANCE.OpenConnection().prepareStatement(SQL_Select);
+            selTB.setInt(1, Integer.parseInt(String.valueOf( User.INSTANCE.getUserid())));
+            ResultSet wid = selTB.executeQuery();
+            while(wid.next()){
+                workouts.add(new Workout(Integer.parseInt(wid.getString("WorkoutID"),Integer.parseInt(wid.getString("Calories"),
+                        Integer.parseInt(wid.getString("Duration"),Integer.parseInt(wid.getString("WorkoutType")))))));
+            }
+            workoutidTb.setCellValueFactory(new PropertyValueFactory<>("workoutidtb"));
+            caloriesTb.setCellValueFactory(new PropertyValueFactory<>("caloriestb"));
+            durationTb.setCellValueFactory(new PropertyValueFactory<>("durationtb"));
+            workoutTypeTb.setCellValueFactory(new PropertyValueFactory<>("workoutTypetb"));
+            workoutTable.setItems(workouts);
+            DBsession.INSTANCE.OpenConnection().close();
+
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+
+    }*/
+    /* workouts.add(new Workout (Integer.parseInt(wid.getString("workoutid"))));
+                   workouts.add(new Workout (Integer.parseInt(wid.getString("calories"))));
+                   workouts.add(new Workout (Integer.parseInt(wid.getString("duration"))));
+                  ;*/
+    boolean workoutidbool;
     boolean open=false;
+
+    public void addMessage(String message, String title){
+        JOptionPane.showMessageDialog(null, message, title,JOptionPane.INFORMATION_MESSAGE);
+    }
+
     public void init(){
         if(open==false) {
             for (WorkoutType type : WorkoutType.values()) {
@@ -75,7 +162,6 @@ public class WorkoutPageController extends BaseController{
             }
             open=true;
         }
-
     }
 
     //add data to workout table
@@ -92,14 +178,19 @@ public class WorkoutPageController extends BaseController{
                     }
                 }
             pst.setInt(3,cal* Integer.parseInt(durationTF.getText()));
-            pst.executeUpdate();
+          int msg =   pst.executeUpdate();
+
 
             DBsession.INSTANCE.OpenConnection().close();
-
+            if(msg==1){
+                addMessage("Workout Successfully Added!","WORKOUT ADDED");
+            }
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         }
         DateSet();
+
+
     }
     public void DateSet(){
         LocalDate date=LocalDate.now();
@@ -152,7 +243,7 @@ public class WorkoutPageController extends BaseController{
             sel.setInt(1, Integer.parseInt(String.valueOf( User.INSTANCE.getUserid())));
             ResultSet wid = sel.executeQuery();
           while(wid.next()){
-              ID.getItems().add(wid.getInt("workoutid"));
+          workoutidbool =   ID.getItems().add(wid.getInt("workoutid"));
           }
 
             DBsession.INSTANCE.OpenConnection().close();
@@ -162,23 +253,28 @@ public class WorkoutPageController extends BaseController{
         }
         selectWorkoutType();
     }
-
     public void selectWorkoutType(){
-        String SQL_Select="Select workouttype,duration FROM workout JOIN day ON day.workoutid=workout.workoutid JOIN Users ON day.userid=Users.userid and Users.userid=?";
+        String SQL_Select="Select workouttype,duration FROM workout JOIN day ON day.workoutid=workout.workoutid JOIN Users ON day.userid=Users.userid and workout.workoutid =?" ;
         //Select workouttype,duration FROM workout JOIN day ON day.workoutid=workout.workoutid JOIN Users ON day.userid=Users.userid and workout.workoutid=1
         //Select workouttype,duration FROM workout, Users WHERE User.userid=1 and workout.workoutid=1
         //Select workouttype,duration from workout where workoutid=?
+        // Select workouttype,duration FROM workout JOIN day ON day.workoutid=workout.workoutid JOIN Users ON day.userid=Users.userid and Users.userid=?
+        // Select workouttype,duration FROM workout JOIN day ON day.workoutid=workout.workoutid JOIN Users ON day.userid=Users.userid and Users.userid=? and workout.workoutid=?
         try {
             PreparedStatement sel = DBsession.INSTANCE.OpenConnection().prepareStatement(SQL_Select);
-            sel.setInt(1,Integer.parseInt(String.valueOf(User.INSTANCE.getUserid())));
+           // sel.setInt(1,Integer.parseInt(String.valueOf(User.INSTANCE.getUserid())));
+            sel.setInt(1,Integer.parseInt(String.valueOf(Workout.Instance.getWorkoutid())));
             ResultSet wid = sel.executeQuery();
+            String workoutType ="";
             while(wid.next()){
-                WorkoutTypeSelector.getItems().add(wid.getString("workouttype"));
-                //durationTF.getText();
+              /* WorkoutTypeSelector.getItems().add(wid.getString("workouttype")); String duration2 = durationTF.getText(wid.getInt("duration"),);*///String duration = durationTF.getText();// String workoutType = wid.getString("workouttype");
+                workoutType = wid.getString("workouttype");
+                Integer duration = wid.getInt("duration");
+                workoutTypelable.setText(workoutType);
+                // WorkoutTypeSelector2.setValue(workoutType);
+                duration2.setText(String.valueOf(duration));
+               // WorkoutTypeSelector.setText(workoutType); //  String.valueOf(duration);  //durationTF.getText(duration);*/    //durationTF.getText(); Workout.Instance.setWorkoutid(Integer.parseInt(wid.getString("workoutid")));
             }
-
-
-
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         }

@@ -1,23 +1,28 @@
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
+import javafx.fxml.Initializable;
+import javafx.scene.control.*;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 
+
 import java.io.IOException;
+import java.net.URL;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
 import java.util.Date;
+import java.util.ResourceBundle;
 
-public class HomePageController extends BaseController {
+public class HomePageController extends BaseController{
     private ObservableList<Goal> data;
-
+    @FXML ListView<Goal> listView = new ListView<>();
     public boolean hm=false;
     @FXML Label userLabel;
     @FXML  TableView <Goal>  goalview;
@@ -26,52 +31,63 @@ public class HomePageController extends BaseController {
     @FXML TableColumn<Goal, Date> goaldate;
     @FXML TableColumn<Goal,String> goalstatus;
     @FXML TableColumn<Goal, Integer> goalgroups;
-    int items=0;
-    TextField en;
+    @FXML TextField editgoalname;
+    @FXML DatePicker editgoaldate;
+    @FXML ComboBox editgoalgroup;
+
     public void initialize() {
         userLabel.setText("Hello "+User.INSTANCE.getUsername());
         Check();
         populateGoalsTable();
 
 
+
+
+
     }
     //add data to goal table
     public void populateGoalsTable(){
-
-        SimpleDateFormat sdate = new SimpleDateFormat("yyyy-MM-dd");
-        SimpleDateFormat edate = new SimpleDateFormat("yyyy-MM-dd");
         data = FXCollections.observableArrayList();
-        String SQL_QUERY = "select goalname,startdate,enddate,Goal.goalid as goalid,COUNT(groupgoal.groupgoalid) as total from Goal JOIN Users ON Users.userid=Goal.userid left JOIN groupgoal on Goal.goalid = groupgoal.goalid where Users.userid=? GROUP BY Goal.goalid";
-        try {
+        String SQL_QUERY= "select goalname,startdate,enddate,Goal.goalid as goalid,COUNT(groupgoal.groupgoalid) as total from Goal JOIN Users ON Users.userid=Goal.userid left JOIN groupgoal on Goal.goalid = groupgoal.goalid where Users.userid=? GROUP BY Goal.goalid;";
+        try{
             PreparedStatement pst = DBsession.INSTANCE.OpenConnection().prepareStatement(SQL_QUERY);
-            pst.setInt(1, User.INSTANCE.getUserid());
+            pst.setString(1, User.INSTANCE.getUsername().toString());
             ResultSet rs = pst.executeQuery();
-            String status = null;
-            while (rs.next()) {
-                LocalDate sd = LocalDate.parse(rs.getString("startdate"));
-                LocalDate ed = LocalDate.parse(rs.getString("enddate"));
-                LocalDate now = LocalDate.now();
-
-                long days = ChronoUnit.DAYS.between(now, ed);
-                if (days > 0) {
-                    status = "Active";
-                    data.add(new Goal(Integer.parseInt(rs.getString("goalid")), rs.getString("goalname"), ed.toString(), status, rs.getString("total")+"/"+items));
-                } else {
-                    status = "Expired";
-                    data.add(new Goal(Integer.parseInt(rs.getString("goalid")), rs.getString("goalname"), ed.toString(), status, rs.getString("total")+"/"+items));
+            String status=null;
+            while(rs.next()) {
+               LocalDate sd=LocalDate.parse(rs.getString("startdate"));
+                LocalDate ed=LocalDate.parse(rs.getString("enddate"));
+//               long days = ed.getTime() - sd.getTime();
+                long days = ChronoUnit.DAYS.between(sd, ed);
+                if(days>0) {
+                    String d=Long.toString(days);
+                    status="Incomplete";
+                    data.add(new Goal(rs.getString("goalname"),d,status ,Integer.parseInt(rs.getString("goalid"))));
+                }else{
+                    String d=Long.toString(days);
+                    status="Complete";
+                    data.add(new Goal(rs.getString("goalname"),d,status ,Integer.parseInt(rs.getString("goalid"))));
                 }
             }
-            goalid.setCellValueFactory(new PropertyValueFactory<>("goalid"));
-            goalname.setCellValueFactory(new PropertyValueFactory<>("goalname"));
-            goaldate.setCellValueFactory(new PropertyValueFactory<>("goaldate"));
-            goalstatus.setCellValueFactory(new PropertyValueFactory<>("goalstatus"));
-            goalgroups.setCellValueFactory(new PropertyValueFactory<>("goalgroups"));
-            goalview.setItems(data);
+//            goalid.setCellValueFactory(new PropertyValueFactory<>("goalid"));
+//            goalname.setCellValueFactory(new PropertyValueFactory<>("goalname"));
+//            goaldate.setCellValueFactory(new PropertyValueFactory<>("goaldate"));
+//            goalstatus.setCellValueFactory(new PropertyValueFactory<>("goalstatus"));
+//            goalgroups.setCellValueFactory(new PropertyValueFactory<>("goalgroups"));
+//            goalview.setItems(data);
+
+            listView.setItems(data);
+            listView.setCellFactory(param -> new GoalCell());
+
+
+
             DBsession.INSTANCE.OpenConnection().close();
         } catch (Exception e) {
             System.out.println(e);
         }
     }
+
+
 
     public void Check(){
 
@@ -106,8 +122,8 @@ public class HomePageController extends BaseController {
 
     public void onEdit(javafx.event.ActionEvent actionEvent) throws IOException {
 
-            if (goalview.getSelectionModel().getSelectedItem() != null) {
-                Goal selectedGoal = goalview.getSelectionModel().getSelectedItem();
+            if (listView.getSelectionModel().getSelectedItem() != null) {
+                Goal selectedGoal = listView.getSelectionModel().getSelectedItem();
                 Goal.Instance.setGoalid(selectedGoal.getGoalid());
                 openEditGoalPage(actionEvent);
 
@@ -115,8 +131,8 @@ public class HomePageController extends BaseController {
     }
     //allow user to select a table item/row and delete it using the delete button
     public void onDelete(javafx.event.ActionEvent actionEvent) throws IOException{
-        if (goalview.getSelectionModel().getSelectedItem() != null) {
-            Goal selectedGoal = goalview.getSelectionModel().getSelectedItem();
+        if (listView.getSelectionModel().getSelectedItem() != null) {
+            Goal selectedGoal = listView.getSelectionModel().getSelectedItem();
             Goal.Instance.setGoalid(selectedGoal.getGoalid());
             String SQL_query="DELETE FROM Goal WHERE goalid=?;";
             try{
@@ -126,9 +142,10 @@ public class HomePageController extends BaseController {
                 DBsession.INSTANCE.OpenConnection().close();
             }catch(Exception e){System.out.println(e);}
 
-            BaseController.Instance.filename="HomePage.fxml";
+            BaseController.Instance.Switch(actionEvent,"HomePage.fxml");
         }
 
     }
+
 
 }

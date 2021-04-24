@@ -1,5 +1,4 @@
 
-import com.sun.corba.se.spi.orbutil.threadpool.Work;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -96,16 +95,9 @@ public class WorkoutPageController extends BaseController {
             seltb.setInt(1,User.INSTANCE.getUserid());
             ResultSet wid = seltb.executeQuery();
             while(wid.next()){
-               /* workouts.add(new Workout(Integer.parseInt(wid.getString("WorkoutID"),
-                        Integer.parseInt(wid.getString("Calories"),
-                                Integer.parseInt(wid.getString("Duration"),
-                                        wid.getString("WorkoutType"))))));
-*/
+
                 workouts.add(new Workout(Integer.parseInt(wid.getString("WorkoutID")), Integer.parseInt( wid.getString("Calories")),Integer.parseInt( wid.getString("Duration")), wid.getString("WorkoutType")));
 
-                /*workouts.add(new Workout(String.valueOf(Integer.parseInt(wid.getString("WorkoutID"),Integer.parseInt(wid.getString("Calories"),
-                       Integer.parseInt(wid.getString("Duration"),
-                               Integer.parseInt(String.valueOf(Integer.parseInt(wid.getString("WorkoutType"))))))))));*/
             }
             workoutid.setCellValueFactory(new PropertyValueFactory<>("workoutid"));
             caloriesBurned.setCellValueFactory(new PropertyValueFactory<>("caloriesBurned"));
@@ -118,37 +110,6 @@ public class WorkoutPageController extends BaseController {
         }
 
     }
-
-
-    /*public void initialize(){
-        String SQL_Select = " Select workout.workoutid as WorkoutID, workout.calories as Calories, workout.duration as Duration, workout.workouttype as WorkoutType FROM workout JOIN day ON day.workoutid=workout.workoutid JOIN Users ON day.userid=Users.userid and Users.userid=1";
-       // String SQL_Select="Select workout.workoutid as WorkoutID, workout.calories as Calories, workout.duration as Duration, workout.workouttype as WorkoutType FROM workout JOIN day ON day.workoutid=workout.workoutid JOIN Users ON day.userid=Users.userid and Users.userid=?";
-        //Select workout.workoutid as WorkoutID, workout.calories as Calories, workout.duration as Duration, workout.workouttype as WorkoutType FROM workout
-        // JOIN day ON day.workoutid=workout.workoutid JOIN Users ON day.userid=Users.userid and Users.userid=1
-        try {
-            PreparedStatement selTB = DBsession.INSTANCE.OpenConnection().prepareStatement(SQL_Select);
-            selTB.setInt(1, Integer.parseInt(String.valueOf( User.INSTANCE.getUserid())));
-            ResultSet wid = selTB.executeQuery();
-            while(wid.next()){
-                workouts.add(new Workout(Integer.parseInt(wid.getString("WorkoutID"),Integer.parseInt(wid.getString("Calories"),
-                        Integer.parseInt(wid.getString("Duration"),Integer.parseInt(wid.getString("WorkoutType")))))));
-            }
-            workoutidTb.setCellValueFactory(new PropertyValueFactory<>("workoutidtb"));
-            caloriesTb.setCellValueFactory(new PropertyValueFactory<>("caloriestb"));
-            durationTb.setCellValueFactory(new PropertyValueFactory<>("durationtb"));
-            workoutTypeTb.setCellValueFactory(new PropertyValueFactory<>("workoutTypetb"));
-            workoutTable.setItems(workouts);
-            DBsession.INSTANCE.OpenConnection().close();
-
-        } catch (SQLException throwables) {
-            throwables.printStackTrace();
-        }
-
-    }*/
-    /* workouts.add(new Workout (Integer.parseInt(wid.getString("workoutid"))));
-                   workouts.add(new Workout (Integer.parseInt(wid.getString("calories"))));
-                   workouts.add(new Workout (Integer.parseInt(wid.getString("duration"))));
-                  ;*/
     boolean workoutidbool;
     boolean open=false;
 

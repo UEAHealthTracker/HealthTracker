@@ -6,11 +6,11 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="UserPageController">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="EditUsePageController">
    <left>
       <AnchorPane prefHeight="400.0" prefWidth="200.0" style="-fx-background-color: #c7a4ff;" BorderPane.alignment="CENTER">
          <children>
-            <Label alignment="TOP_CENTER" contentDisplay="CENTER" text="Hello &lt;User&gt;" textAlignment="CENTER" textFill="WHITE">
+            <Label fx:id="hellolbl" alignment="TOP_CENTER" contentDisplay="CENTER" text="Hello &lt;User&gt;" textAlignment="CENTER" textFill="WHITE">
                <font>
                   <Font name="Segoe UI Semilight" size="24.0" />
                </font>
@@ -57,16 +57,15 @@
                   <Insets bottom="10.0" left="10.0" right="25.0" top="10.0" />
                </padding>
             </Label>
-            <TextField layoutX="123.0" layoutY="60.0" promptText="Edit first name" style="-fx-background-color: #ffffff;" />
-            <TextField layoutX="123.0" layoutY="110.0" promptText="Edit surname" style="-fx-background-color: #ffffff;" />
-            <TextField layoutX="123.0" layoutY="160.0" promptText="Edit email" style="-fx-background-color: #ffffff;" />
-            <TextField layoutX="123.0" layoutY="210.0" promptText="Edit height" style="-fx-background-color: #ffffff;" />
-            <Label layoutX="276.0" layoutY="215.0" prefHeight="18.0" prefWidth="21.0" text="cm" textFill="#aa80ff">
+            <TextField fx:id="nametf" layoutX="123.0" layoutY="77.0" promptText="Edit Real Name" style="-fx-background-color: #ffffff;" />
+            <TextField fx:id="emailtf" layoutX="123.0" layoutY="129.0" promptText="Edit Email" style="-fx-background-color: #ffffff;" />
+            <TextField fx:id="heighttf" layoutX="123.0" layoutY="203.0" promptText="Edit Height" style="-fx-background-color: #ffffff;" />
+            <Label layoutX="276.0" layoutY="208.0" prefHeight="18.0" prefWidth="21.0" text="cm" textFill="#aa80ff">
                <font>
                   <Font size="14.0" />
                </font>
             </Label>
-            <TextField layoutX="123.0" layoutY="260.0" promptText="Edit weight" style="-fx-background-color: #ffffff;" />
+            <TextField fx:id="weighttf" layoutX="123.0" layoutY="260.0" promptText="Edit Weight" style="-fx-background-color: #ffffff;" />
             <Label layoutX="276.0" layoutY="265.0" prefHeight="18.0" prefWidth="21.0" text="kg" textFill="#aa80ff">
                <font>
                   <Font size="14.0" />
@@ -78,12 +77,12 @@
    <bottom>
       <AnchorPane prefHeight="50.0" prefWidth="600.0" style="-fx-background-color: #c7a4ff;" BorderPane.alignment="CENTER">
          <children>
-            <Button graphicTextGap="0.0" layoutX="380.0" layoutY="10.0" mnemonicParsing="false" opacity="0.0" prefHeight="30.0" prefWidth="30.0" />
             <ImageView fitHeight="30.0" fitWidth="30.0" layoutX="380.0" layoutY="10.0" pickOnBounds="true" preserveRatio="true">
                <image>
                   <Image url="@img/update.png" />
                </image>
             </ImageView>
+            <Button graphicTextGap="0.0" layoutX="380.0" layoutY="10.0" mnemonicParsing="false" onAction="#Update" opacity="0.0" prefHeight="30.0" prefWidth="30.0" />
          </children>
       </AnchorPane>
    </bottom>

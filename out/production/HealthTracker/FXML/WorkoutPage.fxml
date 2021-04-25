@@ -76,28 +76,19 @@
                   <Image url="@../img/add_box.png" />
                </image>
             </ImageView>
-            <Button graphicTextGap="0.0" layoutX="380.0" layoutY="10.0" mnemonicParsing="false" onAction="#MenuSwitch" opacity="0.0" prefHeight="30.0" prefWidth="30.0" text="AddWorkoutPage">
-               <font>
-                  <Font size="1.0" />
-               </font></Button>
             <ImageView fitHeight="30.0" fitWidth="30.0" layoutX="300.0" layoutY="10.0" pickOnBounds="true" preserveRatio="true">
                <image>
                   <Image url="@../img/mode_edit.png" />
                </image>
             </ImageView>
-            <Button graphicTextGap="0.0" layoutX="300.0" layoutY="10.0" mnemonicParsing="false" onAction="#MenuSwitch" opacity="0.0" prefHeight="30.0" prefWidth="30.0" text="EditWorkoutPage">
-               <font>
-                  <Font size="1.0" />
-               </font></Button>
             <ImageView fitHeight="30.0" fitWidth="30.0" layoutX="460.0" layoutY="10.0" pickOnBounds="true" preserveRatio="true">
                <image>
                   <Image url="@../img/delete.png" />
                </image>
             </ImageView>
-            <Button graphicTextGap="0.0" layoutX="460.0" layoutY="10.0" mnemonicParsing="false" onAction="#removeTableItem" opacity="0.0" prefHeight="30.0" prefWidth="30.0" />
-            <Button fx:id="AddWorkout" layoutX="359.0" layoutY="13.0" mnemonicParsing="false" onAction="#MenuSwitch" text="Add Workout" />
-            <Button fx:id="updateWorkout" layoutX="241.0" layoutY="13.0" mnemonicParsing="false" text="Update Workout" />
-            <Button layoutX="460.0" layoutY="13.0" mnemonicParsing="false" text="Delete Workout" />
+            <Button fx:id="AddWorkout" layoutX="380.0" layoutY="13.0" mnemonicParsing="false" onAction="#MenuSwitch" prefHeight="25.0" prefWidth="30.0" style="-fx-background-color: transparent;" text="AddWorkoutPage" textFill="TRANSPARENT" />
+            <Button fx:id="updateWorkout" layoutX="293.0" layoutY="13.0" mnemonicParsing="false" onAction="#MenuSwitch" prefHeight="25.0" prefWidth="37.0" style="-fx-background-color: transparent;" text="EditWorkoutPage" textFill="TRANSPARENT" />
+            <Button layoutX="460.0" layoutY="13.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="32.0" style="-fx-background-color: transparent;" text="Delete Workout" textFill="TRANSPARENT" />
          </children>
       </AnchorPane>
    </bottom>

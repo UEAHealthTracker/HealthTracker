@@ -22,31 +22,29 @@ public class BaseController {
 
 
     public void MenuSwitch(javafx.event.ActionEvent actionEvent) throws IOException{
-        String text = ((Button)actionEvent.getSource()).getText();
-
-        switch(text){
-            case "Home":
+       String text = ((Button)actionEvent.getSource()).getText();
+       switch(text){
+           case "Home":
                 filename= "FXML/HomePage.fxml";break;
-            case "Diet":
+           case "Diet":
                 filename= "FXML/DietPage.fxml";break;
-            case "Workout":
+           case "Workout":
                 filename= "FXML/WorkoutPage.fxml";break;
-            case "Groups":
+           case "Groups":
                 filename= "FXML/GroupsPage.fxml";break;
-            case "User Information":
+           case "User Information":
                 filename= "FXML/UserPage.fxml";break;
-            case "Edit group":
+           case "Edit group":
                 filename= "FXML/EditGroupPage.fxml"; break;
-            case "Create group":
+           case "Create group":
                 filename= "FXML/CreateGroupPage.fxml";break;
-            case "Add Diet Item":
+           case "Add Diet Item":
                 filename= "FXML/AddDietItemPage.fxml"; break;
-            case "EditWorkoutPage":
+           case "EditWorkoutPage":
                 filename= "FXML/EditWorkoutPage.fxml";break;
-            case "AddWorkoutPage":
-                filename= "FXML/AddWorkoutPage.fxml";
-                break;
-            case "EditUserPage":
+           case "AddWorkoutPage":
+                filename= "FXML/AddWorkoutPage.fxml";break;
+           case "EditUserPage":
                 filename= "FXML/EditUserPage.fxml";break;
             case "Join Group":
                 filename= "FXML/JoinGroup.fxml";break;

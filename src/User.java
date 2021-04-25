@@ -38,7 +38,7 @@ public class User {
         return RealName;
     }
     public void setRealName(String name) {
-        this.RealName = RealName;
+        this.RealName = name;
     }
     public String getUsername() {
         return username;

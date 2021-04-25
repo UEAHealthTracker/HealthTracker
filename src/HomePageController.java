@@ -102,15 +102,15 @@ public class HomePageController extends BaseController {
 
 
     public void openSelectGoalTypePage(javafx.event.ActionEvent actionEvent) throws IOException {
-        BaseController.Instance.Switch(actionEvent,"SelectGoalType.fxml");
+        BaseController.Instance.Switch(actionEvent,"FXML/SelectGoalType.fxml");
     }
 
     public void openAddGoalPage(javafx.event.ActionEvent actionEvent) throws IOException {
-        BaseController.Instance.Switch(actionEvent,"AddWeightGoal.fxml");
+        BaseController.Instance.Switch(actionEvent,"FXML/AddWeightGoal.fxml");
     }
     @FXML
     public void openEditGoalPage(javafx.event.ActionEvent actionEvent) throws IOException {
-        BaseController.Instance.Switch(actionEvent,"EditGoal.fxml");
+        BaseController.Instance.Switch(actionEvent,"FXML/EditGoal.fxml");
 
 
     }
@@ -137,7 +137,7 @@ public class HomePageController extends BaseController {
                 DBsession.INSTANCE.OpenConnection().close();
             }catch(Exception e){System.out.println(e);}
 
-            BaseController.Instance.Switch(actionEvent,"HomePage.fxml");
+            BaseController.Instance.Switch(actionEvent,"FXML/HomePage.fxml");
         }
 
     }

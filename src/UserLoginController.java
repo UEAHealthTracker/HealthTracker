@@ -49,7 +49,7 @@ public class UserLoginController extends BaseController {
 
     }
     public void openSignUpPage(javafx.event.ActionEvent actionEvent) throws IOException {
-        root = FXMLLoader.load(getClass().getResource("CreateAccountPage.fxml"));
+        root = FXMLLoader.load(getClass().getResource("FXML/CreateAccountPage.fxml"));
         stage = (Stage)((Node)actionEvent.getSource()).getScene().getWindow();
         scene = new Scene(root);
         stage.setScene(scene);
@@ -57,7 +57,7 @@ public class UserLoginController extends BaseController {
     }
 
     public void openLoginPage(javafx.event.ActionEvent actionEvent) throws IOException {
-        root = FXMLLoader.load(getClass().getResource("LoginPage.fxml"));
+        root = FXMLLoader.load(getClass().getResource("FXML/LoginPage.fxml"));
         stage = (Stage)((Node)actionEvent.getSource()).getScene().getWindow();
         scene = new Scene(root);
         stage.setScene(scene);
@@ -97,7 +97,7 @@ public class UserLoginController extends BaseController {
                 }
             }
             DBsession.INSTANCE.OpenConnection().close();
-        }catch(Exception e){ System.out.println(e);}
+        }catch(Exception e){ System.out.println(e+"0");}
     }
 
     //https://riptutorial.com/javafx/example/7291/updating-the-ui-using-platform-runlater
@@ -155,11 +155,11 @@ public class UserLoginController extends BaseController {
                     pst.executeUpdate();
                 }
                 userid();
-                BaseController.Instance.Switch(event,"HomePage.fxml");
+                BaseController.Instance.Switch(event,"FXML/HomePage.fxml");
 
                 DBsession.INSTANCE.OpenConnection().close();
             } catch (Exception e) {
-                System.out.println(e);
+                System.out.println(e+"1");
             }
         }else{
             createacc.setStyle("-fx-background-color:transparent;-fx-text-fill: red");
@@ -180,11 +180,15 @@ public class UserLoginController extends BaseController {
             while(rs.next()) {
                 User.INSTANCE.setUserid(Integer.parseInt(rs.getString("userid")));
                 User.INSTANCE.setRealName(rs.getString("realname"));
-                User.INSTANCE.setAge(Integer.parseInt(rs.getString("age")));
+                if(rs.getString("age")!=null) {
+                    User.INSTANCE.setAge(Integer.parseInt(rs.getString("age")));
+                }else{
+                    User.INSTANCE.setAge(0);
+                }
                 User.INSTANCE.setEmail(rs.getString("email"));
             }
             DBsession.INSTANCE.OpenConnection().close();
-        }catch(Exception e){ System.out.println(e);}
+        }catch(Exception e){ System.out.println(e+"2");}
 
     }
 
@@ -200,7 +204,7 @@ public class UserLoginController extends BaseController {
                     counter++;
                 }else{}
             }
-        }catch(Exception e){ System.out.println(e);}
+        }catch(Exception e){ System.out.println(e+"3");}
         return counter;
     }
 }

@@ -10,6 +10,9 @@
     <orderEntry type="library" name="lib" level="project" />
     <orderEntry type="library" name="mysql-connector-java-5.1.40" level="project" />
     <orderEntry type="library" name="scenebuilder-kit-15.0.1" level="project" />
-    <orderEntry type="library" name="mysql-connector-java-8.0.231" level="project" />
+    <orderEntry type="library" name="materialfx-11.7.1" level="project" />
+    <orderEntry type="library" name="javax.mail" level="project" />
+    <orderEntry type="library" name="activation" level="project" />
+    <orderEntry type="library" name="javafx-swt" level="project" />
   </component>
 </module>

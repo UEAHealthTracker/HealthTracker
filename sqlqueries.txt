@@ -153,3 +153,5 @@ dayid int(10),date date,mealid int(10),workoutid int(10),userid int(10),
 3.make a select query for getting the ids from the workout table Select workoutid from workout join day on day.workoutid=workout.workoutid join User on day.userid=user.userid and username=?
 4.make a select query for getting the workoutype and duration Select workouttype,duration from workout where workoutid=?
 5.make a update query to update a specif workout Update workout set workouttype=? and duration=? where workouttype=? (workottypecombobox.selectedmodel) and duration=? duraitontextfield.gettext;
+
+delete from workout JOIN day on day.workoutid=workout.workoutid WHERE workoutid=?

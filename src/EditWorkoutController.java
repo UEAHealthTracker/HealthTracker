@@ -39,6 +39,8 @@ public class EditWorkoutController extends BaseController{
         selectWorkoutType();
     }*/
     public void initialize(){
+        userLabel.setText("Hello "+User.INSTANCE.getUsername());
+
         String SQL_Select="Select workouttype,duration FROM workout JOIN day ON day.workoutid=workout.workoutid JOIN Users ON day.userid=Users.userid and workout.workoutid =?" ;
         //Select workouttype,duration FROM workout JOIN day ON day.workoutid=workout.workoutid JOIN Users ON day.userid=Users.userid and workout.workoutid=1
         //Select workouttype,duration FROM workout, Users WHERE User.userid=1 and workout.workoutid=1

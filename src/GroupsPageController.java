@@ -72,11 +72,11 @@ public class GroupsPageController extends BaseController {
     int items=0;
 
     //Methods that initialise the scene builder textfields to the static elements
-    public void initialize() throws SQLException {
+    public void initialize() {
         groupNameText = groupName;
         groupMemberText = groupMembersEmail;
         createGroupbutton = createGroupbtn;
-        //userLabel.setText("Hello "+User.INSTANCE.getUsername());
+        userLabel.setText("Hello "+User.INSTANCE.getUsername());
         populateGroupTables();
 
 
@@ -310,7 +310,7 @@ public class GroupsPageController extends BaseController {
 
 
 
-    public void populateGroupTables() throws SQLException {
+    public void populateGroupTables() {
 
         data = FXCollections.observableArrayList();
         try{
@@ -346,7 +346,7 @@ public class GroupsPageController extends BaseController {
 
                     groupView.setItems(data);
 
-
+                    DBsession.INSTANCE.OpenConnection().close();
                 }
 
             }catch(SQLException e){
@@ -354,9 +354,8 @@ public class GroupsPageController extends BaseController {
 
             }
         }catch (Exception e){
-
+            e.printStackTrace();
         }
-        DBsession.INSTANCE.OpenConnection().close();
     }
 
 

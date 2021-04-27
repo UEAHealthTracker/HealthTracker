@@ -19,7 +19,6 @@ public class HomePageController extends BaseController {
     private ObservableList<Goal> data;
     @FXML ListView<Goal> listView = new ListView<>();
     public boolean hm=false;
-    @FXML Label userLabel;
     @FXML  TableView <Goal>  goalview;
     @FXML TableColumn<Goal, String> goalid;
     @FXML TableColumn<Goal, String> goalname;

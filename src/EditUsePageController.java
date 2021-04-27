@@ -2,7 +2,6 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 
-import javax.jws.soap.SOAPBinding;
 import java.awt.event.ActionEvent;
 import java.io.IOException;
 import java.sql.PreparedStatement;
@@ -11,14 +10,12 @@ import java.text.DecimalFormat;
 public class EditUsePageController extends BaseController{
 
     @FXML
-    Label hellolbl;
-    @FXML
     TextField nametf;
     @FXML TextField emailtf;
     @FXML TextField heighttf;
     @FXML TextField weighttf;
     public void initialize() {
-        hellolbl.setText("Hello " + User.INSTANCE.getUsername());
+        userLabel.setText("Hello " + User.INSTANCE.getUsername());
         nametf.setText(User.INSTANCE.getRealName());
         emailtf.setText(User.INSTANCE.getEmail());
         heighttf.setText(String.valueOf((int)User.INSTANCE.getHeight()));

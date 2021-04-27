@@ -11,12 +11,11 @@ public class UserPageController extends BaseController{
     @FXML Label weight;
     @FXML Label bmi;
     @FXML Label bmilabel;
-    @FXML Label hellolabel;
 
 
     public void initialize() {
 
-            hellolabel.setText("Hello " + User.INSTANCE.getUsername());
+            userLabel.setText("Hello " + User.INSTANCE.getUsername());
             DecimalFormat df = new DecimalFormat("#.00");
             double var = (User.INSTANCE.getWeight() / (User.INSTANCE.getHeight() * User.INSTANCE.getHeight())) * 10000;
             name.setText("Name: " + User.INSTANCE.getRealName());

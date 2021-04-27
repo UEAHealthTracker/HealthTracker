@@ -87,8 +87,8 @@
                </image>
             </ImageView>
             <Button fx:id="AddWorkout" layoutX="380.0" layoutY="13.0" mnemonicParsing="false" onAction="#MenuSwitch" prefHeight="25.0" prefWidth="30.0" style="-fx-background-color: transparent;" text="AddWorkoutPage" textFill="TRANSPARENT" />
-            <Button fx:id="updateWorkout" layoutX="293.0" layoutY="13.0" mnemonicParsing="false" onAction="#MenuSwitch" prefHeight="25.0" prefWidth="37.0" style="-fx-background-color: transparent;" text="EditWorkoutPage" textFill="TRANSPARENT" />
-            <Button layoutX="460.0" layoutY="13.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="32.0" style="-fx-background-color: transparent;" text="Delete Workout" textFill="TRANSPARENT" />
+            <Button fx:id="updateWorkout" layoutX="293.0" layoutY="13.0" mnemonicParsing="false" onAction="#onEdit" prefHeight="25.0" prefWidth="37.0" style="-fx-background-color: transparent;" text="EditWorkoutPage" textFill="TRANSPARENT" />
+            <Button layoutX="460.0" layoutY="13.0" mnemonicParsing="false" onAction="#onDelete" prefHeight="25.0" prefWidth="32.0" style="-fx-background-color: transparent;" text="Delete Workout" textFill="TRANSPARENT" />
          </children>
       </AnchorPane>
    </bottom>

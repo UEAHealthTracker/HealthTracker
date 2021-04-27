@@ -18,6 +18,7 @@ public class EditWorkoutController extends BaseController{
     @FXML ComboBox ID;
     @FXML
     Label workoutTypelable;
+    @FXML TextField workoutTypeTF;
     boolean workoutidbool;
 
     /*public void fillID(){
@@ -51,17 +52,29 @@ public class EditWorkoutController extends BaseController{
             ResultSet wid = sel.executeQuery();
             String workoutType ="";
             while(wid.next()){
-                /* WorkoutTypeSelector.getItems().add(wid.getString("workouttype")); String duration2 = durationTF.getText(wid.getInt("duration"),);*///String duration = durationTF.getText();// String workoutType = wid.getString("workouttype");
                 workoutType = wid.getString("workouttype");
                 Integer duration = wid.getInt("duration");
-                workoutTypelable.setText(workoutType);
-                 //WorkoutTypeSelector2.setValue(workoutType);
+                workoutTypeTF.setText(workoutType);
                 duration2.setText(String.valueOf(duration));
-                // WorkoutTypeSelector.setText(workoutType); //  String.valueOf(duration);  //durationTF.getText(duration);*/    //durationTF.getText(); Workout.Instance.setWorkoutid(Integer.parseInt(wid.getString("workoutid")));
             }
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+    }
+
+    public void updateWorkout(){
+        String SQL_Update=" UPDATE workout SET duration =?, workouttype=? WHERE workoutid=?";
+        try {
+            PreparedStatement pst = DBsession.INSTANCE.OpenConnection().prepareStatement(SQL_Update);
+            pst.setInt(1, Integer.parseInt(duration2.getText()));
+            pst.setString(2,workoutTypeTF.getText());
+            pst.setInt(3,Workout.Instance.getWorkoutid());
+            pst.executeUpdate();
+            DBsession.INSTANCE.OpenConnection().close();
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         }
 
     }
+
 }

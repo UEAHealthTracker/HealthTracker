@@ -62,8 +62,6 @@ public class WorkoutPageController extends BaseController {
 
 
     private static Button addWorkoutbtn;
-   // private static final String SQL_Insert ="INSERT INTO workout (workoutid, sets, reps, calories, weekday) VALUES ('4','3','20','150 calories','Wednesday')";
-
 
     @FXML TableView workoutTableView;
     @FXML TableColumn<Workout,Integer> workoutid ;
@@ -104,6 +102,7 @@ public class WorkoutPageController extends BaseController {
             BaseController.Instance.Switch(actionEvent,"FXML/EditWorkoutPage.fxml");
         }
     }
+
     public void onDelete(javafx.event.ActionEvent actionEvent) throws IOException{
         if (workoutTableView.getSelectionModel().getSelectedItem() != null) {
             Workout selectedItem = (Workout) workoutTableView.getSelectionModel().getSelectedItem();
@@ -120,6 +119,7 @@ public class WorkoutPageController extends BaseController {
         }
 
     }
+
     public void onDelete2(javafx.event.ActionEvent actionEvent) throws IOException{
             String SQL_query="delete from day Where workoutid=?" ;
             try{
@@ -134,15 +134,6 @@ public class WorkoutPageController extends BaseController {
 
     //allow user to select a table item/row and delete it using the delete button
     public void removeTableItem(){
-     /*   String SQL_Delete ="";
-        workoutTableView.getItems().removeAll(workoutTableView.getSelectionModel().getSelectedItem());
-        try {
-            PreparedStatement del = DBsession.INSTANCE.OpenConnection().prepareStatement(SQL_Delete);
-            del.
-        } catch (SQLException throwables) {
-            throwables.printStackTrace();
-        }*/
-
 
     }
 

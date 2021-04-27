@@ -16,7 +16,7 @@
    <left>
       <AnchorPane prefHeight="400.0" prefWidth="200.0" style="-fx-background-color: #c7a4ff;" BorderPane.alignment="CENTER">
          <children>
-            <Label alignment="TOP_CENTER" contentDisplay="CENTER" text="Hello &lt;User&gt;" textAlignment="CENTER" textFill="WHITE">
+            <Label fx:id="userLabel" alignment="TOP_CENTER" contentDisplay="CENTER" text="Hello &lt;User&gt;" textAlignment="CENTER" textFill="WHITE">
                <font>
                   <Font name="Segoe UI Semilight" size="24.0" />
                </font>

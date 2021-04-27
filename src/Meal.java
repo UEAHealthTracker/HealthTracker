@@ -44,6 +44,15 @@ public class Meal {
 
     public ArrayList<DietItem> getItems(){return items;}
 
+    public String getItemsToString(){
+        StringBuilder itemsToString = new StringBuilder();
+
+        for(DietItem item : items){
+            itemsToString.append(item.getName());
+        }
+        return itemsToString.toString();
+    }
+
     public ArrayList<DietItem> getFoods(){
         ArrayList<DietItem> foods = new ArrayList<>();
 

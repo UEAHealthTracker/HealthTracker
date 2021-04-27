@@ -33,6 +33,7 @@ public class AddWorkoutController  extends BaseController{
     private Scene scene;
     boolean open=false;
     public void init(){
+        userLabel.setText("Hello "+User.INSTANCE.getUsername());
         if(open==false) {
             for (WorkoutType type : WorkoutType.values()) {
                 WorkoutTypeSelector.getItems().add(type.ID);

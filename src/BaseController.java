@@ -1,3 +1,4 @@
+import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Parent;
@@ -13,13 +14,13 @@ public class BaseController {
     Parent root;
     Stage stage;
     Scene scene;
+    @FXML
     Label userLabel;
     public String filename="";
     //default constructor
     public BaseController(){
 
     }
-
 
     public void MenuSwitch(javafx.event.ActionEvent actionEvent) throws IOException{
        String text = ((Button)actionEvent.getSource()).getText();

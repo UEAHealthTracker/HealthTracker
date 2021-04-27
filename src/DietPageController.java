@@ -25,6 +25,7 @@ public class DietPageController extends BaseController {
     @FXML TextField setCalorieCount;
 
     public void initialize(){
+        userLabel.setText("Hello "+User.INSTANCE.getUsername());
         populateDietTable();
     }
 
@@ -65,7 +66,7 @@ public class DietPageController extends BaseController {
             }
 
             timeConsumed.setCellValueFactory(new PropertyValueFactory<>("timeConsumed"));
-            items.setCellValueFactory(new PropertyValueFactory<>("items"));
+            items.setCellValueFactory(new PropertyValueFactory<>("itemsToString"));
             calorieCount.setCellValueFactory(new PropertyValueFactory<>("calorieCount"));
 
             dietTable.setItems(mealData);

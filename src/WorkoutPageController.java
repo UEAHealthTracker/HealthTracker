@@ -73,6 +73,8 @@ public class WorkoutPageController extends BaseController {
     ObservableList<Workout> workouts = FXCollections.observableArrayList();
 
     public void initialize(){
+        userLabel.setText("Hello "+User.INSTANCE.getUsername());
+
         workouts = FXCollections.observableArrayList();
         String SQL_SELECT="Select workout.workoutid as WorkoutID, workout.calories as Calories, workout.duration as Duration, workout.workouttype as WorkoutType FROM workout JOIN day ON day.workoutid=workout.workoutid JOIN Users ON day.userid=Users.userid and Users.userid=?";
         try {

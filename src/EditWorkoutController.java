@@ -1,8 +1,15 @@
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
+import javafx.scene.Scene;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.stage.Stage;
 
+import javax.swing.*;
+import java.io.IOException;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -64,19 +71,33 @@ public class EditWorkoutController extends BaseController{
         }
     }
 
-    public void updateWorkout(){
+    public void updateWorkout(ActionEvent event) throws IOException {
         String SQL_Update=" UPDATE workout SET duration =?, workouttype=? WHERE workoutid=?";
         try {
             PreparedStatement pst = DBsession.INSTANCE.OpenConnection().prepareStatement(SQL_Update);
             pst.setInt(1, Integer.parseInt(duration2.getText()));
             pst.setString(2,workoutTypeTF.getText());
             pst.setInt(3,Workout.Instance.getWorkoutid());
-            pst.executeUpdate();
+           int msg = pst.executeUpdate();
             DBsession.INSTANCE.OpenConnection().close();
+            if(msg==1){
+                updateMessage("Workout Successfully Updated!","WORKOUT UPDATED");
+            }
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         }
+        switchAfterUpdate(event);
 
+    }
+    public void switchAfterUpdate(ActionEvent event) throws IOException {
+        root = FXMLLoader.load(getClass().getResource("FXML/WorkoutPage.fxml"));
+        stage = (Stage)((Node)event.getSource()).getScene().getWindow();
+        scene = new Scene(root);
+        stage.setScene(scene);
+        stage.show();
+    }
+    public void updateMessage(String message, String title){
+        JOptionPane.showMessageDialog(null, message, title,JOptionPane.INFORMATION_MESSAGE);
     }
 
 }

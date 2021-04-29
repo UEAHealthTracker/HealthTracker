@@ -28,11 +28,11 @@ public class AddWorkoutController  extends BaseController{
     @FXML ComboBox ID;
     @FXML
     Label workoutTypelable;
-    private Parent root;
-    private Stage stage;
-    private Scene scene;
+
     boolean open=false;
+
     public void init(){
+
         userLabel.setText("Hello "+User.INSTANCE.getUsername());
         if(open==false) {
             for (WorkoutType type : WorkoutType.values()) {

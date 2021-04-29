@@ -10,8 +10,6 @@ import java.time.LocalDate;
 public class WorkoutGoalController extends BaseController {
 
     @FXML
-    Label userLabel;
-    @FXML
     DatePicker enddate;
     @FXML
     TextField GoalNameTF;

@@ -119,7 +119,7 @@ public class GroupsPageController extends BaseController {
             //Since all the input fileds are filed next is:
             //Check if user to be invited exists:
             if (groupExist(nameOfGroup) == false) {
-                if (userExist()) {
+                if (userExist(groupMail)) {
                     try {
                         String username, password;
                         String adminUserId;
@@ -281,61 +281,83 @@ public class GroupsPageController extends BaseController {
 
     }
 
-    //Edit group
+
 
     public void EditAddMember(ActionEvent actionEvent) throws SQLException, IOException, MessagingException {
         String editGroupName = EditGroupName.getText();
         boolean inGroup=false;
     String addMember = addMemberMail.getText();
     int editGroupId, editUserId;
+    String editPassword, editAdmin;
 
-  try{
-    if(editGroupName.isEmpty()|| addMember.isEmpty()){
-        System.out.println("Please fill in group name and add member details.");
-        GroupMessage.setOpacity(1);
-        GroupMessage.setText("Please fill in group name and  add member details");
-    }else {
+  try {
+      if (editGroupName.isEmpty() || addMember.isEmpty()) {
+          System.out.println("Please fill in group name and add member details.");
+          GroupMessage.setOpacity(1);
+          GroupMessage.setText("Please fill in group name and  add member details");
+      } else {
 
+          if (userExist(addMember)){
+              System.out.println(addMember + " exists");
+              System.out.println("User and group Exist");
+              if (groupExist(editGroupName)) {
+                  //Get group id and user id:
+                  String groupIdQuery = "SELECT groups.groupid, groups.groupPassword, groups.groupadmin FROM groups INNER JOIN groupsmember ON groupsmember.groupid=groups.groupid WHERE groups.groupname=? AND  groupsmember.userid=?";
+                  PreparedStatement groupIdStatement = DBsession.INSTANCE.OpenConnection().prepareStatement(groupIdQuery);
+                  groupIdStatement.setString(1, editGroupName);
+                  groupIdStatement.setInt(2, User.INSTANCE.getUserid());
+                  ResultSet result = groupIdStatement.executeQuery();
+                  while (result.next()) {
+                      inGroup = true;
+                      //System.out.println("Something");
+                      editGroupId = result.getInt("groupid");
+                      editPassword = result.getString("groupPassword");
+                      editAdmin = result.getString("groupadmin");
 
-        if(groupExist(editGroupName)){
-            //Get group id and user id:
-            String groupIdQuery = "SELECT groups.groupid FROM groups INNER JOIN groupsmember ON groupsmember.groupid=groups.groupid WHERE groups.groupname=? AND  groupsmember.userid=?";
-            PreparedStatement groupIdStatement = DBsession.INSTANCE.OpenConnection().prepareStatement(groupIdQuery);
-            groupIdStatement.setString(1, editGroupName);
-            groupIdStatement.setInt(2, User.INSTANCE.getUserid());
-            ResultSet result = groupIdStatement.executeQuery();
-            while (result.next()) {
-                inGroup = true;
-                System.out.println("Something");
-                editGroupId = result.getInt("groupid");
-                System.out.println(editGroupId);
-            }
-            if(inGroup) {
-                String userIdQuery = "SELECT userid FROM Users WHERE email=? ";
-                PreparedStatement userId = DBsession.INSTANCE.OpenConnection().prepareStatement(userIdQuery);
-                userId.setString(1, addMember);
-                ResultSet result2 = userId.executeQuery();
-                while (result2.next()) {
-                    editUserId = result2.getInt("userid");
-                    System.out.println(editUserId);
-                }
-            }else{
-                GroupMessage.setOpacity(1);
-                GroupMessage.setText("Can't invite member cause you are not in group: " + editGroupName);
-            }
+                      System.out.println(editPassword);
+                      System.out.println(editGroupId);
 
-        }else{
-            GroupMessage.setOpacity(1);
-            GroupMessage.setText("Group name: " + editGroupName + " does not exist");
+                      if (inGroup) {
+                          String userIdQuery = "SELECT userid FROM Users WHERE email=? ";
+                          PreparedStatement userId = DBsession.INSTANCE.OpenConnection().prepareStatement(userIdQuery);
+                          userId.setString(1, addMember);
+                          ResultSet result2 = userId.executeQuery();
+                          while (result2.next()) {
+                              editUserId = result2.getInt("userid");
+                              System.out.println(editUserId);
+                              if (SendMail.sendMail(addMember, editGroupName, passwordGroup)) {
+                                  String insertQuery = "INSERT INTO group_invites(group_id, group_name,group_admin, group_member) VALUES(?,?,?, ?)";
+                                  PreparedStatement pst = DBsession.INSTANCE.OpenConnection().prepareStatement(insertQuery);
+                                  pst.setInt(1, editGroupId);
+                                  pst.setString(2, editGroupName);
+                                  pst.setString(3, editAdmin);
+                                  pst.setString(4, addMember);
+                                  pst.executeUpdate();
+                                  GroupMessage.setOpacity(1);
+                                  GroupMessage.setText("Email invitation has been sent to: " + addMember);
+                                  //Insert into group invites after mail has been sent:
+                              }
+                          }
+                      }else {
+                          GroupMessage.setOpacity(1);
+                          GroupMessage.setText("Not in group called: " + editGroupName);
 
-        }
-        }
+                      }
+                  }
+              } else {
+                  GroupMessage.setOpacity(1);
+                  GroupMessage.setText("Group named : " + editGroupName + " does not exist");
+              }
+          }else{
+              GroupMessage.setOpacity(1);
+              GroupMessage.setText("User named : " + addMember + " does not exist");
+              System.out.println(addMember + " exists");
+          }
 
-        } catch(SQLException e){
+      }
+  }catch(SQLException e){
       e.printStackTrace();
-        //String SQLQuery= "SELECT grou";
-        //PreparedStatement checkInvite = DBsession.INSTANCE.OpenConnection().prepareStatement(SQLQuery);
-        //SendMail.sendMail(addMember, editGroupName, passwordGroup);
+
     }
     }
 
@@ -452,7 +474,7 @@ public class GroupsPageController extends BaseController {
     }
 
 
-    public boolean userExist() {
+    public boolean userExist(String mail) {
 
         String emailDb;
         boolean userExist = false;
@@ -460,7 +482,7 @@ public class GroupsPageController extends BaseController {
             ResultSet rs = DBsession.INSTANCE.Stmt().executeQuery("select email from Users ");
             while(rs.next()){
                 emailDb = rs.getString("email");
-                if(emailDb.contentEquals(groupMail)){
+                if(emailDb.contentEquals(mail)){
                     userExist=true;
 
                 }

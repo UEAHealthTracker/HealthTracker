@@ -23,11 +23,6 @@ public class AddWorkoutController  extends BaseController{
     ComboBox WorkoutTypeSelector;
     @FXML
     TextField durationTF;
-    @FXML TextField duration2;
-    @FXML ComboBox WorkoutTypeSelector2;
-    @FXML ComboBox ID;
-    @FXML
-    Label workoutTypelable;
     private Parent root;
     private Stage stage;
     private Scene scene;

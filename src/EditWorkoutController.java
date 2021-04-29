@@ -21,10 +21,6 @@ public class EditWorkoutController extends BaseController{
     @FXML
     TextField durationTF;
     @FXML TextField duration2;
-    @FXML ComboBox WorkoutTypeSelector2;
-    @FXML ComboBox ID;
-    @FXML
-    Label workoutTypelable;
     @FXML TextField workoutTypeTF;
     boolean workoutidbool;
 
@@ -72,12 +68,20 @@ public class EditWorkoutController extends BaseController{
     }
 
     public void updateWorkout(ActionEvent event) throws IOException {
-        String SQL_Update=" UPDATE workout SET duration =?, workouttype=? WHERE workoutid=?";
+        int cal =0;
+
+        String SQL_Update=" UPDATE workout SET duration =?, workouttype=?, calories =? WHERE workoutid=?";
         try {
+            for (WorkoutType type : WorkoutType.values()) {
+                if(workoutTypeTF.getText().equals(type.ID)){
+                    cal= type.MET;
+                    }
+            }
             PreparedStatement pst = DBsession.INSTANCE.OpenConnection().prepareStatement(SQL_Update);
             pst.setInt(1, Integer.parseInt(duration2.getText()));
             pst.setString(2,workoutTypeTF.getText());
-            pst.setInt(3,Workout.Instance.getWorkoutid());
+            pst.setInt(3, cal * Integer.parseInt(duration2.getText()));
+            pst.setInt(4,Workout.Instance.getWorkoutid());
            int msg = pst.executeUpdate();
             DBsession.INSTANCE.OpenConnection().close();
             if(msg==1){
@@ -89,6 +93,7 @@ public class EditWorkoutController extends BaseController{
         switchAfterUpdate(event);
 
     }
+
     public void switchAfterUpdate(ActionEvent event) throws IOException {
         root = FXMLLoader.load(getClass().getResource("FXML/WorkoutPage.fxml"));
         stage = (Stage)((Node)event.getSource()).getScene().getWindow();
@@ -96,6 +101,7 @@ public class EditWorkoutController extends BaseController{
         stage.setScene(scene);
         stage.show();
     }
+
     public void updateMessage(String message, String title){
         JOptionPane.showMessageDialog(null, message, title,JOptionPane.INFORMATION_MESSAGE);
     }

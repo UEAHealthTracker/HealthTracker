@@ -1,6 +1,8 @@
+import java.time.LocalDate;
 import java.util.ArrayList;
 
 public class User {
+
     public final static User INSTANCE = new User();
 
     public int getUserid() {
@@ -10,6 +12,8 @@ public class User {
     public void setUserid(int userid) {
         this.userid = userid;
     }
+
+    public DailyActivity dailyActivity = new DailyActivity(LocalDate.now());
 
     //Initialise variables
      int userid;
@@ -26,9 +30,9 @@ public class User {
         return groups;
     }
 
-    private ArrayList<Goal> goals = new ArrayList<Goal>();
-    private ArrayList<Group> groups = new ArrayList<Group>();
-//    private ArrayList<DailyActivity> activityLog = new ArrayList<DailyActivity>();
+    private ArrayList<Goal> goals = new ArrayList<>();
+    private ArrayList<Group> groups = new ArrayList<>();
+    private ArrayList<DailyActivity> activityLog = new ArrayList<>();
 
     public double getBMI() {
         return BMI;

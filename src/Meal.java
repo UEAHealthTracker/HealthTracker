@@ -1,25 +1,17 @@
-import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 
 public class Meal {
 
     private int mealid;
-    private ArrayList<DietItem> items = new ArrayList<>();
-    private final LocalDateTime timeConsumed;
+    private final ArrayList<DietItem> items = new ArrayList<>();
+    private final LocalTime timeConsumed = LocalTime.now();;
     private int calorieCount;
 
     public Meal() {
         this.mealid = -1;
-        this.items = null;
-        this.timeConsumed = LocalDateTime.now();
         this.calorieCount = 0;
-    }
-
-    public Meal(int mealid, ArrayList<DietItem> items, LocalDateTime timeConsumed, int calorieCount){
-        this.mealid = mealid;
-        this.items = items;
-        this.timeConsumed = timeConsumed;
-        this.calorieCount = calorieCount;
     }
 
     public void setMealid(int mealid){
@@ -44,43 +36,36 @@ public class Meal {
 
     public ArrayList<DietItem> getItems(){return items;}
 
-    public String getItemsToString(){
-        StringBuilder itemsToString = new StringBuilder();
-
-        for(DietItem item : items){
-            itemsToString.append(item.getName());
-        }
-        return itemsToString.toString();
-    }
-
-    public ArrayList<DietItem> getFoods(){
-        ArrayList<DietItem> foods = new ArrayList<>();
+    public String getFoods(){
+        StringBuilder foodsToString = new StringBuilder();
 
         for(DietItem item : items){
             if(item.getType() == DietItem.Type.FOOD){
-                foods.add(item);
+                foodsToString.append(item.getName()).append("\n");
             }
         }
-        return foods;
+
+        return foodsToString.toString();
     }
 
-    public ArrayList<DietItem>getDrinks(){
-        ArrayList<DietItem> drinks = new ArrayList<>();
+    public String getDrinks(){
+        StringBuilder drinksToString = new StringBuilder();
 
         for(DietItem item : items){
             if(item.getType() == DietItem.Type.DRINK){
-                drinks.add(item);
+                drinksToString.append(item.getName()).append("\n");
             }
         }
-        return drinks;
+
+        return drinksToString.toString();
     }
 
     public int getCalorieCount() {
         return calorieCount;
     }
 
-    public LocalDateTime getTimeConsumed() {
-        return timeConsumed;
+    public LocalTime getTimeConsumed() {
+        return timeConsumed.truncatedTo(ChronoUnit.MINUTES);
     }
 
     public String toString() {
@@ -105,7 +90,7 @@ public class Meal {
     }
 
     //Testing harness
-    public static void main(String[] args) {
+    public static void test() {
 
         //Create a new meal
         Meal meal = new Meal();

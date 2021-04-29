@@ -16,6 +16,7 @@ import java.time.temporal.ChronoUnit;
 import java.util.Date;
 
 public class HomePageController extends BaseController {
+
     private ObservableList<Goal> data;
     @FXML ListView<Goal> listView = new ListView<>();
     public boolean hm=false;

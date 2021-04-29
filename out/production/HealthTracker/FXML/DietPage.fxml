@@ -74,7 +74,8 @@
             <TableView fx:id="dietTable" layoutX="15.0" layoutY="60.0" prefHeight="280.0" prefWidth="360.0" style="-fx-background-color: #ffffff;">
               <columns>
                 <TableColumn fx:id="timeConsumed" prefWidth="90.0" text="Time" />
-                  <TableColumn fx:id="items" prefWidth="180.0" text="Items" />
+                  <TableColumn fx:id="food" prefWidth="90.0" text="Food" />
+                  <TableColumn fx:id="drink" prefWidth="90.0" text="Drink" />
                   <TableColumn fx:id="calorieCount" prefWidth="90.0" text="Calories" />
               </columns>
             </TableView>
@@ -89,7 +90,7 @@
                   <Image url="@../img/add_box.png" />
                </image>
             </ImageView>
-            <Button graphicTextGap="0.0" layoutX="380.0" layoutY="10.0" mnemonicParsing="false" onAction="#MenuSwitch" opacity="0.0" prefHeight="30.0" prefWidth="30.0" text="Add Diet Item">
+            <Button graphicTextGap="0.0" layoutX="380.0" layoutY="10.0" mnemonicParsing="false" onAction="#openAddDietItem" opacity="0.0" prefHeight="30.0" prefWidth="30.0" text="Add Diet Item">
                <font>
                   <Font size="1.0" />
                </font></Button>

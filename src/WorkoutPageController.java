@@ -5,12 +5,10 @@ import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 
-import javax.swing.*;
 import java.io.IOException;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.time.LocalDate;
 
 enum WorkoutType {
 
@@ -57,8 +55,8 @@ enum WorkoutType {
 }
 
 public class WorkoutPageController extends BaseController {
-    public final static  WorkoutPageController Instance= new WorkoutPageController();
 
+    public final static  WorkoutPageController Instance= new WorkoutPageController();
 
     private static Button addWorkoutbtn;
 

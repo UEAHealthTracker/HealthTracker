@@ -24,9 +24,7 @@ import java.util.*;
 
 public class GroupsPageController extends BaseController {
     //Variables needed for controller
-    private Parent root;
-    private Stage stage;
-    private Scene scene;
+
     //Email Pattern that emails must adhere to
     private static final String EMAIL_PATTERN =
             "^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@"

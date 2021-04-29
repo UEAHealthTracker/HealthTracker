@@ -14,7 +14,9 @@ public class EditUsePageController extends BaseController{
     @FXML TextField emailtf;
     @FXML TextField heighttf;
     @FXML TextField weighttf;
+
     public void initialize() {
+
         userLabel.setText("Hello " + User.INSTANCE.getUsername());
         nametf.setText(User.INSTANCE.getRealName());
         emailtf.setText(User.INSTANCE.getEmail());

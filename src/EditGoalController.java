@@ -18,9 +18,9 @@ public class EditGoalController extends BaseController{
     DatePicker editgoaldate;
     @FXML
     ComboBox editgoalgroup;
-    @FXML
-    Label userLabel;
+
     int items=0;
+
     public void initialize() {
         userLabel.setText("Hello " + User.INSTANCE.getUsername());
 

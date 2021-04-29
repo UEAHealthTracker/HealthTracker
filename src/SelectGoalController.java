@@ -9,7 +9,6 @@ import java.sql.ResultSet;
 public class SelectGoalController extends BaseController {
     @FXML ComboBox gtypecb;
     @FXML ComboBox gnamecb;
-    @FXML Label userLabel;
 
     public void initialize() {
 

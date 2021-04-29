@@ -6,8 +6,7 @@ import java.sql.PreparedStatement;
 import java.time.LocalDate;
 
 public class AddWeightController extends BaseController {
-    @FXML
-    Label userLabel;
+
     @FXML
     TextField Weightgtf;
     @FXML
@@ -20,6 +19,7 @@ public class AddWeightController extends BaseController {
     ToggleButton kgtb;
     @FXML ToggleButton lbtb;
     ToggleGroup group = new ToggleGroup();
+
     public void initialize() {
         kgtb.setToggleGroup(group);
         lbtb.setToggleGroup(group);

@@ -14,8 +14,7 @@ public class BaseController {
     Parent root;
     Stage stage;
     Scene scene;
-    @FXML
-    Label userLabel;
+    @FXML Label userLabel;
     public String filename="";
     //default constructor
     public BaseController(){

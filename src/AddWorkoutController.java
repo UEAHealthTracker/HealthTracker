@@ -23,11 +23,16 @@ public class AddWorkoutController  extends BaseController{
     ComboBox WorkoutTypeSelector;
     @FXML
     TextField durationTF;
-    private Parent root;
-    private Stage stage;
-    private Scene scene;
+    @FXML TextField duration2;
+    @FXML ComboBox WorkoutTypeSelector2;
+    @FXML ComboBox ID;
+    @FXML
+    Label workoutTypelable;
+
     boolean open=false;
+
     public void init(){
+
         userLabel.setText("Hello "+User.INSTANCE.getUsername());
         if(open==false) {
             for (WorkoutType type : WorkoutType.values()) {

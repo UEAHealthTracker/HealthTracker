@@ -1,21 +1,22 @@
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.ArrayList;
 
 public class Meal {
 
     private int mealid;
-    private ArrayList<DietItem> items = new ArrayList<>();
-    private final LocalDateTime timeConsumed;
+    private ArrayList<DietItem> items;
+    private LocalTime timeConsumed;
     private int calorieCount;
 
     public Meal() {
         this.mealid = -1;
         this.items = null;
-        this.timeConsumed = LocalDateTime.now();
+        this.timeConsumed = LocalTime.now();
         this.calorieCount = 0;
     }
 
-    public Meal(int mealid, ArrayList<DietItem> items, LocalDateTime timeConsumed, int calorieCount){
+    public Meal(int mealid, ArrayList<DietItem> items, LocalTime timeConsumed, int calorieCount){
         this.mealid = mealid;
         this.items = items;
         this.timeConsumed = timeConsumed;
@@ -79,7 +80,7 @@ public class Meal {
         return calorieCount;
     }
 
-    public LocalDateTime getTimeConsumed() {
+    public LocalTime getTimeConsumed() {
         return timeConsumed;
     }
 

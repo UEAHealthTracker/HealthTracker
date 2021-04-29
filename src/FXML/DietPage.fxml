@@ -89,7 +89,7 @@
                   <Image url="@../img/add_box.png" />
                </image>
             </ImageView>
-            <Button graphicTextGap="0.0" layoutX="380.0" layoutY="10.0" mnemonicParsing="false" onAction="#MenuSwitch" opacity="0.0" prefHeight="30.0" prefWidth="30.0" text="Add Diet Item">
+            <Button graphicTextGap="0.0" layoutX="380.0" layoutY="10.0" mnemonicParsing="false" onAction="#openAddDietItem" opacity="0.0" prefHeight="30.0" prefWidth="30.0" text="Add Diet Item">
                <font>
                   <Font size="1.0" />
                </font></Button>

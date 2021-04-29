@@ -22,6 +22,8 @@ public class User {
      double height;
      double BMI;
 
+     DailyActivity dailyActivity;
+
     public ArrayList<Group> getGroups() {
         return groups;
     }

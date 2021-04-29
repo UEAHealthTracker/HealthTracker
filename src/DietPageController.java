@@ -1,21 +1,23 @@
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
-import javafx.scene.control.TextField;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
+import javafx.scene.Scene;
+import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.sql.*;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.ArrayList;
 
 public class DietPageController extends BaseController {
 
     @FXML TableView<Meal> dietTable;
-    @FXML TableColumn<Meal, Timestamp> timeConsumed;
+    @FXML TableColumn<Meal, LocalTime> timeConsumed;
     @FXML TableColumn<Meal, ArrayList<DietItem>> items;
     @FXML TableColumn<Meal, Integer> calorieCount;
 
@@ -23,6 +25,9 @@ public class DietPageController extends BaseController {
     @FXML ComboBox<String> setItemType;
     @FXML TextField setItemName;
     @FXML TextField setCalorieCount;
+    @FXML Label errorMessage;
+
+    Meal selectedMeal = null;
 
     public void initialize(){
         userLabel.setText("Hello "+User.INSTANCE.getUsername());
@@ -59,7 +64,7 @@ public class DietPageController extends BaseController {
                     itemtype = null;
                 }
 
-                LocalDateTime time = rs.getTimestamp("timeconsumed").toLocalDateTime().withSecond(0);
+                LocalTime time = rs.getTime("timeconsumed").toLocalTime().withSecond(0);
                 dietItems.add(new DietItem(rs.getString("itemname"), rs.getInt("caloriecount"), itemtype));
 
                 mealData.add(new Meal(Integer.parseInt(rs.getString("mealid")), dietItems, time, rs.getInt("caloriecount")));
@@ -79,10 +84,10 @@ public class DietPageController extends BaseController {
     }
 
     //allow user to select a table item/row and delete it using the delete button
-    public void removeTableItem(javafx.event.ActionEvent actionEvent) throws IOException{
+    public void removeTableItem() {
         if (dietTable.getSelectionModel().getSelectedItem() != null) {
-            Meal selectedMeal = dietTable.getSelectionModel().getSelectedItem();
-            String SQL_QUERY="DELETE FROM Meal WHERE mealid=?;";
+            selectedMeal = dietTable.getSelectionModel().getSelectedItem();
+            String SQL_QUERY="DELETE FROM mealitem WHERE mealid=?;";
             try{
                 PreparedStatement pst = DBsession.INSTANCE.OpenConnection().prepareStatement(SQL_QUERY);
                 pst.setInt(1, selectedMeal.getMealid());
@@ -91,37 +96,55 @@ public class DietPageController extends BaseController {
             }catch(Exception e){System.out.println(e);}
 
         }
-
+        populateDietTable();
     }
 
-    public void addMeal(){
+    public Meal addMeal(){
 
         Meal newMeal = new Meal();
 
         try {
             String SQL_QUERY = "INSERT INTO meal (timeconsumed, userid) VALUES (?, ?)";
             Connection connection = DBsession.INSTANCE.OpenConnection();
-            PreparedStatement pst = connection.prepareStatement(SQL_QUERY, Statement.RETURN_GENERATED_KEYS);
-            pst.setTimestamp(1, Timestamp.valueOf(newMeal.getTimeConsumed()));
+            PreparedStatement pst = connection.prepareStatement(SQL_QUERY, PreparedStatement.RETURN_GENERATED_KEYS);
+            pst.setTime(1, Time.valueOf(newMeal.getTimeConsumed()));
             pst.setInt(2, User.INSTANCE.getUserid());
             pst.executeQuery();
             ResultSet generatedKey = pst.getGeneratedKeys();
 
             newMeal.setMealid(generatedKey.getInt(1));
+
         }
         catch (Exception e){
             System.out.println("error- meal could not be added.");
         }
 
+        return newMeal;
+    }
+
+    public void openAddDietItem(javafx.event.ActionEvent actionEvent) throws IOException{
+
+        if (dietTable.getSelectionModel().getSelectedItem() != null) {
+
+            selectedMeal = dietTable.getSelectionModel().getSelectedItem();
+        }
+
+        root = FXMLLoader.load(getClass().getClassLoader().getResource("FXML/AddDietItemPage.fxml"));
+        stage = (Stage)((Node)actionEvent.getSource()).getScene().getWindow();
+        scene = new Scene(root);
+        stage.setScene(scene);
+        stage.show();
+
     }
 
     public void addDietItem(){
 
-        if (dietTable.getSelectionModel().getSelectedItem() != null) {
-
-            Meal selectedMeal = dietTable.getSelectionModel().getSelectedItem();
-
-            //open add diet item page
+        if (selectedMeal == null) {
+            selectedMeal = addMeal();
+        }
+        else {
+            selectedMeal = dietTable.getSelectionModel().getSelectedItem();
+        }
 
             DietItem itemToAdd;
             DietItem.Type itemType;
@@ -137,32 +160,35 @@ public class DietPageController extends BaseController {
                 itemToAdd = new DietItem(setItemName.getText(), Integer.parseInt(setCalorieCount.getText()), itemType);
                 selectedMeal.addDietItem(itemToAdd);
 
-                String SQL_QUERY = "INSERT INTO dietitem (itemtype, itemname, caloriecount) VALUES (?, ?, ?)";
-                Connection connection = DBsession.INSTANCE.OpenConnection();
-                PreparedStatement pst = connection.prepareStatement(SQL_QUERY, Statement.RETURN_GENERATED_KEYS);
-                pst.setString(1, setItemName.getText());
-                pst.setInt(2, Integer.parseInt(setCalorieCount.getText()));
-                pst.setString(3, itemType.toString());
-                pst.executeQuery();
-                ResultSet generatedKey = pst.getGeneratedKeys();
-                pst.close();
+                try{
+                    String SQL_QUERY = "INSERT INTO dietitem (itemtype, itemname, caloriecount) VALUES (?, ?, ?)";
+                    Connection connection = DBsession.INSTANCE.OpenConnection();
+                    PreparedStatement pst = connection.prepareStatement(SQL_QUERY, PreparedStatement.RETURN_GENERATED_KEYS);
+                    pst.setString(1, setItemName.getText());
+                    pst.setInt(2, Integer.parseInt(setCalorieCount.getText()));
+                    pst.setString(3, itemType.toString());
+                    pst.executeQuery();
+                    ResultSet generatedKey = pst.getGeneratedKeys();
+                    pst.close();
 
-                SQL_QUERY = "INSERT INTO mealitem VALUES (?, ?)";
-                pst = connection.prepareStatement(SQL_QUERY);
-                pst.setInt(1, selectedMeal.getMealid());
-                pst.setInt(2, generatedKey.getInt(1));
-                pst.executeQuery();
-                pst.close();
+                    SQL_QUERY = "INSERT INTO mealitem VALUES (?, ?)";
+                    pst = connection.prepareStatement(SQL_QUERY);
+                    pst.setInt(1, selectedMeal.getMealid());
+                    pst.setInt(2, generatedKey.getInt(1));
+                    pst.executeQuery();
+                    pst.close();
+                }
+                catch (Exception e){
+                    System.out.println("error inserting into database");
+                }
 
             }
             catch (Exception e){
                 System.out.println("Item cannot be added - some values may be empty.");
+                errorMessage.setText("Item cannot be added - some values may be empty.");
+
             }
 
-        }
-        else {
-            addMeal();
-        }
     }
 
     public void selectItemType() {

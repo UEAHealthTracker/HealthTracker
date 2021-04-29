@@ -61,8 +61,6 @@ public class AddWorkoutController  extends BaseController{
             }
             pst.setInt(3,cal* Integer.parseInt(durationTF.getText()));
             int msg =   pst.executeUpdate();
-
-
             DBsession.INSTANCE.OpenConnection().close();
             if(msg==1){
                 addMessage("Workout Successfully Added!","WORKOUT ADDED");
@@ -73,13 +71,13 @@ public class AddWorkoutController  extends BaseController{
         DateSet();
         switchToAddworkout(event);
     }
+
     public void switchToAddworkout(ActionEvent event) throws IOException {
         root = FXMLLoader.load(getClass().getResource("FXML/WorkoutPage.fxml"));
         stage = (Stage)((Node)event.getSource()).getScene().getWindow();
         scene = new Scene(root);
         stage.setScene(scene);
         stage.show();
-
     }
 
     public void DateSet(){
@@ -105,6 +103,7 @@ public class AddWorkoutController  extends BaseController{
         }
         DateSet2();
     }
+
     public void DateSet2(){
         LocalDate date=LocalDate.now();
 //        String SQL_Insert="INSERT INTO day( date, workoutid, calories) Select workoutid,username from Users ON day.dayid=Users.dayid Join workout ON workout.workoutid=day.dayid Where username=? and workoutid=?";   ";

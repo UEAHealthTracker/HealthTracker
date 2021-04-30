@@ -12,6 +12,8 @@ import java.io.IOException;
 import java.sql.*;
 import java.time.LocalTime;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Objects;
 
 public class DietPageController extends BaseController {
@@ -31,8 +33,6 @@ public class DietPageController extends BaseController {
     //add data to diet table
     public void populateDietTable(){
 
-        //TODO add meal to User so it can be retrieved more easily?
-
         //diet page
         ObservableList<Meal> mealData = FXCollections.observableArrayList();
 
@@ -44,7 +44,7 @@ public class DietPageController extends BaseController {
                     "ORDER BY meal.timeconsumed";
 
             PreparedStatement pst = DBsession.INSTANCE.OpenConnection().prepareStatement(SQL_QUERY);
-            pst.setString(1, Integer.toString(User.INSTANCE.getUserid()));
+            pst.setInt(1, User.INSTANCE.getUserid());
             ResultSet rs = pst.executeQuery();
 
             ArrayList<DietItem> dietItems = new ArrayList<>();
@@ -52,24 +52,28 @@ public class DietPageController extends BaseController {
 
             while(rs.next()){
 
-                if (rs.getString("itemtype").equals("food")){
-                    itemtype = DietItem.Type.FOOD;
-                }
-                else if (rs.getString("itemtype").equals("drink")){
-                    itemtype = DietItem.Type.DRINK;
-                }
-                else {
-                    itemtype = null;
+                List<String> items = Arrays.asList(rs.getString("itemname").split("\\s*,\\s*"));
+                List<String> itemtypes = Arrays.asList(rs.getString("itemtype").split("\\s*,\\s*"));
+
+                for(int i = 0; i < items.size(); i++){
+                    if(itemtypes.get(i).equals("food")){
+                        itemtype = DietItem.Type.FOOD;
+                    }
+                    else if(itemtypes.get(i).equals("drink")){
+                        itemtype = DietItem.Type.DRINK;
+                    }
+                    else {
+                        itemtype = null;
+                    }
+
+                    dietItems.add(new DietItem(items.get(i), rs.getInt("caloriecount"), itemtype));
                 }
 
                 LocalTime time = rs.getTime("timeconsumed").toLocalTime().withSecond(0);
-                dietItems.add(new DietItem(rs.getString("itemname"), rs.getInt("caloriecount"), itemtype));
 
-                mealData.add(new Meal(Integer.parseInt(rs.getString("mealid")), dietItems, time, rs.getInt("caloriecount")));
-
-                DBsession.INSTANCE.OpenConnection().close();
-
+                mealData.add(new Meal(Integer.parseInt(rs.getString("mealid"), dietItems, time, rs.getInt("caloriecount")));
             }
+            DBsession.INSTANCE.OpenConnection().close();
 
         }catch (Exception e){
             System.out.println("error retrieving data from database");

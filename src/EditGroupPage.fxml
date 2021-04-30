@@ -69,7 +69,7 @@
                </font>
             </Button>
             <TextField fx:id="removeMemberMail" layoutX="122.0" layoutY="184.0" prefWidth="150.0" promptText="Type email" style="-fx-background-color: #ffffff;" />
-            <Button layoutX="123.0" layoutY="209.0" mnemonicParsing="false" prefWidth="150.0" style="-fx-background-color: #aa80ff;" text="Remove member" textFill="WHITE">
+            <Button layoutX="123.0" layoutY="209.0" mnemonicParsing="false" onAction="#removeMember" prefWidth="150.0" style="-fx-background-color: #aa80ff;" text="Remove member" textFill="WHITE">
                <font>
                   <Font name="Segoe UI Semilight" size="12.0" />
                </font>

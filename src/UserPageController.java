@@ -18,7 +18,7 @@ public class UserPageController extends BaseController{
             userLabel.setText("Hello " + User.INSTANCE.getUsername());
             DecimalFormat df = new DecimalFormat("#.00");
             double var = (User.INSTANCE.getWeight() / (User.INSTANCE.getHeight() * User.INSTANCE.getHeight())) * 10000;
-            name.setText("Name: " + User.INSTANCE.getRealName());
+            name.setText("Name: " + User.INSTANCE.getUsername());
             email.setText("Email: " + User.INSTANCE.getEmail());
             height.setText("Height: " + User.INSTANCE.getHeight());
             weight.setText("Weight: " + User.INSTANCE.getWeight());

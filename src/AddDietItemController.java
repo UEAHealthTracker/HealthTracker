@@ -35,7 +35,7 @@ public class AddDietItemController extends BaseController{
         Meal newMeal = new Meal();
 
         try {
-            /*String SQL_QUERY = "INSERT INTO meal (timeconsumed, userid) VALUES (?, ?)";
+            /*String SQL_QUERY = "INSERT INTO meal (timeconsumed, userid) VALUES ('?', ?)";
             Connection connection = DBsession.INSTANCE.OpenConnection();
             PreparedStatement pst = connection.prepareStatement(SQL_QUERY);
             pst.setTime(1, Time.valueOf(newMeal.getTimeConsumed()));

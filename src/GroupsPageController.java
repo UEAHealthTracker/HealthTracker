@@ -94,7 +94,7 @@ public class GroupsPageController extends BaseController {
         groupNameText = groupName;
         groupMemberText = groupMembersEmail;
         createGroupbutton = createGroupbtn;
-        //userLabel.setText("Hello "+User.INSTANCE.getUsername());
+        userLabel.setText("Hello "+User.INSTANCE.getUsername());
         populateGroupTables();
     }
 
@@ -404,7 +404,7 @@ public class GroupsPageController extends BaseController {
             String editGroupName = EditGroupName.getText();
             String memberEmail = removeMemberMail.getText();
             String resultAdmin;
-            boolean isInGroup=false;
+           boolean isInInGroup=false;
             //Check if the user is admin of the group
             try {
                 if (editGroupName.isEmpty() || memberEmail.isEmpty()) {
@@ -454,7 +454,7 @@ public class GroupsPageController extends BaseController {
                                             String removeInvite = "DELETE FROM group_invites WHERE group_id=? AND group_member=?";
                                             PreparedStatement deleteInvite = DBsession.INSTANCE.OpenConnection().prepareStatement(removeInvite);
                                             deleteInvite.setInt(1, groupId);
-                                            deleteInvite.setInt(2, userId);
+                                            deleteInvite.setString(2, memberEmail);
                                               deleteInvite.executeUpdate();
                                               System.out.println("Invite has been deleted. User cannot join the group");
                                         }

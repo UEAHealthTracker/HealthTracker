@@ -14,6 +14,7 @@ import javafx.stage.Stage;
 //import javax.mail.internet.MimeMessage;
 
 
+import javax.mail.MessagingException;
 import java.io.IOException;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;

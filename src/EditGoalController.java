@@ -9,6 +9,7 @@ import java.io.IOException;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.Iterator;
 
 public class EditGoalController extends BaseController{
@@ -18,9 +19,11 @@ public class EditGoalController extends BaseController{
     DatePicker editgoaldate;
     @FXML
     ComboBox editgoalgroup;
-
+    ArrayList<String> email=new ArrayList<>();
     int items=0;
-
+    String goalalphacode;
+    String enddate;
+    String description;
     public void initialize() {
         userLabel.setText("Hello " + User.INSTANCE.getUsername());
 
@@ -40,7 +43,7 @@ public class EditGoalController extends BaseController{
     }
     public void Check(){
         int i=0;
-        String SQL_QUERY="select goalname,enddate,groups.groupname as gn from Goal left join groupgoal on groupgoal.goalid=Goal.goalid left JOIN groups on groups.groupid=groupgoal.groupid where Goal.goalid=?";
+        String SQL_QUERY="select goalname,code,enddate,groups.groupname as gn from Goal left join groupgoal on groupgoal.goalid=Goal.goalid left JOIN groups on groups.groupid=groupgoal.groupid where Goal.goalid=?";
         try{
             PreparedStatement pst = DBsession.INSTANCE.OpenConnection().prepareStatement(SQL_QUERY);
             pst.setInt(1, Goal.Instance.getGoalid());
@@ -48,6 +51,9 @@ public class EditGoalController extends BaseController{
             while(rs.next()) {
                 editgoalname.setText(rs.getString("goalname"));
                 editgoaldate.setValue(LocalDate.parse(rs.getString("enddate")));
+                goalalphacode=rs.getString("code");
+                enddate=rs.getString("enddate");
+                description=rs.getString("goalname");
                 ObservableList<String> items = editgoalgroup.getItems();
                 Iterator<String> iterator = items.iterator();
                 while(iterator.hasNext()){
@@ -78,10 +84,35 @@ public class EditGoalController extends BaseController{
                 ps.setInt(1, Goal.Instance.getGoalid());
                 ps.setString(2,editgoalgroup.getSelectionModel().getSelectedItem().toString());
                 ps.executeUpdate();
+                getgroupmembers(editgoalgroup.getSelectionModel().getSelectedItem().toString(),User.INSTANCE.getUserid());
+                for (String item: email) {
+                   SendMail.sendGoalMail(item,editgoalgroup.getSelectionModel().getSelectedItem().toString(),goalalphacode,enddate,description);
+                }
+
             }
             DBsession.INSTANCE.OpenConnection().close();
         }catch(Exception e){System.out.println(e);}
         Instance.Switch(actionEvent, "FXML/HomePage.fxml");
 
+
+    }
+
+    ArrayList getgroupmembers(String groupname,Integer userid){
+
+        String SQL_QUERY="SELECT Users.email as email,Users.userid as userid FROM Users JOIN groupsmember on Users.userid=groupsmember.userid JOIN groups ON groups.groupid=groupsmember.groupid WHERE groups.groupid=(SELECT groupid FROM groups where groupname=?)";
+        try{
+            PreparedStatement pst = DBsession.INSTANCE.OpenConnection().prepareStatement(SQL_QUERY);
+            pst.setString(1, groupname);
+            ResultSet rs=pst.executeQuery();
+            while(rs.next()) {
+                if(Integer.parseInt(rs.getString("userid"))==userid) {
+
+                }else {
+                    email.add(rs.getString("email"));
+                }
+            }
+            DBsession.INSTANCE.OpenConnection().close();
+        }catch(Exception e){System.out.println(e);}
+        return email;
     }
 }

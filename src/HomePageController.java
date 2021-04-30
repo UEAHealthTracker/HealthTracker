@@ -8,15 +8,18 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 
 
+import javax.mail.MessagingException;
 import java.io.IOException;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
+import java.util.ArrayList;
 import java.util.Date;
 
 public class HomePageController extends BaseController {
-
+    ArrayList<String> email=new ArrayList<>();
+    ArrayList<String> groupnames=new ArrayList<>();
     private ObservableList<Goal> data;
     @FXML ListView<Goal> listView = new ListView<>();
     public boolean hm=false;
@@ -29,12 +32,27 @@ public class HomePageController extends BaseController {
     int items=0;
 
 
-    public void initialize() {
+    public void initialize() throws MessagingException {
         userLabel.setText("Hello "+User.INSTANCE.getUsername());
         Check();
         populateGoalsTable();
 
+//SELECT DISTINCT groups.groupname as gn from groups JOIN groupsmember on groupsmember.groupid=groups.groupid
+// JOIN Users on Users.userid=groupsmember.userid
+// JOIN Goal ON Goal.userid=Users.userid
+// JOIN groupgoal on groupgoal.groupid=groups.groupid where Goal.goalname="Complete5thWorkout"
 
+
+        //Do not remove this comment!!!!!
+//        for(String groupname:groupnames){
+//            for(String email:email){
+//                for(Goal goal:data) {
+//                    if(goal.getGoalstatus()=="Complete") {
+//                    SendMail.sendGoalCompletationMail(email,groupname,goal.getGoalname(),User.INSTANCE.username);
+//                    }
+//                }
+//            }
+//        }
 
 
 
@@ -44,7 +62,7 @@ public class HomePageController extends BaseController {
         data = FXCollections.observableArrayList();
 
 
-        String SQL_QUERY = "select goalname,startdate,enddate,Goal.goalid as goalid,COUNT(groupgoal.groupgoalid) as total from Goal JOIN Users ON Users.userid=Goal.userid left JOIN groupgoal on Goal.goalid = groupgoal.goalid where Users.userid=? GROUP BY Goal.goalid";
+        String SQL_QUERY = "select goalname,startdate,enddate,Goal.code as code,Goal.goalid as goalid,COUNT(groupgoal.groupgoalid) as total from Goal JOIN Users ON Users.userid=Goal.userid left JOIN groupgoal on Goal.goalid = groupgoal.goalid where Users.userid=? GROUP BY Goal.goalid";
         try {
             PreparedStatement pst = DBsession.INSTANCE.OpenConnection().prepareStatement(SQL_QUERY);
             pst.setInt(1, User.INSTANCE.getUserid());
@@ -58,10 +76,15 @@ public class HomePageController extends BaseController {
                 long days = ChronoUnit.DAYS.between(now, ed);
                 if (days > 0) {
                     status = "Active";
-                    data.add(new Goal(Integer.parseInt(rs.getString("goalid")), rs.getString("goalname"), ed.toString(), status, rs.getString("total")+"/"+items,sd.toString()));
+                    data.add(new Goal(Integer.parseInt(rs.getString("goalid")), rs.getString("goalname"), ed.toString(), status, rs.getString("total")+"/"+items,sd.toString(),rs.getString("code")));
                 } else {
                     status = "Complete";
-                    data.add(new Goal(Integer.parseInt(rs.getString("goalid")), rs.getString("goalname"), ed.toString(), status, rs.getString("total")+"/"+items,sd.toString()));
+                    getgroupnames(rs.getString("goalname"));
+                    data.add(new Goal(Integer.parseInt(rs.getString("goalid")), rs.getString("goalname"), ed.toString(), status, rs.getString("total")+"/"+items,sd.toString(),rs.getString("code")));
+                    for(String item:groupnames){
+                        getgroupmembers(item,User.INSTANCE.getUserid());
+                    }
+
                 }
             }
 //            goalid.setCellValueFactory(new PropertyValueFactory<>("goalid"));
@@ -140,6 +163,40 @@ public class HomePageController extends BaseController {
             BaseController.Instance.Switch(actionEvent,"FXML/HomePage.fxml");
         }
 
+    }
+
+    ArrayList getgroupmembers(String groupname, Integer userid){
+
+        String SQL_QUERY="SELECT DISTINCT Users.email as email,Users.userid as userid FROM Users JOIN groupsmember on Users.userid=groupsmember.userid JOIN groups ON groups.groupid=groupsmember.groupid WHERE groups.groupid=(SELECT groupid FROM groups where groupname=?)";
+        try{
+            PreparedStatement pst = DBsession.INSTANCE.OpenConnection().prepareStatement(SQL_QUERY);
+            pst.setString(1, groupname);
+            ResultSet rs=pst.executeQuery();
+            while(rs.next()) {
+                if(Integer.parseInt(rs.getString("userid"))==userid) {
+
+                }else {
+
+                    email.add(rs.getString("email"));
+                }
+            }
+            DBsession.INSTANCE.OpenConnection().close();
+        }catch(Exception e){System.out.println(e);}
+        return email;
+    }
+    ArrayList getgroupnames(String goalname){
+
+        String SQL_QUERY="SELECT DISTINCT groups.groupname as gn from groups JOIN groupsmember on groupsmember.groupid=groups.groupid JOIN groupgoal on groupgoal.groupid=groups.groupid JOIN Goal on Goal.goalid=groupgoal.goalid where Goal.goalname=?";
+        try{
+            PreparedStatement pst = DBsession.INSTANCE.OpenConnection().prepareStatement(SQL_QUERY);
+            pst.setString(1, goalname);
+            ResultSet rs=pst.executeQuery();
+            while(rs.next()) {
+                groupnames.add(rs.getString("gn"));
+            }
+            DBsession.INSTANCE.OpenConnection().close();
+        }catch(Exception e){System.out.println(e);}
+        return groupnames;
     }
 
 }

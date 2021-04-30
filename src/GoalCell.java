@@ -6,6 +6,9 @@ import javafx.scene.layout.AnchorPane;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.Random;
 
 public class GoalCell extends ListCell<Goal> {
     FXMLLoader mLLoader;
@@ -21,13 +24,14 @@ public class GoalCell extends ListCell<Goal> {
     Label GroupsLbl;
     @FXML
     ProgressBar Progress;
-
-
+    @FXML
+    ProgressBar Progress1;
+//    public static final GoalCell Instance= new GoalCell();
+    public float percent=0;
 
     @Override
     protected void updateItem(Goal item, boolean empty) {
         super.updateItem(item, empty);
-
 
         if(empty || item == null) {
             setText(null);
@@ -61,15 +65,21 @@ public class GoalCell extends ListCell<Goal> {
 
             }else if(item.getGoalstatus()=="Active"){
                 StatusLbl.setStyle("-fx-text-fill: green;-fx-font-weight: bold");
-                float percent=100*ChronoUnit.DAYS.between(now,sd)/ChronoUnit.DAYS.between(ed,sd);
+                percent=100*ChronoUnit.DAYS.between(sd,now)/ChronoUnit.DAYS.between(ed,sd);
+                Progress1.setProgress(percent/100);
+                percent=100*ChronoUnit.DAYS.between(now,sd)/ChronoUnit.DAYS.between(ed,sd);
                 Progress.setProgress(percent/100);
+//              Progress.setProgress(getPercentageLeft(java.sql.Date.valueOf(sd),java.sql.Date.valueOf(ed)));
             }
            // Progress.setProgress(0.5);
 
             setText(null);
             setGraphic(ap);
         }
+
     }
+
+
 
 
 

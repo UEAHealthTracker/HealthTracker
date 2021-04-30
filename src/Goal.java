@@ -34,13 +34,14 @@ public class Goal {
         this.goalgroups = goalgroups;
     }
 
-    public Goal(Integer goalid,String goalname, String goaldate, String goalstatus, String goalgroups,String goalstartdate) {
+    public Goal(Integer goalid,String goalname, String goaldate, String goalstatus, String goalgroups,String goalstartdate,String code) {
         this.goalid = goalid;
         this.goalname = goalname;
         this.goaldate = goaldate;
         this.goalstatus = goalstatus;
         this.goalgroups = goalgroups;
         this.goalstartdate = goalstartdate;
+        this.code=code;
     }
     public Goal() { }
 
@@ -66,4 +67,14 @@ public class Goal {
     String goaldate;
     String goalstatus;
     String goalgroups;
+
+    public String getCode() {
+        return code;
+    }
+
+    public void setCode(String code) {
+        this.code = code;
+    }
+
+    String code;
 }

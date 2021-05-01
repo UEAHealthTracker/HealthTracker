@@ -1,3 +1,6 @@
+import javafx.animation.KeyFrame;
+import javafx.animation.KeyValue;
+import javafx.animation.Timeline;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -6,21 +9,26 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
+import javafx.scene.image.ImageView;
+import javafx.util.Duration;
 
 
 import javax.mail.MessagingException;
 import java.io.IOException;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Iterator;
 
 public class HomePageController extends BaseController {
     ArrayList<String> email=new ArrayList<>();
     ArrayList<String> groupnames=new ArrayList<>();
     private ObservableList<Goal> data;
+    private ObservableList<Goal> completeGoals;
     @FXML ListView<Goal> listView = new ListView<>();
     public boolean hm=false;
     @FXML  TableView <Goal>  goalview;
@@ -29,37 +37,39 @@ public class HomePageController extends BaseController {
     @FXML TableColumn<Goal, Date> goaldate;
     @FXML TableColumn<Goal,String> goalstatus;
     @FXML TableColumn<Goal, Integer> goalgroups;
+    @FXML Label msglbl;
     int items=0;
+    int goalsmet=0;
+    @FXML Button share;
+    @FXML  ImageView imshare;
+
 
 
     public void initialize() throws MessagingException {
         userLabel.setText("Hello "+User.INSTANCE.getUsername());
         Check();
         populateGoalsTable();
+        if(goalsmet>0) {
+            msglbl.setVisible(true);
+            share.setVisible(true);
+            imshare.setVisible(true);
+            msglbl.setText("You have:" + goalsmet + " completed goal/'s");
+        }else{
+            msglbl.setVisible(false);
+            share.setVisible(false);
+            imshare.setVisible(false);
+        }
 
-//SELECT DISTINCT groups.groupname as gn from groups JOIN groupsmember on groupsmember.groupid=groups.groupid
-// JOIN Users on Users.userid=groupsmember.userid
-// JOIN Goal ON Goal.userid=Users.userid
-// JOIN groupgoal on groupgoal.groupid=groups.groupid where Goal.goalname="Complete5thWorkout"
-
-
-        //Do not remove this comment!!!!!
-//        for(String groupname:groupnames){
-//            for(String email:email){
-//                for(Goal goal:data) {
-//                    if(goal.getGoalstatus()=="Complete") {
-//                    SendMail.sendGoalCompletationMail(email,groupname,goal.getGoalname(),User.INSTANCE.username);
-//                    }
-//                }
-//            }
-//        }
 
 
 
     }
+
+
     //add data to goal table
     public void populateGoalsTable(){
         data = FXCollections.observableArrayList();
+        completeGoals = FXCollections.observableArrayList();
 
 
         String SQL_QUERY = "select goalname,startdate,enddate,Goal.code as code,Goal.goalid as goalid,COUNT(groupgoal.groupgoalid) as total from Goal JOIN Users ON Users.userid=Goal.userid left JOIN groupgoal on Goal.goalid = groupgoal.goalid where Users.userid=? GROUP BY Goal.goalid";
@@ -78,21 +88,17 @@ public class HomePageController extends BaseController {
                     status = "Active";
                     data.add(new Goal(Integer.parseInt(rs.getString("goalid")), rs.getString("goalname"), ed.toString(), status, rs.getString("total")+"/"+items,sd.toString(),rs.getString("code")));
                 } else {
+                    goalsmet++;
                     status = "Complete";
                     getgroupnames(rs.getString("goalname"));
                     data.add(new Goal(Integer.parseInt(rs.getString("goalid")), rs.getString("goalname"), ed.toString(), status, rs.getString("total")+"/"+items,sd.toString(),rs.getString("code")));
+                    completeGoals.add(new Goal(Integer.parseInt(rs.getString("goalid")), rs.getString("goalname"), ed.toString(), status, rs.getString("total")+"/"+items,sd.toString(),rs.getString("code")));
                     for(String item:groupnames){
                         getgroupmembers(item,User.INSTANCE.getUserid());
                     }
 
                 }
             }
-//            goalid.setCellValueFactory(new PropertyValueFactory<>("goalid"));
-//            goalname.setCellValueFactory(new PropertyValueFactory<>("goalname"));
-//            goaldate.setCellValueFactory(new PropertyValueFactory<>("goaldate"));
-//            goalstatus.setCellValueFactory(new PropertyValueFactory<>("goalstatus"));
-//            goalgroups.setCellValueFactory(new PropertyValueFactory<>("goalgroups"));
-//            goalview.setItems(data);
 
             listView.setItems(data);
             listView.setCellFactory(param -> new GoalCell());
@@ -124,8 +130,23 @@ public class HomePageController extends BaseController {
 
 
 
-    public void openSelectGoalTypePage(javafx.event.ActionEvent actionEvent) throws IOException {
-        BaseController.Instance.Switch(actionEvent,"FXML/SelectGoalType.fxml");
+    public void ShareGoal() throws MessagingException {
+        msglbl.setVisible(false);
+        share.setVisible(false);
+        imshare.setVisible(false);
+        Iterator iterator=groupnames.iterator();
+        Iterator emailiterator=email.iterator();
+        while(iterator.hasNext()&&emailiterator.hasNext() ) {
+            while (emailiterator.hasNext()) {
+                for (Goal goal : completeGoals) {
+                    if(emailiterator.hasNext()==true) {
+                        SendMail.sendGoalCompletationMail((String) emailiterator.next(), (String) iterator.next(), goal.getGoalname(), User.INSTANCE.username);
+
+                    }else{break;}
+                }
+            }
+        }
+
     }
 
     public void openAddGoalPage(javafx.event.ActionEvent actionEvent) throws IOException {
@@ -174,9 +195,8 @@ public class HomePageController extends BaseController {
             ResultSet rs=pst.executeQuery();
             while(rs.next()) {
                 if(Integer.parseInt(rs.getString("userid"))==userid) {
-
                 }else {
-
+//                    if(!email.contains(rs.getString("email")))
                     email.add(rs.getString("email"));
                 }
             }
@@ -192,6 +212,7 @@ public class HomePageController extends BaseController {
             pst.setString(1, goalname);
             ResultSet rs=pst.executeQuery();
             while(rs.next()) {
+                if(!groupnames.contains(rs.getString("gn")))
                 groupnames.add(rs.getString("gn"));
             }
             DBsession.INSTANCE.OpenConnection().close();

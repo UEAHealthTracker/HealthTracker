@@ -14,6 +14,7 @@ public class WorkoutGoalController extends BaseController {
     DatePicker enddate;
     @FXML
     TextField GoalNameTF;
+    @FXML Label msglbl;
     public void initialize() {
 
         userLabel.setText("Hello "+User.INSTANCE.getUsername());
@@ -35,9 +36,9 @@ public class WorkoutGoalController extends BaseController {
             pst.setString(5, "Complex");
             pst.setString(6,getSaltString());
             pst.executeUpdate();
-//            }else{ thread.start();
-//                label.setText("");
-//            }
+            if(GoalNameTF.getText()==""|| String.valueOf(enddate.getValue())==""){
+                msglbl.setVisible(true);
+            }
             DBsession.INSTANCE.OpenConnection().close();
         }catch(Exception e){System.out.println(e);}
 //        if (Check() == true) {

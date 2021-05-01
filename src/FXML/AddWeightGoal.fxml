@@ -70,6 +70,7 @@
                </image>
             </ImageView>
             <Button graphicTextGap="0.0" layoutX="333.0" layoutY="314.0" mnemonicParsing="false" onAction="#AddWorkoutByCode" opacity="0.0" prefHeight="30.0" prefWidth="30.0" />
+            <Label fx:id="msglbl" layoutX="126.0" layoutY="249.0" prefHeight="38.0" prefWidth="190.0" style="-fx-background-color: transparent;" text="Name/Weight goal/Date Incorrect" visible="false" />
          </children>
       </AnchorPane>
    </right>

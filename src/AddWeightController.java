@@ -26,7 +26,7 @@ public class AddWeightController extends BaseController {
     ToggleGroup group = new ToggleGroup();
     @FXML
     TextField codetf;
-
+    @FXML Label msglbl;
     public void initialize() {
         kgtb.setToggleGroup(group);
         lbtb.setToggleGroup(group);
@@ -75,6 +75,10 @@ public class AddWeightController extends BaseController {
                 pst.setString(5, "Simple");
                 pst.setString(6,getSaltString());
             pst.executeUpdate();
+            if(String.valueOf(enddate.getValue())==""||Nametf.getText()==""|| Weightgtf.getText()==""){
+                msglbl.setVisible(true);
+            }
+
             DBsession.INSTANCE.OpenConnection().close();
         }catch(Exception e){System.out.println(e);}
             BaseController.Instance.Switch(actionEvent, "FXML/HomePage.fxml");

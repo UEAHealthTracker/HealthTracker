@@ -1,15 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.geometry.Insets?>
-<?import javafx.scene.control.Button?>
-<?import javafx.scene.control.Label?>
-<?import javafx.scene.image.Image?>
-<?import javafx.scene.image.ImageView?>
-<?import javafx.scene.layout.AnchorPane?>
-<?import javafx.scene.layout.BorderPane?>
-<?import javafx.scene.text.Font?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/15.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="UserPageController">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="UserPageController">
    <left>
       <AnchorPane prefHeight="400.0" prefWidth="200.0" style="-fx-background-color: #c7a4ff;" BorderPane.alignment="CENTER">
          <children>
@@ -65,7 +62,7 @@
                   <Image url="@../img/face.png" />
                </image>
             </ImageView>
-            <Label layoutX="100.0" layoutY="60.0" textFill="#aa80ff">
+            <Label layoutX="20.0" layoutY="60.0" textFill="#aa80ff">
                <font>
                   <Font name="Segoe UI Semilight" size="18.0" />
                </font>
@@ -77,7 +74,7 @@
                   </Label>
                </graphic>
             </Label>
-            <Label layoutX="100.0" layoutY="110.0" textFill="#aa80ff">
+            <Label layoutX="20.0" layoutY="110.0" textFill="#aa80ff">
                <font>
                   <Font name="Segoe UI Semilight" size="18.0" />
                </font>
@@ -89,7 +86,7 @@
                   </Label>
                </graphic>
             </Label>
-            <Label layoutX="100.0" layoutY="160.0" textFill="#aa80ff">
+            <Label layoutX="20.0" layoutY="160.0" textFill="#aa80ff">
                <font>
                   <Font name="Segoe UI Semilight" size="18.0" />
                </font>
@@ -101,7 +98,7 @@
                   </Label>
                </graphic>
             </Label>
-            <Label layoutX="100.0" layoutY="210.0" textFill="#aa80ff">
+            <Label layoutX="20.0" layoutY="210.0" textFill="#aa80ff">
                <font>
                   <Font name="Segoe UI Semilight" size="18.0" />
                </font>
@@ -113,7 +110,7 @@
                   </Label>
                </graphic>
             </Label>
-            <Label fx:id="bmilabel" layoutX="100.0" layoutY="260.0" textFill="#aa80ff">
+            <Label fx:id="bmilabel" layoutX="20.0" layoutY="260.0" textFill="#aa80ff">
                <font>
                   <Font name="Segoe UI Semilight" size="18.0" />
                </font>

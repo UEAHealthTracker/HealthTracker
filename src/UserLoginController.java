@@ -39,11 +39,14 @@ public class UserLoginController extends BaseController {
     @FXML Button loginbtn;
     @FXML Button signupbtn;
     @FXML Button sign;
+    @FXML Button forgotbtn;
+    Button forgbtn;
     public void initialize() {
 
         user=usernameTextField;
         pass=passwordTextField;
         logbtn=loginbtn;
+        forgbtn=forgotbtn;
         //createacc=signup;
         logbtn.setStyle("-fx-background-color:#FA526C");
 
@@ -206,5 +209,24 @@ public class UserLoginController extends BaseController {
             }
         }catch(Exception e){ System.out.println(e+"3");}
         return counter;
+    }
+
+    public void forgotpassword(){
+        String email,password;
+        String SQL_QUERY="select email,password from Users where username=?";
+        try{
+            PreparedStatement pst = DBsession.INSTANCE.OpenConnection().prepareStatement(SQL_QUERY);
+            pst.setString(1, usernameTextField.getText());
+            ResultSet rs=pst.executeQuery();
+            while(rs.next()) {
+            email=rs.getString("email");
+            password=rs.getString("password");
+                SendMail.sendPassword(email,email,password);
+                loginbtn.setStyle("-fx-background-color:transparent;-fx-text-fill: red");
+                loginbtn.setText("Email has been sent");
+                thread.start();
+            }
+            DBsession.INSTANCE.OpenConnection().close();
+        }catch(Exception e){ System.out.println(e+"0");}
     }
 }

@@ -105,7 +105,7 @@
                      <Image url="@img/delete.png" />
                   </image>
                </ImageView>
-               <Button graphicTextGap="0.0" layoutX="431.0" layoutY="10.0" mnemonicParsing="false" opacity="0.0" prefHeight="30.0" prefWidth="30.0" />
+               <Button graphicTextGap="0.0" layoutX="431.0" layoutY="10.0" mnemonicParsing="false" onAction="#deleteGroup" opacity="0.0" prefHeight="30.0" prefWidth="30.0" />
                <ImageView fitHeight="30.0" fitWidth="30.0" layoutX="489.0" layoutY="10.0" pickOnBounds="true" preserveRatio="true">
                   <image>
                      <Image url="@img/group_add.png" />

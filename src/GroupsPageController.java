@@ -85,6 +85,7 @@ public class GroupsPageController extends BaseController {
     TableColumn<Group, String> groupMembers;
     @FXML
     Label userLabel;
+    static Group selectedGroup = null;
 
     //Group existingGroup = new Group();
     int items=0;
@@ -530,7 +531,79 @@ public class GroupsPageController extends BaseController {
     }
 
 
-    public void deleteGroup(){
+    public void deleteGroup() throws SQLException {
+        //check if user has selcted a meal
+        if (groupView.getSelectionModel().getSelectedItem() != null) {
+            selectedGroup = groupView.getSelectionModel().getSelectedItem();
+
+            //try removing meal data from database
+            try{
+
+
+
+
+
+                String SQL_QUERY="SELECT groupid, groupadmin FROM groups WHERE groupname=?";
+                PreparedStatement pst = DBsession.INSTANCE.OpenConnection().prepareStatement(SQL_QUERY);
+                pst.setString(1,selectedGroup.getGroupName());
+                ResultSet result = pst.executeQuery();
+                while(result.next()){
+                    String groupAdmin = result.getString("groupadmin");
+                    if(groupAdmin.contentEquals(User.INSTANCE.getUsername())){
+                        int groupId = result.getInt("groupid");
+                        //System.out.println(groupId);
+                        //Delete group
+                        String delete2="DELETE  FROM groupsmember WHERE groupid=?";
+                        PreparedStatement delete2statement = DBsession.INSTANCE.OpenConnection().prepareStatement(delete2);
+                        delete2statement.setInt(1, groupId);
+                        delete2statement.executeUpdate();
+
+                        String deleteInvite = "DELETE from group_invites WHERE group_id=?";
+                        PreparedStatement inviteDelete = DBsession.INSTANCE.OpenConnection().prepareStatement(deleteInvite);
+                        inviteDelete.setInt(1,groupId);
+                        inviteDelete.executeUpdate();
+
+
+                        String deleteGoal="DELETE  FROM groupgoal WHERE groupid=?";
+                        PreparedStatement goalDelete = DBsession.INSTANCE.OpenConnection().prepareStatement(deleteGoal);
+                        goalDelete.setInt(1, groupId);
+                        goalDelete.executeUpdate();
+
+                        String deleteQuery="DELETE  FROM groups WHERE groups.groupid=?";
+                        PreparedStatement deleteStatement = DBsession.INSTANCE.OpenConnection().prepareStatement(deleteQuery);
+                        deleteStatement.setInt(1, groupId);
+                        deleteStatement.executeUpdate();
+
+                        DBsession.INSTANCE.OpenConnection().close();
+                        //Delete it from the group.
+                        groupView.getItems().removeAll(selectedGroup);
+
+                    }else{
+
+                    }
+
+                    //User.INSTANCE.removeMeal(selectedGroup);
+                }
+
+                /*
+                PreparedStatement pst = DBsession.INSTANCE.OpenConnection().prepareStatement(SQL_QUERY);
+                pst.setInt(1, selectedMeal.getMealid());
+                */
+
+
+                //pst.executeUpdate();
+
+
+                //delete meal from user's daily activity
+
+            }
+            catch(SQLException e){
+                e.printStackTrace();
+                System.out.println("error deleting meal");
+            }
+        }
+        //update table
+      populateGroupTables();
 
     }
 

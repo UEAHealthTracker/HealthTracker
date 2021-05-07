@@ -59,6 +59,7 @@
             </Label>
             <TextField fx:id="GoalNameTF" layoutX="123.0" layoutY="150.0" promptText="Goal Name" style="-fx-background-color: #ffffff;" />
             <DatePicker fx:id="enddate" layoutX="123.0" layoutY="195.0" promptText="Date" style="-fx-background-color: #ffffff;" />
+            <Label fx:id="msglbl" layoutX="109.0" layoutY="312.0" prefHeight="35.0" prefWidth="179.0" style="-fx-background-color: transparent;" text="Goal name/Date incorrect" visible="false" />
          </children>
       </AnchorPane>
    </right>
@@ -70,7 +71,7 @@
                   <Image url="@../img/add_box.png" />
                </image>
             </ImageView>
-            <Button onAction="#AddWorkoutGoal" graphicTextGap="0.0" layoutX="380.0" layoutY="10.0" mnemonicParsing="false" opacity="0.0" prefHeight="30.0" prefWidth="30.0" />
+            <Button graphicTextGap="0.0" layoutX="380.0" layoutY="10.0" mnemonicParsing="false" onAction="#AddWorkoutGoal" opacity="0.0" prefHeight="30.0" prefWidth="30.0" />
          </children>
       </AnchorPane>
    </bottom>

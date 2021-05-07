@@ -15,6 +15,7 @@ import javafx.stage.Stage;
 
 
 import javax.mail.MessagingException;
+import javax.swing.*;
 import java.io.IOException;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -146,6 +147,7 @@ public class GroupsPageController extends BaseController {
                             //Add the  invite details into the database.
                             AddInvite(groupAdmin, groupMail, nameOfGroup);
 
+                            addMessage("Group Successfully Created!","GROUP CREATED");
 
                             root = FXMLLoader.load(getClass().getResource("FXML/GroupsPage.fxml"));
                             stage = (Stage)((Node)actionEvent.getSource()).getScene().getWindow();
@@ -182,7 +184,11 @@ public class GroupsPageController extends BaseController {
 
         }
         DBsession.INSTANCE.OpenConnection().close();
-        }
+    }
+
+    public void addMessage(String message, String title){
+        JOptionPane.showMessageDialog(null, message, title,JOptionPane.INFORMATION_MESSAGE);
+    }
 
 //Add invite after sending the mail:
     public void AddInvite(String groupAdmin, String receipient, String groupName) throws SQLException {
@@ -235,6 +241,8 @@ public class GroupsPageController extends BaseController {
                         joinStatement.setInt(2, User.INSTANCE.getUserid());
                         joinStatement.executeUpdate();
                         System.out.println("Successfully joined the group "+ joinGroupName.getText());
+
+                        addMessage("Group Successfully Joined!","GROUP JOINED");
 
                         //Move to the groups page to show they have joined the group:
                         root = FXMLLoader.load(getClass().getResource("FXML/GroupsPage.fxml"));

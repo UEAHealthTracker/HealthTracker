@@ -22,7 +22,7 @@ public class EditWorkoutController extends BaseController{
     TextField durationTF;
     @FXML TextField duration2;
     @FXML TextField workoutTypeTF;
-    boolean workoutidbool;
+    @FXML Label labelError;
 
     /*public void fillID(){
         String SQL_Select="Select workout.workoutid FROM workout JOIN day ON day.workoutid=workout.workoutid JOIN Users ON day.userid=Users.userid and Users.userid=?";
@@ -88,7 +88,12 @@ public class EditWorkoutController extends BaseController{
                 updateMessage("Workout Successfully Updated!","WORKOUT UPDATED");
             }
         } catch (SQLException throwables) {
-            throwables.printStackTrace();
+            if(duration2.equals(null)||workoutTypeTF.equals(null)||duration2.equals(null) && workoutTypeTF.equals(null)){
+                labelError.setText("Edit Unsuccessful! - Check all fields are complete in the correct format");
+                throwables.printStackTrace();
+
+            }
+
         }
         switchAfterUpdate(event);
 

@@ -23,12 +23,13 @@ public class AddWorkoutController  extends BaseController{
     ComboBox WorkoutTypeSelector;
     @FXML
     TextField durationTF;
+    @FXML Label labelError;
     private Parent root;
     private Stage stage;
     private Scene scene;
     boolean open=false;
     public void init(){
-        userLabel.setText("Hello "+User.INSTANCE.getUsername());
+        //userLabel.setText("Hello "+User.INSTANCE.getUsername());
         if(open==false) {
             for (WorkoutType type : WorkoutType.values()) {
                 WorkoutTypeSelector.getItems().add(type.ID);
@@ -61,7 +62,10 @@ public class AddWorkoutController  extends BaseController{
                 addMessage("Workout Successfully Added!","WORKOUT ADDED");
             }
         } catch (SQLException throwables) {
-            throwables.printStackTrace();
+         /*   if(durationTF.equals(null)||WorkoutTypeSelector.equals(null)||durationTF.equals(null) && WorkoutTypeSelector.equals(null)){
+                labelError.setText("Edit Unsuccessful! - Check all fields are complete in the correct format");
+            }*/
+           throwables.printStackTrace();
         }
         DateSet();
         switchToAddworkout(event);
@@ -90,7 +94,6 @@ public class AddWorkoutController  extends BaseController{
             while(wid.next()) {
                 Workout.Instance.setWorkoutid(Integer.parseInt(wid.getString("workoutid")));
             }
-
             DBsession.INSTANCE.OpenConnection().close();
 
         } catch (SQLException throwables) {

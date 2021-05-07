@@ -2,13 +2,21 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.chart.BarChart;
+import javafx.scene.chart.CategoryAxis;
+import javafx.scene.chart.NumberAxis;
+import javafx.scene.chart.XYChart;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 
+import javax.swing.text.html.HTMLDocument;
 import java.io.IOException;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.Iterator;
 
 enum WorkoutType {
 
@@ -66,19 +74,54 @@ public class WorkoutPageController extends BaseController {
     @FXML TableColumn<Workout,Integer> durationMinutes;
     @FXML TableColumn<Workout,String> workoutTypestr ;
 
-    ObservableList<Workout> workouts = FXCollections.observableArrayList();
 
+    ArrayList<Integer> calories= new ArrayList<>();
+    @FXML CategoryAxis xAxis;
+    //xAxis.setLabel("Devices");
+    @FXML NumberAxis yAxis;
+   // yAxis.setLabel("Visits");
+
+    @FXML  BarChart <String,Number>  barChart;
+
+
+    ObservableList<Workout> workouts = FXCollections.observableArrayList();
+    ArrayList<String> fiveDays = new ArrayList<>();
     public void initialize(){
         userLabel.setText("Hello "+User.INSTANCE.getUsername());
 
+        populateTable();
+
+
+      //  barChart("2021-05-07");
+        for(String day : days()){
+            barChart(day);
+        }
+        XYChart.Series <String,Number> dataSeries1 = new XYChart.Series();
+        Iterator  numbers = calories.iterator();
+        Iterator days = fiveDays.iterator();
+        while(numbers.hasNext() && days.hasNext()){
+
+            dataSeries1.getData().add(new XYChart.Data(days.next(), numbers.next()));
+                  // System.out.println(numbers);
+
+        }
+        barChart.getData().add(dataSeries1);
+
+
+        //System.out.println("this is a test ");
+
+
+
+    }
+
+    public void populateTable(){
         workouts = FXCollections.observableArrayList();
-        String SQL_SELECT="Select workout.workoutid as WorkoutID, workout.calories as Calories, workout.duration as Duration, workout.workouttype as WorkoutType FROM workout JOIN day ON day.workoutid=workout.workoutid JOIN Users ON day.userid=Users.userid and Users.userid=?";
+        String SQL_SELECT=" Select workout.workoutid as WorkoutID, workout.calories as Calories, workout.duration as Duration, workout.workouttype as WorkoutType FROM workout JOIN day ON day.workoutid=workout.workoutid JOIN Users ON day.userid=Users.userid and Users.userid=?";
         try {
             PreparedStatement seltb = DBsession.INSTANCE.OpenConnection().prepareStatement(SQL_SELECT);
             seltb.setInt(1,User.INSTANCE.getUserid());
             ResultSet wid = seltb.executeQuery();
             while(wid.next()){
-
                 workouts.add(new Workout(Integer.parseInt(wid.getString("WorkoutID")), Integer.parseInt( wid.getString("Calories")),Integer.parseInt( wid.getString("Duration")), wid.getString("WorkoutType")));
             }
             workoutid.setCellValueFactory(new PropertyValueFactory<>("workoutid"));
@@ -87,12 +130,10 @@ public class WorkoutPageController extends BaseController {
             workoutTypestr.setCellValueFactory(new PropertyValueFactory<>("workoutTypestr"));
             workoutTableView.setItems(workouts);
             DBsession.INSTANCE.OpenConnection().close();
-        } catch (SQLException throwables) {
+        } catch (SQLException throwables ) {
             throwables.printStackTrace();
         }
-
     }
-
 
     public void onEdit(javafx.event.ActionEvent actionEvent) throws IOException {
         if (workoutTableView.getSelectionModel().getSelectedItem() != null) {
@@ -115,6 +156,7 @@ public class WorkoutPageController extends BaseController {
             }catch(Exception e){System.out.println(e);}
             onDelete2(actionEvent);
             BaseController.Instance.Switch(actionEvent,"FXML/HomePage.fxml");
+
         }
 
     }
@@ -128,11 +170,53 @@ public class WorkoutPageController extends BaseController {
                 DBsession.INSTANCE.OpenConnection().close();
             }catch(Exception e){System.out.println(e);}
         }
+
     //add data to workout table
+    public void barChart(String date){
+        String SQL_Select="SELECT SUM(calories) AS cal, date from workout join day on day.workoutid=workout.workoutid join Users on Users.userid=day.userid where Users.userid =? and date=? ";
+
+
+        try {
+            PreparedStatement sel = DBsession.INSTANCE.OpenConnection().prepareStatement(SQL_Select);
+            sel.setInt(1,User.INSTANCE.getUserid());
+            sel.setString(2,date);
+
+            ResultSet wid = sel.executeQuery();
+
+            while(wid.next()){
+                calories.add(wid.getInt("cal"));
+
+            }
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+
+
+
+
+    }
+    public ArrayList<String> days(){
+        LocalDate now = LocalDate.now();
+
+        for(int i = 0; i < 5; i++){
+            LocalDate dayBefore = now.minusDays(i);
+            fiveDays.add(dayBefore.toString());
+
+        }
+        return fiveDays;
+    }
 
 
     //allow user to select a table item/row and delete it using the delete button
-    public void removeTableItem(){
+    public void logOutButton(){
+    Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+    alert.setTitle("Sign Out");
+    alert.setContentText("Are you sure you want to log out?");
+    ButtonType yes = new ButtonType("Yes", ButtonBar.ButtonData.YES);
+    ButtonType no = new ButtonType("No", ButtonBar.ButtonData.NO);
+    ButtonType cancel = new ButtonType("Cancel", ButtonBar.ButtonData.CANCEL_CLOSE);
+    alert.getButtonTypes().setAll(yes,no,cancel);
+    //alert.showAndWait().ifPresent(buttonType -> );
 
     }
 

@@ -1,17 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.geometry.Insets?>
-<?import javafx.scene.control.Button?>
-<?import javafx.scene.control.Label?>
-<?import javafx.scene.control.TableColumn?>
-<?import javafx.scene.control.TableView?>
-<?import javafx.scene.image.Image?>
-<?import javafx.scene.image.ImageView?>
-<?import javafx.scene.layout.AnchorPane?>
-<?import javafx.scene.layout.BorderPane?>
-<?import javafx.scene.text.Font?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.chart.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/15.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="WorkoutPageController">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="WorkoutPageController">
    <left>
       <AnchorPane prefHeight="400.0" prefWidth="200.0" style="-fx-background-color: #c7a4ff;" BorderPane.alignment="CENTER">
          <children>
@@ -62,7 +58,7 @@
                   <Insets bottom="10.0" left="10.0" right="25.0" top="10.0" />
                </padding>
             </Label>
-            <TableView fx:id="workoutTableView" layoutX="15.0" layoutY="60.0" prefHeight="280.0" prefWidth="360.0" style="-fx-background-color: #ffffff;">
+            <TableView fx:id="workoutTableView" layoutX="15.0" layoutY="60.0" prefHeight="140.0" prefWidth="360.0" style="-fx-background-color: #ffffff;">
               <columns>
                   <TableColumn fx:id="workoutid" prefWidth="30.0" text="id" />
                 <TableColumn fx:id="caloriesBurned" prefWidth="74.0" text="Calories" />
@@ -70,6 +66,14 @@
                   <TableColumn fx:id="workoutTypestr" prefWidth="133.0" text="Workout Type" />
               </columns>
             </TableView>
+            <BarChart fx:id="barChart" layoutX="15.0" layoutY="200.0" prefHeight="80.0" prefWidth="360.0">
+              <xAxis>
+                <CategoryAxis fx:id="xAxis" side="BOTTOM" />
+              </xAxis>
+              <yAxis>
+                <NumberAxis  fx:id="yAxis" side="LEFT" />
+              </yAxis>
+            </BarChart>
          </children>
       </AnchorPane>
    </right>

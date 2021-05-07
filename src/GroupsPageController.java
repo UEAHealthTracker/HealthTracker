@@ -530,6 +530,10 @@ public class GroupsPageController extends BaseController {
     }
 
 
+    public void deleteGroup(){
+
+    }
+
 
 
             //Checking credntials for adding members in the group, after group has been created.

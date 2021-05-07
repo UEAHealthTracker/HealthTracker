@@ -53,7 +53,7 @@ public class HomePageController extends BaseController {
             msglbl.setVisible(true);
             share.setVisible(true);
             imshare.setVisible(true);
-            msglbl.setText("You have:" + goalsmet + " completed goal/'s");
+            msglbl.setText("You have: " + goalsmet + " completed goal/'s");
         }else{
             msglbl.setVisible(false);
             share.setVisible(false);

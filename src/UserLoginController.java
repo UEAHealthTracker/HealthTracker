@@ -162,8 +162,8 @@ public class UserLoginController extends BaseController {
                 System.out.println(e+"1");
             }
         }else{
-            createacc.setStyle("-fx-background-color:transparent;-fx-text-fill: red");
-            createacc.setText("Wrong Email address");
+            loginbtn.setStyle("-fx-background-color:transparent;-fx-text-fill: red");
+            loginbtn.setText("Wrong Email address");
             thread.start();
 
         }

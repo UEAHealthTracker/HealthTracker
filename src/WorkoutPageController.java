@@ -1,18 +1,23 @@
-
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Node;
-import javafx.scene.Scene;
+import javafx.scene.chart.BarChart;
+import javafx.scene.chart.CategoryAxis;
+import javafx.scene.chart.NumberAxis;
+import javafx.scene.chart.XYChart;
 import javafx.scene.control.*;
-import javafx.stage.Stage;
-import javafx.scene.control.ChoiceBox;
+import javafx.scene.control.cell.PropertyValueFactory;
+
+import javax.swing.*;
+import javax.swing.text.html.HTMLDocument;
 import java.io.IOException;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
 import java.time.LocalDate;
-import java.util.Date;
+import java.util.ArrayList;
+import java.util.Iterator;
 
 enum WorkoutType {
 
@@ -58,94 +63,153 @@ enum WorkoutType {
     }
 }
 
-public class WorkoutPageController extends BaseController{
+public class WorkoutPageController extends BaseController {
+
     public final static  WorkoutPageController Instance= new WorkoutPageController();
-    public TableView workoutTable;
 
     private static Button addWorkoutbtn;
-   // private static final String SQL_Insert ="INSERT INTO workout (workoutid, sets, reps, calories, weekday) VALUES ('4','3','20','150 calories','Wednesday')";
-    @FXML ComboBox WorkoutTypeSelector;
-    @FXML TextField durationTF;
-    boolean open=false;
-    public void init(){
-        if(open==false) {
-            for (WorkoutType type : WorkoutType.values()) {
-                WorkoutTypeSelector.getItems().add(type.ID);
-            }
-            open=true;
+
+    @FXML TableView workoutTableView;
+    @FXML TableColumn<Workout,Integer> workoutid ;
+    @FXML TableColumn<Workout,Integer> caloriesBurned ;
+    @FXML TableColumn<Workout,Integer> durationMinutes;
+    @FXML TableColumn<Workout,String> workoutTypestr ;
+
+
+    ArrayList<Integer> calories= new ArrayList<>();
+    @FXML CategoryAxis xAxis;
+    //xAxis.setLabel("Devices");
+    @FXML NumberAxis yAxis;
+   // yAxis.setLabel("Visits");
+
+    @FXML  BarChart <String,Number>  barChart;
+
+
+    ObservableList<Workout> workouts = FXCollections.observableArrayList();
+    ArrayList<String> fiveDays = new ArrayList<>();
+    public void initialize(){
+        userLabel.setText("Hello "+User.INSTANCE.getUsername());
+
+        populateTable();
+
+
+      //  barChart("2021-05-07");
+        for(String day : days()){
+            barChart(day);
         }
+        XYChart.Series <String,Number> dataSeries1 = new XYChart.Series();
+        Iterator  numbers = calories.iterator();
+        Iterator days = fiveDays.iterator();
+        while(numbers.hasNext() && days.hasNext()){
+
+            dataSeries1.getData().add(new XYChart.Data(days.next(), numbers.next()));
+                  // System.out.println(numbers);
+
+        }
+        barChart.getData().add(dataSeries1);
+        //System.out.println("this is a test ");
 
     }
 
-    //add data to workout table
-    public void populateWorkoutTable(){
-        int cal=0;
-      String SQL_Insert="INSERT INTO workout( duration, workoutType, calories) VALUES (?,?,?)";
-            try {
-                PreparedStatement pst = DBsession.INSTANCE.OpenConnection().prepareStatement(SQL_Insert);
-              pst.setInt(1, Integer.parseInt(durationTF.getText()));
-            pst.setString(2,WorkoutTypeSelector.getSelectionModel().getSelectedItem().toString());
-                for (WorkoutType type : WorkoutType.values()) {
-                    if(WorkoutTypeSelector.getSelectionModel().getSelectedItem().equals(type.ID)){
-                        cal= type.MET;
-                    }
-                }
-            pst.setInt(3,cal* Integer.parseInt(durationTF.getText()));
-            pst.executeUpdate();
-
+    public void populateTable(){
+        workouts = FXCollections.observableArrayList();
+        String SQL_SELECT=" Select workout.workoutid as WorkoutID, workout.calories as Calories, workout.duration as Duration, workout.workouttype as WorkoutType FROM workout JOIN day ON day.workoutid=workout.workoutid JOIN Users ON day.userid=Users.userid and Users.userid=?";
+        try {
+            PreparedStatement seltb = DBsession.INSTANCE.OpenConnection().prepareStatement(SQL_SELECT);
+            seltb.setInt(1,User.INSTANCE.getUserid());
+            ResultSet wid = seltb.executeQuery();
+            while(wid.next()){
+                workouts.add(new Workout(Integer.parseInt(wid.getString("WorkoutID")), Integer.parseInt( wid.getString("Calories")),Integer.parseInt( wid.getString("Duration")), wid.getString("WorkoutType")));
+            }
+            workoutid.setCellValueFactory(new PropertyValueFactory<>("workoutid"));
+            caloriesBurned.setCellValueFactory(new PropertyValueFactory<>("caloriesBurned"));
+            durationMinutes.setCellValueFactory(new PropertyValueFactory<>("durationMinutes"));
+            workoutTypestr.setCellValueFactory(new PropertyValueFactory<>("workoutTypestr"));
+            workoutTableView.setItems(workouts);
             DBsession.INSTANCE.OpenConnection().close();
-
-        } catch (SQLException throwables) {
+        } catch (SQLException throwables ) {
             throwables.printStackTrace();
         }
-        DateSet();
     }
-    public void DateSet(){
-        LocalDate date=LocalDate.now();
-//        String SQL_Insert="INSERT INTO day( date, workoutid, calories) Select workoutid,username from Users ON day.dayid=Users.dayid Join workout ON workout.workoutid=day.dayid Where username=? and workoutid=?";   ";
-       // String SQL_Insert="INSERT INTO day(date,mealid,workoutid,userid) values";
-        //String SQL_Insert="INSERT INTO day(date,workoutid,userid) values(?,(Select workoutid from workout where workouttype=? AND duration=?),?)";
-        String SQL_Select="Select workoutid from workout where workouttype=? AND duration=?";
+
+    public void onEdit(javafx.event.ActionEvent actionEvent) throws IOException {
+        if (workoutTableView.getSelectionModel().getSelectedItem() != null) {
+            Workout selectedWorkout = (Workout) workoutTableView.getSelectionModel().getSelectedItem();
+            Workout.Instance.setWorkoutid(selectedWorkout.getWorkoutid());
+            BaseController.Instance.Switch(actionEvent,"FXML/EditWorkoutPage.fxml");
+        }
+    }
+
+    public void onDelete(javafx.event.ActionEvent actionEvent) throws IOException{
+        if (workoutTableView.getSelectionModel().getSelectedItem() != null) {
+            Workout selectedItem = (Workout) workoutTableView.getSelectionModel().getSelectedItem();
+            Workout.Instance.setWorkoutid(selectedItem.getWorkoutid());
+            String SQL_query="delete from workout Where workoutid=? " ;
+            try{
+                PreparedStatement pst = DBsession.INSTANCE.OpenConnection().prepareStatement(SQL_query);
+                pst.setInt(1, Workout.Instance.getWorkoutid());
+                pst.executeUpdate();
+                DBsession.INSTANCE.OpenConnection().close();
+            }catch(Exception e){System.out.println(e);}
+            onDelete2(actionEvent);
+            BaseController.Instance.Switch(actionEvent,"FXML/HomePage.fxml");
+
+        }
+
+    }
+
+    public void onDelete2(javafx.event.ActionEvent actionEvent) throws IOException{
+            String SQL_query="delete from day Where workoutid=?" ;
+            try{
+                PreparedStatement pst = DBsession.INSTANCE.OpenConnection().prepareStatement(SQL_query);
+                pst.setInt(1, Workout.Instance.getWorkoutid());
+                pst.executeUpdate();
+                DBsession.INSTANCE.OpenConnection().close();
+            }catch(Exception e){System.out.println(e);}
+        }
+
+    //add data to workout table
+    public void barChart(String date){
+        String SQL_Select="SELECT SUM(calories) AS cal, date from workout join day on day.workoutid=workout.workoutid join Users on Users.userid=day.userid where Users.userid =? and date=? ";
+
 
         try {
             PreparedStatement sel = DBsession.INSTANCE.OpenConnection().prepareStatement(SQL_Select);
-            sel.setString(1,WorkoutTypeSelector.getSelectionModel().getSelectedItem().toString());
-            sel.setInt(2, Integer.parseInt(durationTF.getText()));
-            ResultSet wid= sel.executeQuery();
-            while(wid.next()) {
-             Workout.Instance.setWorkoutid(Integer.parseInt(wid.getString("workoutid")));
+            sel.setInt(1,User.INSTANCE.getUserid());
+            sel.setString(2,date);
+
+            ResultSet wid = sel.executeQuery();
+
+            while(wid.next()){
+                calories.add(wid.getInt("cal"));
+
             }
-
-            DBsession.INSTANCE.OpenConnection().close();
-
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         }
-        DateSet2();
+
+
+
+
     }
-    public void DateSet2(){
-        LocalDate date=LocalDate.now();
-//        String SQL_Insert="INSERT INTO day( date, workoutid, calories) Select workoutid,username from Users ON day.dayid=Users.dayid Join workout ON workout.workoutid=day.dayid Where username=? and workoutid=?";   ";
-        // String SQL_Insert="INSERT INTO day(date,mealid,workoutid,userid) values";
-        //String SQL_Insert="INSERT INTO day(date,workoutid,userid) values(?,(Select workoutid from workout where workouttype=? AND duration=?),?)";
-        String SQL_Insert="INSERT INTO day(date,workoutid,userid) values(?,?,?)";
-        try {
-            PreparedStatement pst = DBsession.INSTANCE.OpenConnection().prepareStatement(SQL_Insert);
-            pst.setString(1,date.toString());
-            pst.setInt(2, Workout.Instance.getWorkoutid());
-            pst.setInt(3, User.INSTANCE.getUserid());
-            pst.executeUpdate();
+    public ArrayList<String> days(){
+        LocalDate now = LocalDate.now();
 
-            DBsession.INSTANCE.OpenConnection().close();
+        for(int i = 0; i < 5; i++){
+            LocalDate dayBefore = now.minusDays(i);
+            fiveDays.add(dayBefore.toString());
 
-        } catch (SQLException throwables) {
-            throwables.printStackTrace();
         }
+        return fiveDays;
     }
 
-    //allow user to select a table item/row and delete it using the delete button
-    public void removeTableItem(){
 
+
+    public void logOut(javafx.event.ActionEvent actionEvent) throws IOException {
+        int logoutOpt = JOptionPane.showConfirmDialog(null,"Are you sure you want to Log out?");
+        if(logoutOpt==JOptionPane.YES_OPTION){
+            BaseController.Instance.Switch(actionEvent,"FXML/LoginPage.fxml");
+        }
     }
 
 

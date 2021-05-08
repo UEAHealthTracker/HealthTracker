@@ -1,4 +1,3 @@
-import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -10,33 +9,24 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
-import java.io.UnsupportedEncodingException;
-import java.sql.SQLOutput;
-import java.util.Date;
 
 
 //import javax.mail.internet.MimeMessage;
 
 
-import java.util.Properties;
+import javax.mail.MessagingException;
+import javax.swing.*;
 import java.io.IOException;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.Timer;
-import java.util.TimerTask;
 import java.util.*;
-import javax.mail.*;
-import javax.mail.internet.*;
-import javax.activation.*;
 //import javax.mail.Session;
 
 
 public class GroupsPageController extends BaseController {
     //Variables needed for controller
-    private Parent root;
-    private Stage stage;
-    private Scene scene;
+
     //Email Pattern that emails must adhere to
     private static final String EMAIL_PATTERN =
             "^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@"
@@ -94,7 +84,7 @@ public class GroupsPageController extends BaseController {
     int items=0;
 
     //Methods that initialise the scene builder textfields to the static elements
-    public void initialize() throws SQLException {
+    public void initialize() {
         groupNameText = groupName;
         groupMemberText = groupMembersEmail;
         createGroupbutton = createGroupbtn;
@@ -162,7 +152,7 @@ public class GroupsPageController extends BaseController {
                             AddInvite(groupAdmin, groupMail, nameOfGroup);
 
 
-                            root = FXMLLoader.load(getClass().getResource("GroupsPage.fxml"));
+                            root = FXMLLoader.load(getClass().getResource("FXML/GroupsPage.fxml"));
                             stage = (Stage)((Node)actionEvent.getSource()).getScene().getWindow();
                             scene = new Scene(root);
                             stage.setScene(scene);
@@ -252,7 +242,7 @@ public class GroupsPageController extends BaseController {
                         System.out.println("Successfully joined the group "+ joinGroupName.getText());
 
                         //Move to the groups page to show they have joined the group:
-                        root = FXMLLoader.load(getClass().getResource("GroupsPage.fxml"));
+                        root = FXMLLoader.load(getClass().getResource("FXML/GroupsPage.fxml"));
                         stage = (Stage)((Node)actionEvent.getSource()).getScene().getWindow();
                         scene = new Scene(root);
                         stage.setScene(scene);
@@ -484,7 +474,7 @@ public class GroupsPageController extends BaseController {
             }
         }
 
-    public void populateGroupTables() throws SQLException {
+    public void populateGroupTables() {
 
         data = FXCollections.observableArrayList();
         try{
@@ -520,7 +510,7 @@ public class GroupsPageController extends BaseController {
 
                     groupView.setItems(data);
 
-
+                    DBsession.INSTANCE.OpenConnection().close();
                 }
 
             }catch(SQLException e){
@@ -528,9 +518,8 @@ public class GroupsPageController extends BaseController {
 
             }
         }catch (Exception e){
-
+            e.printStackTrace();
         }
-        DBsession.INSTANCE.OpenConnection().close();
     }
 
 
@@ -747,7 +736,12 @@ public class GroupsPageController extends BaseController {
     }
 
 
-
+    public void logout(ActionEvent actionEvent) throws IOException {
+        int logoutOpt = JOptionPane.showConfirmDialog(null,"Are you sure you want to Log out?");
+        if(logoutOpt==JOptionPane.YES_OPTION){
+            BaseController.Instance.Switch(actionEvent,"FXML/LoginPage.fxml");
+        }
+    }
 }
 
 

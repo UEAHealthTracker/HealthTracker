@@ -43,8 +43,6 @@ public class HomePageController extends BaseController {
     @FXML Button share;
     @FXML  ImageView imshare;
 
-
-
     public void initialize() throws MessagingException {
         userLabel.setText("Hello "+User.INSTANCE.getUsername());
         Check();
@@ -59,10 +57,6 @@ public class HomePageController extends BaseController {
             share.setVisible(false);
             imshare.setVisible(false);
         }
-
-
-
-
     }
 
 
@@ -70,7 +64,6 @@ public class HomePageController extends BaseController {
     public void populateGoalsTable(){
         data = FXCollections.observableArrayList();
         completeGoals = FXCollections.observableArrayList();
-
 
         String SQL_QUERY = "select goalname,startdate,enddate,Goal.code as code,Goal.goalid as goalid,COUNT(groupgoal.groupgoalid) as total from Goal JOIN Users ON Users.userid=Goal.userid left JOIN groupgoal on Goal.goalid = groupgoal.goalid where Users.userid=? GROUP BY Goal.goalid";
         try {
@@ -112,9 +105,7 @@ public class HomePageController extends BaseController {
     }
 
 
-
     public void Check(){
-
         String SQL_query="select groups.groupname as gn from groups JOIN groupsmember on groups.groupid=groupsmember.groupid JOIN Users on Users.userid=groupsmember.userid where Users.userid=?";
         try{
             PreparedStatement pst = DBsession.INSTANCE.OpenConnection().prepareStatement(SQL_query);
@@ -173,15 +164,29 @@ public class HomePageController extends BaseController {
         if (listView.getSelectionModel().getSelectedItem() != null) {
             Goal selectedGoal = listView.getSelectionModel().getSelectedItem();
             Goal.Instance.setGoalid(selectedGoal.getGoalid());
-            String SQL_query="DELETE FROM Goal WHERE goalid=?;";
+            String SQL_query="Delete from groupgoal where goalid=?";
             try{
                 PreparedStatement pst = DBsession.INSTANCE.OpenConnection().prepareStatement(SQL_query);
                 pst.setInt(1, Goal.Instance.getGoalid());
                 pst.executeUpdate();
                 DBsession.INSTANCE.OpenConnection().close();
             }catch(Exception e){System.out.println(e);}
-
+            onDelete1(actionEvent);
             BaseController.Instance.Switch(actionEvent,"FXML/HomePage.fxml");
+        }
+
+    }
+    public void onDelete1(javafx.event.ActionEvent actionEvent) throws IOException{
+        if (listView.getSelectionModel().getSelectedItem() != null) {
+            Goal selectedGoal = listView.getSelectionModel().getSelectedItem();
+            Goal.Instance.setGoalid(selectedGoal.getGoalid());
+            String SQL_query="Delete from Goal where goalid=?";
+            try{
+                PreparedStatement pst = DBsession.INSTANCE.OpenConnection().prepareStatement(SQL_query);
+                pst.setInt(1, Goal.Instance.getGoalid());
+                pst.executeUpdate();
+                DBsession.INSTANCE.OpenConnection().close();
+            }catch(Exception e){System.out.println(e);}
         }
 
     }

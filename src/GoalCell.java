@@ -31,9 +31,15 @@ public class GoalCell extends ListCell<Goal> {
     ProgressBar Progress1;
     @FXML Button cbtn;
     boolean complete=false;
-//    public static final GoalCell Instance= new GoalCell();
     public float percent=0;
 
+    /**
+     * Custom tableview record with elements as labels,progress bars,buttons, etc.
+     * For each element the elements change depending on the information given by the database
+     * Internal function is set on a button to complete a specific goal if not completed with auto update on the database
+     * @param item
+     * @param empty
+     */
     @Override
     protected void updateItem(Goal item, boolean empty) {
         super.updateItem(item, empty);

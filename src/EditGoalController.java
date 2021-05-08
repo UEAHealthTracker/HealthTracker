@@ -24,9 +24,12 @@ public class EditGoalController extends BaseController{
     String goalalphacode;
     String enddate;
     String description;
+
+    /**
+     * Initialize the window with the username label and fillinf a ComboBox with the groups that a user is member of
+     */
     public void initialize() {
         userLabel.setText("Hello " + User.INSTANCE.getUsername());
-
         String SQL_query="select groups.groupname as gn from groups JOIN groupsmember on groups.groupid=groupsmember.groupid JOIN Users on Users.userid=groupsmember.userid where Users.userid=?";
         try{
             PreparedStatement pst = DBsession.INSTANCE.OpenConnection().prepareStatement(SQL_query);
@@ -35,12 +38,16 @@ public class EditGoalController extends BaseController{
             while(rs.next()) {
                 editgoalgroup.getItems().add(rs.getString("gn"));
                 items++;
-
             }
             DBsession.INSTANCE.OpenConnection().close();
         }catch(Exception e){System.out.println(e);}
         Check();
     }
+
+
+    /**
+     * Populating all the fields with data of the selected goal in the homepage
+     */
     public void Check(){
         int i=0;
         String SQL_QUERY="select goalname,code,enddate,groups.groupname as gn from Goal left join groupgoal on groupgoal.goalid=Goal.goalid left JOIN groups on groups.groupid=groupgoal.groupid where Goal.goalid=?";
@@ -62,13 +69,17 @@ public class EditGoalController extends BaseController{
                         iterator.remove();
                     }
                 }
-
             }
             DBsession.INSTANCE.OpenConnection().close();
         }catch(Exception e){System.out.println(e);}
     }
 
 
+    /**
+     * Function to update a specific goal selected in the homepage by updating and inserting a goal in a group if a user decides to
+     * @param actionEvent
+     * @throws IOException
+     */
     public void Update(javafx.event.ActionEvent actionEvent) throws IOException {
         //TODO Complete query with group exending test
         String SQL_QUERY="UPDATE Goal set goalname=?, enddate=? where goalid=?";
@@ -88,15 +99,19 @@ public class EditGoalController extends BaseController{
                 for (String item: email) {
                    SendMail.sendGoalMail(item,editgoalgroup.getSelectionModel().getSelectedItem().toString(),goalalphacode,enddate,description);
                 }
-
             }
             DBsession.INSTANCE.OpenConnection().close();
         }catch(Exception e){System.out.println(e);}
         Instance.Switch(actionEvent, "FXML/HomePage.fxml");
-
-
     }
 
+
+    /**
+     * Function to retrive an arraylist with the emails of specific group which can lead after to generate an email to all of the members of a group
+     * @param groupname
+     * @param userid
+     * @return
+     */
     ArrayList getgroupmembers(String groupname,Integer userid){
 
         String SQL_QUERY="SELECT Users.email as email,Users.userid as userid FROM Users JOIN groupsmember on Users.userid=groupsmember.userid JOIN groups ON groups.groupid=groupsmember.groupid WHERE groups.groupid=(SELECT groupid FROM groups where groupname=?)";

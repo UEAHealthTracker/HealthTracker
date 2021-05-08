@@ -57,9 +57,17 @@ return null;
   }
 
 
-
-
-
+    /**
+     *
+     * Function which purpose leads to sending a generated email to all members in a specific group containing a generated code for a specific gaol which can be used by each member of the group to create a local one
+     * @param receipient
+     * @param groupName
+     * @param goalCode
+     * @param Date
+     * @param desc
+     * @return
+     * @throws MessagingException
+     */
     public static boolean sendGoalMail(String receipient, String groupName, String goalCode,String Date,String desc) throws MessagingException {
         String appSender = "team1.5healthtracker@gmail.com";
         String password = "ganttsucks123";
@@ -114,19 +122,15 @@ return null;
     }
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
+    /**
+     * Function to generate email to a specific group when a goal is met by a user
+     * @param receipient
+     * @param groupName
+     * @param desc
+     * @param username
+     * @return
+     * @throws MessagingException
+     */
     public static boolean sendGoalCompletationMail(String receipient, String groupName,String desc,String username) throws MessagingException {
         String appSender = "team1.5healthtracker@gmail.com";
         String password = "ganttsucks123";
@@ -181,12 +185,14 @@ return null;
     }
 
 
-
-
-
-
-
-
+    /**
+     * Function to request a forgotten password by specifying the username
+     * @param receipient
+     * @param email
+     * @param pass
+     * @return
+     * @throws MessagingException
+     */
     public static boolean sendPassword(String receipient, String email, String pass) throws MessagingException {
         String appSender = "team1.5healthtracker@gmail.com";
         String password = "ganttsucks123";

@@ -64,6 +64,9 @@ public class GroupsPageController extends BaseController {
     TextField GroupMessage;
 
     @FXML
+    Label messageLabel;
+
+    @FXML
     TextField joinGroupPassword;
     @FXML
     TextField EditGroupName;
@@ -538,11 +541,6 @@ public class GroupsPageController extends BaseController {
 
             //try removing meal data from database
             try{
-
-
-
-
-
                 String SQL_QUERY="SELECT groupid, groupadmin FROM groups WHERE groupname=?";
                 PreparedStatement pst = DBsession.INSTANCE.OpenConnection().prepareStatement(SQL_QUERY);
                 pst.setString(1,selectedGroup.getGroupName());
@@ -578,7 +576,12 @@ public class GroupsPageController extends BaseController {
                         //Delete it from the group.
                         groupView.getItems().removeAll(selectedGroup);
 
+
+
                     }else{
+                        messageLabel.setOpacity(1);
+                        messageLabel.setStyle("-fx-background-color:rgba(0,0,0,0);-fx-text-fill: #ff0000");
+                        messageLabel.setText("Can't delete group because you are not admin");
 
                     }
 
@@ -599,6 +602,9 @@ public class GroupsPageController extends BaseController {
             }
             catch(SQLException e){
                 e.printStackTrace();
+                messageLabel.setOpacity(1);
+                messageLabel.setStyle("-fx-background-color:rgba(0,0,0,0);-fx-text-fill: #ff0000");
+                messageLabel.setText("Group has not been deleted.");
                 System.out.println("error deleting meal");
             }
         }

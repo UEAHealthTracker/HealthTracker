@@ -3,17 +3,23 @@ import javafx.animation.KeyValue;
 import javafx.animation.Timeline;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.image.ImageView;
+import javafx.stage.Stage;
 import javafx.util.Duration;
 
 
 import javax.mail.MessagingException;
+import javax.swing.*;
 import java.io.IOException;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -41,6 +47,7 @@ public class HomePageController extends BaseController {
     int items=0;
     int goalsmet=0;
     @FXML Button share;
+    @FXML Button logout;
     @FXML  ImageView imshare;
 
     public void initialize() throws MessagingException {
@@ -225,4 +232,10 @@ public class HomePageController extends BaseController {
         return groupnames;
     }
 
+    public void logout(ActionEvent actionEvent) throws IOException {
+        int logoutOpt = JOptionPane.showConfirmDialog(null,"Are you sure you want to Log out?");
+        if(logoutOpt==JOptionPane.YES_OPTION){
+            BaseController.Instance.Switch(actionEvent,"FXML/LoginPage.fxml");
+        }
+    }
 }

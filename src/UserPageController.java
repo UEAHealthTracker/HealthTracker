@@ -1,7 +1,14 @@
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
+import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.stage.Stage;
 
+import javax.swing.*;
+import java.io.IOException;
 import java.text.DecimalFormat;
 
 public class UserPageController extends BaseController{
@@ -36,5 +43,12 @@ public class UserPageController extends BaseController{
                 bmilabel.setText("OBESE");
             }
 
+    }
+
+    public void logout(ActionEvent actionEvent) throws IOException {
+        int logoutOpt = JOptionPane.showConfirmDialog(null,"Are you sure you want to Log out?");
+        if(logoutOpt==JOptionPane.YES_OPTION){
+            BaseController.Instance.Switch(actionEvent,"FXML/LoginPage.fxml");
+        }
     }
 }

@@ -1,5 +1,6 @@
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
@@ -8,6 +9,7 @@ import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
 
+import javax.swing.*;
 import java.io.IOException;
 import java.sql.*;
 import java.time.LocalTime;
@@ -127,4 +129,10 @@ public class DietPageController extends BaseController {
 
     }
 
+    public void logout(ActionEvent actionEvent) throws IOException {
+        int logoutOpt = JOptionPane.showConfirmDialog(null,"Are you sure you want to Log out?");
+        if(logoutOpt==JOptionPane.YES_OPTION){
+            BaseController.Instance.Switch(actionEvent,"FXML/LoginPage.fxml");
+        }
+    }
 }

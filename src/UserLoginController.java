@@ -32,7 +32,7 @@ public class UserLoginController extends BaseController {
     //passwordStatusLabel shows if password is incorrect
     @FXML  TextField usernameTF;
     @FXML  PasswordField passwordTF;
-    @FXML  Label passwordStatusLabel;
+    //@FXML  Label passwordStatusLabel;
     @FXML  TextField emailTF;
     @FXML  TextField heightTF;
     @FXML  TextField weightTF;

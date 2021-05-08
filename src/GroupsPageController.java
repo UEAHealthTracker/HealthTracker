@@ -15,6 +15,7 @@ import javafx.stage.Stage;
 
 
 import javax.mail.MessagingException;
+import javax.swing.*;
 import java.io.IOException;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -652,7 +653,12 @@ public class GroupsPageController extends BaseController {
     }
 
 
-
+    public void logout(ActionEvent actionEvent) throws IOException {
+        int logoutOpt = JOptionPane.showConfirmDialog(null,"Are you sure you want to Log out?");
+        if(logoutOpt==JOptionPane.YES_OPTION){
+            BaseController.Instance.Switch(actionEvent,"FXML/LoginPage.fxml");
+        }
+    }
 }
 
 

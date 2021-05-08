@@ -98,7 +98,12 @@
             <Button fx:id="AddWorkout" layoutX="380.0" layoutY="13.0" mnemonicParsing="false" onAction="#MenuSwitch" prefHeight="25.0" prefWidth="30.0" style="-fx-background-color: transparent;" text="AddWorkoutPage" textFill="TRANSPARENT" />
             <Button fx:id="updateWorkout" layoutX="293.0" layoutY="13.0" mnemonicParsing="false" onAction="#onEdit" prefHeight="25.0" prefWidth="37.0" style="-fx-background-color: transparent;" text="EditWorkoutPage" textFill="TRANSPARENT" />
             <Button layoutX="460.0" layoutY="13.0" mnemonicParsing="false" onAction="#onDelete" prefHeight="25.0" prefWidth="32.0" style="-fx-background-color: transparent;" text="Delete Workout" textFill="TRANSPARENT" />
-            <Button layoutX="45.0" layoutY="13.0" mnemonicParsing="false" onAction="#logOut" text="Log out" />
+            <ImageView fitHeight="30.0" fitWidth="30.0" layoutX="87.0" layoutY="10.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../img/logout.png" />
+               </image>
+            </ImageView>
+            <Button graphicTextGap="0.0" layoutX="87.0" layoutY="10.0" mnemonicParsing="false" onAction="#logOut" opacity="0.0" prefHeight="30.0" prefWidth="30.0" />
          </children>
       </AnchorPane>
    </bottom>

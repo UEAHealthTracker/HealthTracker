@@ -9,6 +9,7 @@ import javafx.scene.chart.XYChart;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 
+import javax.swing.*;
 import javax.swing.text.html.HTMLDocument;
 import java.io.IOException;
 import java.sql.PreparedStatement;
@@ -106,11 +107,7 @@ public class WorkoutPageController extends BaseController {
 
         }
         barChart.getData().add(dataSeries1);
-
-
         //System.out.println("this is a test ");
-
-
 
     }
 
@@ -207,17 +204,12 @@ public class WorkoutPageController extends BaseController {
     }
 
 
-    //allow user to select a table item/row and delete it using the delete button
-    public void logOutButton(){
-    Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-    alert.setTitle("Sign Out");
-    alert.setContentText("Are you sure you want to log out?");
-    ButtonType yes = new ButtonType("Yes", ButtonBar.ButtonData.YES);
-    ButtonType no = new ButtonType("No", ButtonBar.ButtonData.NO);
-    ButtonType cancel = new ButtonType("Cancel", ButtonBar.ButtonData.CANCEL_CLOSE);
-    alert.getButtonTypes().setAll(yes,no,cancel);
-    //alert.showAndWait().ifPresent(buttonType -> );
 
+    public void logOut(javafx.event.ActionEvent actionEvent) throws IOException {
+        int logoutOpt = JOptionPane.showConfirmDialog(null,"Are you sure you want to Log out?");
+        if(logoutOpt==JOptionPane.YES_OPTION){
+            BaseController.Instance.Switch(actionEvent,"FXML/LoginPage.fxml");
+        }
     }
 
 

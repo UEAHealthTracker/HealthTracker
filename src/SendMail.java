@@ -215,7 +215,7 @@ return null;
                 });
         //compose message
 
-        Message message = preparepassword(session, appSender, receipient,password);
+        Message message = preparepassword(session, appSender, receipient,pass);
         Transport.send(message);
 
         return true;

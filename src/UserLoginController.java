@@ -117,6 +117,7 @@ public class UserLoginController extends BaseController {
             while (true) {
                 try {
                     Thread.sleep(3000);
+                    thread.interrupt();
                 } catch (InterruptedException ex) {
                 }
                 // UI update is run on the Application thread
@@ -138,6 +139,7 @@ public class UserLoginController extends BaseController {
 
         if (email.matches(EMAIL_PATTERN)) {
             try {
+                thread.stop();
                 PreparedStatement pst = DBsession.INSTANCE.OpenConnection().prepareStatement(SQL_INSERT);
                 pst.setString(1, usnm);
                 pst.setString(2, pass);
@@ -150,7 +152,6 @@ public class UserLoginController extends BaseController {
                     thread.start();
                     DBsession.INSTANCE.OpenConnection().close();
                 } else {
-                    thread.start();
                     User.INSTANCE.setUsername(usernameTF.getText());
                     User.INSTANCE.setPassword(passwordTF.getText());
                     User.INSTANCE.setHeight(Double.parseDouble(heightTF.getText()));
@@ -167,6 +168,7 @@ public class UserLoginController extends BaseController {
         }else{
             loginbtn.setStyle("-fx-background-color:transparent;-fx-text-fill: red");
             loginbtn.setText("Wrong Email address");
+
             thread.start();
 
         }

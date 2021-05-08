@@ -12,7 +12,9 @@ public class UserPageController extends BaseController{
     @FXML Label bmi;
     @FXML Label bmilabel;
 
-
+    /**
+     * Initialize all the fiels in the UserPage with current information taken from the User class
+     */
     public void initialize() {
 
             userLabel.setText("Hello " + User.INSTANCE.getUsername());
@@ -33,12 +35,6 @@ public class UserPageController extends BaseController{
             } else {
                 bmilabel.setText("OBESE");
             }
-//        }else if(BaseController.Instance.text=="EditUserPage.fxml"){
-//            hellolbl.setText("Hello " + User.INSTANCE.getUsername());
-//            nametf.setText(User.INSTANCE.getRealName());
-//            emailtf.setText(User.INSTANCE.getEmail());
-//            heighttf.setText(String.valueOf(User.INSTANCE.getHeight()));
-//            weighttf.setText(String.valueOf(User.INSTANCE.getWeight()));
-//        }
+
     }
 }

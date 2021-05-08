@@ -52,7 +52,7 @@
          </AnchorPane>
       </left>
       <right>
-         <AnchorPane prefHeight="400.0" prefWidth="394.0" BorderPane.alignment="CENTER">
+         <AnchorPane fx:id="mess" prefHeight="400.0" prefWidth="394.0" BorderPane.alignment="CENTER">
             <children>
                <Label alignment="TOP_CENTER" contentDisplay="CENTER" layoutX="148.0" text="Groups" textAlignment="CENTER" textFill="#aa80ff">
                   <font>
@@ -76,18 +76,13 @@
                      <TableColumn fx:id="groupMembers" prefWidth="200.0" text="Members" />
                   </columns>
                </TableView>
+            <Label fx:id="messageLabel" layoutX="6.0" layoutY="305.0" opacity="0.0" prefHeight="45.0" prefWidth="366.0" text="Label" />
             </children>
          </AnchorPane>
       </right>
       <bottom>
          <AnchorPane prefHeight="50.0" prefWidth="600.0" style="-fx-background-color: #c7a4ff;" BorderPane.alignment="CENTER">
             <children>
-               <ImageView fitHeight="30.0" fitWidth="30.0" layoutX="87.0" layoutY="10.0" pickOnBounds="true" preserveRatio="true">
-                  <image>
-                     <Image url="@../img/logout.png" />
-                  </image>
-               </ImageView>
-               <Button graphicTextGap="0.0" layoutX="87.0" layoutY="10.0" mnemonicParsing="false" onAction="#logout" opacity="0.0" prefHeight="30.0" prefWidth="30.0" />
                <ImageView fitHeight="30.0" fitWidth="30.0" layoutX="358.0" layoutY="10.0" pickOnBounds="true" preserveRatio="true">
                   <image>
                      <Image url="@../img/add_box.png" />
@@ -111,7 +106,7 @@
                      <Image url="@../img/delete.png" />
                   </image>
                </ImageView>
-               <Button graphicTextGap="0.0" layoutX="431.0" layoutY="10.0" mnemonicParsing="false" opacity="0.0" prefHeight="30.0" prefWidth="30.0" />
+               <Button graphicTextGap="0.0" layoutX="431.0" layoutY="10.0" mnemonicParsing="false" onAction="#deleteGroup" opacity="0.0" prefHeight="30.0" prefWidth="30.0" />
                <ImageView fitHeight="30.0" fitWidth="30.0" layoutX="489.0" layoutY="10.0" pickOnBounds="true" preserveRatio="true">
                   <image>
                      <Image url="@../img/group_add.png" />

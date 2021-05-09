@@ -46,7 +46,19 @@
          </children>
       </AnchorPane>
    </left>
-   <right>
+   <bottom>
+      <AnchorPane prefHeight="50.0" prefWidth="600.0" style="-fx-background-color: #c7a4ff;" BorderPane.alignment="CENTER">
+         <children>
+            <ImageView fitHeight="30.0" fitWidth="30.0" layoutX="380.0" layoutY="10.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../img/add_box.png" />
+               </image>
+            </ImageView>
+            <Button graphicTextGap="0.0" layoutX="380.0" layoutY="10.0" mnemonicParsing="false" onAction="#populateWorkoutTable" opacity="0.0" prefHeight="30.0" prefWidth="30.0" />
+         </children>
+      </AnchorPane>
+   </bottom>
+   <center>
       <AnchorPane prefHeight="400.0" prefWidth="394.0" BorderPane.alignment="CENTER">
          <children>
             <Label alignment="TOP_CENTER" contentDisplay="CENTER" layoutX="112.0" text="Add Workout" textAlignment="CENTER" textFill="#aa80ff">
@@ -63,21 +75,9 @@
                   <Font size="14.0" />
                </font>
             </Label>
-            <ComboBox fx:id="WorkoutTypeSelector" layoutX="122.0" layoutY="98.0" onMouseClicked="#init" prefWidth="150.0" promptText="Workout type" style="-fx-background-color: white;" />
-            <Label fx:id="labelError" layoutX="183.0" layoutY="195.0" />
+            <ComboBox fx:id="WorkoutTypeSelector" layoutX="122.0" layoutY="98.0" onMouseClicked="#listWorkouts" prefWidth="150.0" promptText="Workout type" style="-fx-background-color: white;" />
+            <Label fx:id="labelError" layoutX="64.0" layoutY="182.0" prefHeight="138.0" prefWidth="275.0" textFill="RED" wrapText="true" />
          </children>
       </AnchorPane>
-   </right>
-   <bottom>
-      <AnchorPane prefHeight="50.0" prefWidth="600.0" style="-fx-background-color: #c7a4ff;" BorderPane.alignment="CENTER">
-         <children>
-            <ImageView fitHeight="30.0" fitWidth="30.0" layoutX="380.0" layoutY="10.0" pickOnBounds="true" preserveRatio="true">
-               <image>
-                  <Image url="@../img/add_box.png" />
-               </image>
-            </ImageView>
-            <Button graphicTextGap="0.0" layoutX="380.0" layoutY="10.0" mnemonicParsing="false" onAction="#populateWorkoutTable" opacity="0.0" prefHeight="30.0" prefWidth="30.0" />
-         </children>
-      </AnchorPane>
-   </bottom>
+   </center>
 </BorderPane>

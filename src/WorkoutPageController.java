@@ -87,13 +87,12 @@ public class WorkoutPageController extends BaseController {
 
     ObservableList<Workout> workouts = FXCollections.observableArrayList();
     ArrayList<String> fiveDays = new ArrayList<>();
+
     public void initialize(){
         userLabel.setText("Hello "+User.INSTANCE.getUsername());
 
         populateTable();
 
-
-      //  barChart("2021-05-07");
         for(String day : days()){
             barChart(day);
         }
@@ -103,11 +102,9 @@ public class WorkoutPageController extends BaseController {
         while(numbers.hasNext() && days.hasNext()){
 
             dataSeries1.getData().add(new XYChart.Data(days.next(), numbers.next()));
-                  // System.out.println(numbers);
-
         }
         barChart.getData().add(dataSeries1);
-        //System.out.println("this is a test ");
+
 
     }
 
@@ -141,7 +138,17 @@ public class WorkoutPageController extends BaseController {
     }
 
     public void onDelete(javafx.event.ActionEvent actionEvent) throws IOException{
-        if (workoutTableView.getSelectionModel().getSelectedItem() != null) {
+        /*if(workoutTableView.getSelectionModel().getSelectedItem() == null){
+            Alert deleteAlert =  new Alert(Alert.AlertType.INFORMATION,"To Add: Click on the Add button below. " +
+                    "                                 " +
+                    "To Delete: Select a workout from the table and click delete button. " +
+                    "                  " +
+                    "To Edit: Select a workout from the table and click edit button. " +
+                    " ",ButtonType.OK);
+            deleteAlert.show();
+        }*/
+       //else
+           if (workoutTableView.getSelectionModel().getSelectedItem() != null) {
             Workout selectedItem = (Workout) workoutTableView.getSelectionModel().getSelectedItem();
             Workout.Instance.setWorkoutid(selectedItem.getWorkoutid());
             String SQL_query="delete from workout Where workoutid=? " ;
@@ -152,7 +159,7 @@ public class WorkoutPageController extends BaseController {
                 DBsession.INSTANCE.OpenConnection().close();
             }catch(Exception e){System.out.println(e);}
             onDelete2(actionEvent);
-            BaseController.Instance.Switch(actionEvent,"FXML/HomePage.fxml");
+            BaseController.Instance.Switch(actionEvent,"FXML/WorkoutPage.fxml");
 
         }
 
@@ -168,10 +175,9 @@ public class WorkoutPageController extends BaseController {
             }catch(Exception e){System.out.println(e);}
         }
 
-    //add data to workout table
+
     public void barChart(String date){
         String SQL_Select="SELECT SUM(calories) AS cal, date from workout join day on day.workoutid=workout.workoutid join Users on Users.userid=day.userid where Users.userid =? and date=? ";
-
 
         try {
             PreparedStatement sel = DBsession.INSTANCE.OpenConnection().prepareStatement(SQL_Select);
@@ -187,11 +193,8 @@ public class WorkoutPageController extends BaseController {
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         }
-
-
-
-
     }
+
     public ArrayList<String> days(){
         LocalDate now = LocalDate.now();
 
@@ -211,7 +214,12 @@ public class WorkoutPageController extends BaseController {
             BaseController.Instance.Switch(actionEvent,"FXML/LoginPage.fxml");
         }
     }
-
+    public void pageInfo(){
+        Alert deleteAlert =  new Alert(Alert.AlertType.INFORMATION,"To Add: Click on the Add button below.\n"  +
+                "To Delete: Select a workout from the table and click delete button\n" + "To Edit: Select a workout from the table and click edit button \n" +
+                "          ",ButtonType.OK);
+        deleteAlert.show();
+    }
 
 }
 

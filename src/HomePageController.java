@@ -199,6 +199,13 @@ public class HomePageController extends BaseController {
         }
 
     }
+    public void logout(ActionEvent actionEvent){
+        root = FXMLLoader.load(getClass().getResource("HomePage.fxml"));
+        stage = (Stage)((Node)actionEvent.getSource()).getScene().getWindow();
+        scene = new Scene(root);
+        stage.setScene(scene);
+        stage.show();
+    }
 
     ArrayList getgroupmembers(String groupname, Integer userid){
 

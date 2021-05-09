@@ -381,35 +381,39 @@ public class GroupsPageController extends BaseController {
                 while(result.next()){
                     String groupAdmin = result.getString("groupadmin");
                     if(groupAdmin.contentEquals(User.INSTANCE.getUsername())){
-                        chooseDelete();
-                        int groupId = result.getInt("groupid");
-                        //System.out.println(groupId);
-                        //Delete group
-                        String delete2="DELETE  FROM groupsmember WHERE groupid=?";
-                        PreparedStatement delete2statement = DBsession.INSTANCE.OpenConnection().prepareStatement(delete2);
-                        delete2statement.setInt(1, groupId);
-                        delete2statement.executeUpdate();
 
-                        String deleteInvite = "DELETE from group_invites WHERE group_id=?";
-                        PreparedStatement inviteDelete = DBsession.INSTANCE.OpenConnection().prepareStatement(deleteInvite);
-                        inviteDelete.setInt(1,groupId);
-                        inviteDelete.executeUpdate();
+                        int response = chooseDelete();
+                        if(response == 0) {
+                            int groupId = result.getInt("groupid");
+                            //System.out.println(groupId);
+                            //Delete group
+                            String delete2 = "DELETE  FROM groupsmember WHERE groupid=?";
+                            PreparedStatement delete2statement = DBsession.INSTANCE.OpenConnection().prepareStatement(delete2);
+                            delete2statement.setInt(1, groupId);
+                            delete2statement.executeUpdate();
+
+                            String deleteInvite = "DELETE from group_invites WHERE group_id=?";
+                            PreparedStatement inviteDelete = DBsession.INSTANCE.OpenConnection().prepareStatement(deleteInvite);
+                            inviteDelete.setInt(1, groupId);
+                            inviteDelete.executeUpdate();
 
 
-                        String deleteGoal="DELETE  FROM groupgoal WHERE groupid=?";
-                        PreparedStatement goalDelete = DBsession.INSTANCE.OpenConnection().prepareStatement(deleteGoal);
-                        goalDelete.setInt(1, groupId);
-                        goalDelete.executeUpdate();
+                            String deleteGoal = "DELETE  FROM groupgoal WHERE groupid=?";
+                            PreparedStatement goalDelete = DBsession.INSTANCE.OpenConnection().prepareStatement(deleteGoal);
+                            goalDelete.setInt(1, groupId);
+                            goalDelete.executeUpdate();
 
-                        String deleteQuery="DELETE  FROM groups WHERE groups.groupid=?";
-                        PreparedStatement deleteStatement = DBsession.INSTANCE.OpenConnection().prepareStatement(deleteQuery);
-                        deleteStatement.setInt(1, groupId);
-                        deleteStatement.executeUpdate();
+                            String deleteQuery = "DELETE  FROM groups WHERE groups.groupid=?";
+                            PreparedStatement deleteStatement = DBsession.INSTANCE.OpenConnection().prepareStatement(deleteQuery);
+                            deleteStatement.setInt(1, groupId);
+                            deleteStatement.executeUpdate();
 
-                        DBsession.INSTANCE.OpenConnection().close();
-                        //Delete it from the group.
-                        groupView.getItems().removeAll(selectedGroup);
+                            DBsession.INSTANCE.OpenConnection().close();
+                            //Delete it from the group.
+                            groupView.getItems().removeAll(selectedGroup);
+                        }else if(response==1){
 
+                        }
 
 
                     }else{
@@ -460,11 +464,12 @@ public class GroupsPageController extends BaseController {
 
     }
 
-    public void chooseDelete(){
+    public int chooseDelete(){
         String[] finalResponse = {"Group", "Myself"};
        int response= JOptionPane.showOptionDialog(null, "Delete group or remove myself?", "Choose response", JOptionPane.DEFAULT_OPTION,
                JOptionPane.INFORMATION_MESSAGE, null, finalResponse, finalResponse[0]);
         System.out.println(response);
+        return response;
     }
 
 

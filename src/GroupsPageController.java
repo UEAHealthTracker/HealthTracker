@@ -12,7 +12,7 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.text.TextAlignment;
 import javafx.stage.Stage;
-
+import java.awt.event.*;
 
 //import javax.mail.internet.MimeMessage;
 
@@ -253,21 +253,12 @@ public class GroupsPageController extends BaseController {
                         scene = new Scene(root);
                         stage.setScene(scene);
                         stage.show();
-
-
                     }
-
-
-
-
-
-
                 }else{
                     GroupMessage.setOpacity(1);
                     GroupMessage.setStyle("-fx-background-color:rgba(0,0,0,0);-fx-text-fill: #ff0000");
                     GroupMessage.setText("Not invited thus can't join");
                     GroupMessage.setAlignment(Pos.CENTER);
-
                 }
 
             }else{
@@ -276,19 +267,14 @@ public class GroupsPageController extends BaseController {
                 GroupMessage.setText("Try Again. Name and Password Don't match.");
                 GroupMessage.setAlignment(Pos.CENTER);
                 System.out.println("The group and Password don't match");
-
             }
             System.out.println("You are not already in the group");
-
-
         }else{
             GroupMessage.setOpacity(1);
             GroupMessage.setStyle("-fx-background-color:rgba(0,0,0,0);-fx-text-fill: #ff0000");
             GroupMessage.setText("You are already in the group");
             GroupMessage.setAlignment(Pos.CENTER);
             System.out.println("You are already in group");
-
-
         }
 
     }
@@ -386,7 +372,6 @@ public class GroupsPageController extends BaseController {
         //check if user has selcted a meal
         if (groupView.getSelectionModel().getSelectedItem() != null) {
             selectedGroup = groupView.getSelectionModel().getSelectedItem();
-
             //try removing meal data from database
             try{
                 String SQL_QUERY="SELECT groupid, groupadmin FROM groups WHERE groupname=?";
@@ -396,6 +381,7 @@ public class GroupsPageController extends BaseController {
                 while(result.next()){
                     String groupAdmin = result.getString("groupadmin");
                     if(groupAdmin.contentEquals(User.INSTANCE.getUsername())){
+                        chooseDelete();
                         int groupId = result.getInt("groupid");
                         //System.out.println(groupId);
                         //Delete group
@@ -454,37 +440,12 @@ public class GroupsPageController extends BaseController {
                                 deleteInvite.setString(2, User.INSTANCE.getEmail());
                                 deleteInvite.executeUpdate();
                                 System.out.println("Invite has been deleted. User cannot join the group");
-
-
-
-
                             }
                         }catch (SQLException e){
                             e.printStackTrace();
-
                         }
-
-
-
-
-
-
                     }
-
-                    //User.INSTANCE.removeMeal(selectedGroup);
                 }
-
-                /*
-                PreparedStatement pst = DBsession.INSTANCE.OpenConnection().prepareStatement(SQL_QUERY);
-                pst.setInt(1, selectedMeal.getMealid());
-                */
-
-
-                //pst.executeUpdate();
-
-
-                //delete meal from user's daily activity
-
             }
             catch(SQLException e){
                 e.printStackTrace();
@@ -499,6 +460,15 @@ public class GroupsPageController extends BaseController {
 
     }
 
+    public void chooseDelete(){
+        String[] finalResponse = {"Group", "Myself"};
+       int response= JOptionPane.showOptionDialog(null, "Delete group or remove myself?", "Choose response", JOptionPane.DEFAULT_OPTION,
+               JOptionPane.INFORMATION_MESSAGE, null, finalResponse, finalResponse[0]);
+        System.out.println(response);
+    }
+
+
+
 public  String getGroupForEdit() throws IOException {
     String getGroupName=null;
     if (groupView.getSelectionModel().getSelectedItem() != null) {
@@ -510,7 +480,7 @@ public  String getGroupForEdit() throws IOException {
 
 
 
- public  ArrayList getGroupMember(){
+     public  ArrayList getGroupMember(){
         ArrayList groupMembers = new ArrayList<>();
         String memberName= null;
     if (groupView.getSelectionModel().getSelectedItem() != null) {
@@ -531,10 +501,6 @@ public  String getGroupForEdit() throws IOException {
     }
     return groupMembers;
 }
-
-
-
-
     public void onEditGroup(javafx.event.ActionEvent actionEvent) throws IOException {
         if (groupView.getSelectionModel().getSelectedItem() != null) {
            selectedGroup = groupView.getSelectionModel().getSelectedItem();
@@ -543,11 +509,7 @@ public  String getGroupForEdit() throws IOException {
 
         }
     }
-
-
-
-
-            //Checking credntials for adding members in the group, after group has been created.
+    //Checking credntials for adding members in the group, after group has been created.
     public int CheckCredentials() {
         int counter = 0;
         String emailDb;
@@ -566,10 +528,7 @@ public  String getGroupForEdit() throws IOException {
         }
         return counter;
     }
-
-
     public static boolean userExist(String mail) {
-
         String emailDb;
         boolean userExist = false;
         try {
@@ -586,7 +545,6 @@ public  String getGroupForEdit() throws IOException {
         }
         return userExist;
     }
-
     public static boolean usernameExist(String username) {
 
         String usernameDb;
@@ -624,7 +582,6 @@ public  String getGroupForEdit() throws IOException {
         return groupExist;
 
     }
-
     //Method to check if the group exists for the join group method.
     public boolean joinGroupCorrect() throws SQLException{
         String groupToJoin = joinGroupName.getText();
@@ -647,7 +604,6 @@ public  String getGroupForEdit() throws IOException {
         //System.out.println(groupExist);
         return groupExist;
     }
-
     //Method to check if the group and password match for user to be able to join group.
     public boolean joinGroupsCredentials() throws SQLException{
         String groupToJoin = joinGroupName.getText();
@@ -672,8 +628,6 @@ public  String getGroupForEdit() throws IOException {
         }
         return joinGroupCredential;
     }
-
-
     //Method to check if the user has already  joined the group method.
     public boolean alreadyInGroup() throws SQLException{
         String groupToJoin = joinGroupName.getText();
@@ -695,8 +649,6 @@ public  String getGroupForEdit() throws IOException {
         }
         return userIsAlreadyInGroup;
     }
-
-
     public void logout(ActionEvent actionEvent) throws IOException {
         int logoutOpt = JOptionPane.showConfirmDialog(null,"Are you sure you want to Log out?");
         if(logoutOpt==JOptionPane.YES_OPTION){

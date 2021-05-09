@@ -1,47 +1,78 @@
+import javafx.animation.KeyFrame;
+import javafx.animation.KeyValue;
+import javafx.animation.Timeline;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
+import javafx.scene.Scene;
+import javafx.scene.control.*;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
-import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.image.ImageView;
+import javafx.stage.Stage;
+import javafx.util.Duration;
 
+
+import javax.mail.MessagingException;
+import javax.swing.*;
 import java.io.IOException;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.text.SimpleDateFormat;
+
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.Iterator;
 
 public class HomePageController extends BaseController {
+    ArrayList<String> email=new ArrayList<>();
+    ArrayList<String> groupnames=new ArrayList<>();
     private ObservableList<Goal> data;
-
+    private ObservableList<Goal> completeGoals;
+    @FXML ListView<Goal> listView = new ListView<>();
     public boolean hm=false;
-    @FXML Label userLabel;
     @FXML  TableView <Goal>  goalview;
     @FXML TableColumn<Goal, String> goalid;
     @FXML TableColumn<Goal, String> goalname;
     @FXML TableColumn<Goal, Date> goaldate;
     @FXML TableColumn<Goal,String> goalstatus;
     @FXML TableColumn<Goal, Integer> goalgroups;
+    @FXML Label msglbl;
     int items=0;
-    TextField en;
-    public void initialize() {
+    int goalsmet=0;
+    @FXML Button share;
+    @FXML Button logout;
+    @FXML  ImageView imshare;
+
+    public void initialize() throws MessagingException {
         userLabel.setText("Hello "+User.INSTANCE.getUsername());
         Check();
         populateGoalsTable();
-
-
+        if(goalsmet>0) {
+            msglbl.setVisible(true);
+            share.setVisible(true);
+            imshare.setVisible(true);
+            msglbl.setText("You have: " + goalsmet + " completed goal/'s");
+        }else{
+            msglbl.setVisible(false);
+            share.setVisible(false);
+            imshare.setVisible(false);
+        }
     }
+
+
     //add data to goal table
     public void populateGoalsTable(){
-
-        SimpleDateFormat sdate = new SimpleDateFormat("yyyy-MM-dd");
-        SimpleDateFormat edate = new SimpleDateFormat("yyyy-MM-dd");
         data = FXCollections.observableArrayList();
-        String SQL_QUERY = "select goalname,startdate,enddate,Goal.goalid as goalid,COUNT(groupgoal.groupgoalid) as total from Goal JOIN Users ON Users.userid=Goal.userid left JOIN groupgoal on Goal.goalid = groupgoal.goalid where Users.userid=? GROUP BY Goal.goalid";
+        completeGoals = FXCollections.observableArrayList();
+
+        String SQL_QUERY = "select goalname,startdate,enddate,Goal.code as code,Goal.goalid as goalid,COUNT(groupgoal.groupgoalid) as total from Goal JOIN Users ON Users.userid=Goal.userid left JOIN groupgoal on Goal.goalid = groupgoal.goalid where Users.userid=? GROUP BY Goal.goalid";
         try {
             PreparedStatement pst = DBsession.INSTANCE.OpenConnection().prepareStatement(SQL_QUERY);
             pst.setInt(1, User.INSTANCE.getUserid());
@@ -55,26 +86,33 @@ public class HomePageController extends BaseController {
                 long days = ChronoUnit.DAYS.between(now, ed);
                 if (days > 0) {
                     status = "Active";
-                    data.add(new Goal(Integer.parseInt(rs.getString("goalid")), rs.getString("goalname"), ed.toString(), status, rs.getString("total")+"/"+items));
+                    data.add(new Goal(Integer.parseInt(rs.getString("goalid")), rs.getString("goalname"), ed.toString(), status, rs.getString("total")+"/"+items,sd.toString(),rs.getString("code")));
                 } else {
-                    status = "Expired";
-                    data.add(new Goal(Integer.parseInt(rs.getString("goalid")), rs.getString("goalname"), ed.toString(), status, rs.getString("total")+"/"+items));
+                    goalsmet++;
+                    status = "Complete";
+                    getgroupnames(rs.getString("goalname"));
+                    data.add(new Goal(Integer.parseInt(rs.getString("goalid")), rs.getString("goalname"), ed.toString(), status, rs.getString("total")+"/"+items,sd.toString(),rs.getString("code")));
+                    completeGoals.add(new Goal(Integer.parseInt(rs.getString("goalid")), rs.getString("goalname"), ed.toString(), status, rs.getString("total")+"/"+items,sd.toString(),rs.getString("code")));
+                    for(String item:groupnames){
+                        getgroupmembers(item,User.INSTANCE.getUserid());
+                    }
+
                 }
             }
-            goalid.setCellValueFactory(new PropertyValueFactory<>("goalid"));
-            goalname.setCellValueFactory(new PropertyValueFactory<>("goalname"));
-            goaldate.setCellValueFactory(new PropertyValueFactory<>("goaldate"));
-            goalstatus.setCellValueFactory(new PropertyValueFactory<>("goalstatus"));
-            goalgroups.setCellValueFactory(new PropertyValueFactory<>("goalgroups"));
-            goalview.setItems(data);
+
+            listView.setItems(data);
+            listView.setCellFactory(param -> new GoalCell());
+
+
+
             DBsession.INSTANCE.OpenConnection().close();
         } catch (Exception e) {
             System.out.println(e);
         }
     }
 
-    public void Check(){
 
+    public void Check(){
         String SQL_query="select groups.groupname as gn from groups JOIN groupsmember on groups.groupid=groupsmember.groupid JOIN Users on Users.userid=groupsmember.userid where Users.userid=?";
         try{
             PreparedStatement pst = DBsession.INSTANCE.OpenConnection().prepareStatement(SQL_query);
@@ -90,45 +128,114 @@ public class HomePageController extends BaseController {
 
 
 
-    public void openSelectGoalTypePage(javafx.event.ActionEvent actionEvent) throws IOException {
-        BaseController.Instance.Switch(actionEvent,"SelectGoalType.fxml");
+    public void ShareGoal() throws MessagingException {
+        msglbl.setVisible(false);
+        share.setVisible(false);
+        imshare.setVisible(false);
+        Iterator iterator=groupnames.iterator();
+        Iterator emailiterator=email.iterator();
+        while(iterator.hasNext()&&emailiterator.hasNext() ) {
+            while (emailiterator.hasNext()) {
+                for (Goal goal : completeGoals) {
+                    if(emailiterator.hasNext()==true) {
+                        SendMail.sendGoalCompletationMail((String) emailiterator.next(), (String) iterator.next(), goal.getGoalname(), User.INSTANCE.username);
+
+                    }else{break;}
+                }
+            }
+        }
+
     }
 
     public void openAddGoalPage(javafx.event.ActionEvent actionEvent) throws IOException {
-        BaseController.Instance.Switch(actionEvent,"AddWeightGoal.fxml");
+        BaseController.Instance.Switch(actionEvent,"FXML/AddWeightGoal.fxml");
     }
     @FXML
     public void openEditGoalPage(javafx.event.ActionEvent actionEvent) throws IOException {
-        BaseController.Instance.Switch(actionEvent,"EditGoal.fxml");
+        BaseController.Instance.Switch(actionEvent,"FXML/EditGoal.fxml");
 
 
     }
 
     public void onEdit(javafx.event.ActionEvent actionEvent) throws IOException {
 
-            if (goalview.getSelectionModel().getSelectedItem() != null) {
-                Goal selectedGoal = goalview.getSelectionModel().getSelectedItem();
-                Goal.Instance.setGoalid(selectedGoal.getGoalid());
-                openEditGoalPage(actionEvent);
+        if (listView.getSelectionModel().getSelectedItem() != null) {
+            Goal selectedGoal = listView.getSelectionModel().getSelectedItem();
+            Goal.Instance.setGoalid(selectedGoal.getGoalid());
+            openEditGoalPage(actionEvent);
 
-            }
+        }
     }
     //allow user to select a table item/row and delete it using the delete button
     public void onDelete(javafx.event.ActionEvent actionEvent) throws IOException{
-        if (goalview.getSelectionModel().getSelectedItem() != null) {
-            Goal selectedGoal = goalview.getSelectionModel().getSelectedItem();
+        if (listView.getSelectionModel().getSelectedItem() != null) {
+            Goal selectedGoal = listView.getSelectionModel().getSelectedItem();
             Goal.Instance.setGoalid(selectedGoal.getGoalid());
-            String SQL_query="DELETE FROM Goal WHERE goalid=?;";
+            String SQL_query="Delete from groupgoal where goalid=?";
             try{
                 PreparedStatement pst = DBsession.INSTANCE.OpenConnection().prepareStatement(SQL_query);
                 pst.setInt(1, Goal.Instance.getGoalid());
                 pst.executeUpdate();
                 DBsession.INSTANCE.OpenConnection().close();
             }catch(Exception e){System.out.println(e);}
+            onDelete1(actionEvent);
+            BaseController.Instance.Switch(actionEvent,"FXML/HomePage.fxml");
+        }
 
-            BaseController.Instance.filename="HomePage.fxml";
+    }
+    public void onDelete1(javafx.event.ActionEvent actionEvent) throws IOException{
+        if (listView.getSelectionModel().getSelectedItem() != null) {
+            Goal selectedGoal = listView.getSelectionModel().getSelectedItem();
+            Goal.Instance.setGoalid(selectedGoal.getGoalid());
+            String SQL_query="Delete from Goal where goalid=?";
+            try{
+                PreparedStatement pst = DBsession.INSTANCE.OpenConnection().prepareStatement(SQL_query);
+                pst.setInt(1, Goal.Instance.getGoalid());
+                pst.executeUpdate();
+                DBsession.INSTANCE.OpenConnection().close();
+            }catch(Exception e){System.out.println(e);}
         }
 
     }
 
+    ArrayList getgroupmembers(String groupname, Integer userid){
+
+        String SQL_QUERY="SELECT DISTINCT Users.email as email,Users.userid as userid FROM Users JOIN groupsmember on Users.userid=groupsmember.userid JOIN groups ON groups.groupid=groupsmember.groupid WHERE groups.groupid=(SELECT groupid FROM groups where groupname=?)";
+        try{
+            PreparedStatement pst = DBsession.INSTANCE.OpenConnection().prepareStatement(SQL_QUERY);
+            pst.setString(1, groupname);
+            ResultSet rs=pst.executeQuery();
+            while(rs.next()) {
+                if(Integer.parseInt(rs.getString("userid"))==userid) {
+                }else {
+//                    if(!email.contains(rs.getString("email")))
+                    email.add(rs.getString("email"));
+                }
+            }
+            DBsession.INSTANCE.OpenConnection().close();
+        }catch(Exception e){System.out.println(e);}
+        return email;
+    }
+    ArrayList getgroupnames(String goalname){
+
+        String SQL_QUERY="SELECT DISTINCT groups.groupname as gn from groups JOIN groupsmember on groupsmember.groupid=groups.groupid JOIN groupgoal on groupgoal.groupid=groups.groupid JOIN Goal on Goal.goalid=groupgoal.goalid where Goal.goalname=?";
+        try{
+            PreparedStatement pst = DBsession.INSTANCE.OpenConnection().prepareStatement(SQL_QUERY);
+            pst.setString(1, goalname);
+            ResultSet rs=pst.executeQuery();
+            while(rs.next()) {
+                if(!groupnames.contains(rs.getString("gn")))
+                groupnames.add(rs.getString("gn"));
+            }
+            DBsession.INSTANCE.OpenConnection().close();
+        }catch(Exception e){System.out.println(e);}
+        return groupnames;
+    }
+
+    public void logout(ActionEvent actionEvent) throws IOException {
+        int logoutOpt = JOptionPane.showConfirmDialog(null,"Are you sure you want to Log out?");
+        if(logoutOpt==JOptionPane.YES_OPTION){
+            BaseController.Instance.Switch(actionEvent,"FXML/LoginPage.fxml");
+        }
+    }
 }

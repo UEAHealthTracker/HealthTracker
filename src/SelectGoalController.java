@@ -9,7 +9,6 @@ import java.sql.ResultSet;
 public class SelectGoalController extends BaseController {
     @FXML ComboBox gtypecb;
     @FXML ComboBox gnamecb;
-    @FXML Label userLabel;
 
     public void initialize() {
 
@@ -43,7 +42,7 @@ public class SelectGoalController extends BaseController {
                 DBsession.INSTANCE.OpenConnection().close();
             }catch(Exception e){System.out.println(e);}
 
-            BaseController.Instance.filename="HomePage.fxml";
+            Instance.filename= "FXML/HomePage.fxml";
     }
 
 }

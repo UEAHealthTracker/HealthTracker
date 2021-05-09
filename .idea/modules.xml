@@ -3,7 +3,6 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/HealthTracker.iml" filepath="$PROJECT_DIR$/HealthTracker.iml" />
-      <module fileurl="file://$PROJECT_DIR$/Jdk 1.8/Jdk 1.8.iml" filepath="$PROJECT_DIR$/Jdk 1.8/Jdk 1.8.iml" />
     </modules>
   </component>
 </project>

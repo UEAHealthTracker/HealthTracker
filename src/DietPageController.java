@@ -1,40 +1,34 @@
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
-import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
 
+import javax.swing.*;
 import java.io.IOException;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.Time;
-import java.sql.Timestamp;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
+import java.sql.*;
+import java.time.LocalTime;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Objects;
 
 public class DietPageController extends BaseController {
 
     @FXML TableView<Meal> dietTable;
-    @FXML TableColumn<Meal, Timestamp> timeConsumed;
-    @FXML TableColumn<Meal, ArrayList<Food>> foods;
-    @FXML TableColumn<Meal, ArrayList<Drink>> drinks;
+    @FXML TableColumn<Meal, LocalTime> timeConsumed;
+    @FXML TableColumn<Meal, String> food;
+    @FXML TableColumn<Meal, String> drink;
     @FXML TableColumn<Meal, Integer> calorieCount;
-
-    //add diet item page
-    @FXML ComboBox<String> setItemType;
-    @FXML TextField setItemName;
-    @FXML TextField setCalorieCount;
+    static Meal selectedMeal = null;
 
     public void initialize(){
+        userLabel.setText("Hello "+User.INSTANCE.getUsername());
         populateDietTable();
     }
 
@@ -44,59 +38,101 @@ public class DietPageController extends BaseController {
         //diet page
         ObservableList<Meal> mealData = FXCollections.observableArrayList();
 
-        String SQL_QUERY = "SELECT mealid, timeconsumed, food.foodName AS foodname, drink.drinkName AS drinkname, food.caloriecount + drink.caloriecount AS caloriecount \n" +
-                            "FROM meal JOIN food ON food.foodid = meal.foodid JOIN drink ON drink.drinkid = meal.drinkid \n" +
-                            "WHERE userid = ? \n" +
-                            "GROUP BY mealid \n" +
-                            "ORDER BY timeconsumed";
-        try {
+        /*try {
+            String SQL_QUERY = "SELECT meal.mealid AS mealid, meal.timeconsumed AS timeconsumed, GROUP_CONCAT(dietitem.itemname) AS itemname, GROUP_CONCAT(dietitem.itemtype) AS itemtype, SUM(dietitem.caloriecount) AS caloriecount " +
+                    "FROM mealitem JOIN meal ON meal.mealid = mealitem.mealid JOIN dietitem ON dietitem.itemid = mealitem.itemid " +
+                    "WHERE meal.userid = ? " +
+                    "GROUP BY mealitem.mealid " +
+                    "ORDER BY meal.timeconsumed";
+
             PreparedStatement pst = DBsession.INSTANCE.OpenConnection().prepareStatement(SQL_QUERY);
-            pst.setString(1, Integer.toString(User.INSTANCE.getUserid()));
+            pst.setInt(1, User.INSTANCE.getUserid());
             ResultSet rs = pst.executeQuery();
 
-            ArrayList<Food> food = new ArrayList<>();
-            ArrayList<Drink> drink = new ArrayList<>();
+            ArrayList<DietItem> dietItems = new ArrayList<>();
+            DietItem.Type itemtype;
+
             while(rs.next()){
 
-                LocalDateTime time = rs.getTimestamp("timeconsumed").toLocalDateTime().withSecond(0);
-                food.add(new Food(rs.getString("foodname")));
-                drink.add(new Drink(rs.getString("drinkname")));
+                List<String> items = Arrays.asList(rs.getString("itemname").split("\\s*,\\s*"));
+                List<String> itemtypes = Arrays.asList(rs.getString("itemtype").split("\\s*,\\s*"));
 
-                mealData.add(new Meal(Integer.parseInt(rs.getString("mealid")), food, drink, time, rs.getInt("caloriecount")));
+                for(int i = 0; i < items.size(); i++){
+                    if(itemtypes.get(i).equals("food")){
+                        itemtype = DietItem.Type.FOOD;
+                    }
+                    else if(itemtypes.get(i).equals("drink")){
+                        itemtype = DietItem.Type.DRINK;
+                    }
+                    else {
+                        itemtype = null;
+                    }
+
+                    dietItems.add(new DietItem(items.get(i), rs.getInt("caloriecount"), itemtype));
+                }
+
+                LocalTime time = rs.getTime("timeconsumed").toLocalTime().withSecond(0);
+
+                mealData.add(new Meal(Integer.parseInt(rs.getString("mealid"), dietItems, time, rs.getInt("caloriecount")));
             }
-
-            timeConsumed.setCellValueFactory(new PropertyValueFactory<>("timeConsumed"));
-            foods.setCellValueFactory(new PropertyValueFactory<>("foods"));
-            drinks.setCellValueFactory(new PropertyValueFactory<>("drinks"));
-            calorieCount.setCellValueFactory(new PropertyValueFactory<>("calorieCount"));
-
-            dietTable.setItems(mealData);
-
             DBsession.INSTANCE.OpenConnection().close();
 
         }catch (Exception e){
-            System.out.println(e);
-        }
+            System.out.println("error retrieving data from database");
+        }*/
+        timeConsumed.setCellValueFactory(new PropertyValueFactory<>("timeConsumed"));
+        food.setCellValueFactory(new PropertyValueFactory<>("foods"));
+        drink.setCellValueFactory(new PropertyValueFactory<>("drinks"));
+        calorieCount.setCellValueFactory(new PropertyValueFactory<>("calorieCount"));
+
+        mealData.addAll(User.INSTANCE.dailyActivity.getMeals());
+        dietTable.setItems(mealData);
     }
 
     //allow user to select a table item/row and delete it using the delete button
-    public void removeTableItem(javafx.event.ActionEvent actionEvent) throws IOException{
-        /*if (dietTable.getSelectionModel().getSelectedItem() != null) {
-            Meal selectedMeal = dietTable.getSelectionModel().getSelectedItem();
-            String SQL_QUERY="DELETE FROM Meal WHERE mealid=?;";
+    public void removeTableItem() {
+        //check if user has selcted a meal
+        if (dietTable.getSelectionModel().getSelectedItem() != null) {
+            selectedMeal = dietTable.getSelectionModel().getSelectedItem();
+
+            //try removing meal data from database
             try{
+                /*String SQL_QUERY="DELETE FROM mealitem WHERE mealid=?;";
                 PreparedStatement pst = DBsession.INSTANCE.OpenConnection().prepareStatement(SQL_QUERY);
                 pst.setInt(1, selectedMeal.getMealid());
                 pst.executeUpdate();
-                DBsession.INSTANCE.OpenConnection().close();
-            }catch(Exception e){System.out.println(e);}
+                DBsession.INSTANCE.OpenConnection().close();*/
 
-        }*/
+                //delete meal from user's daily activity
+                User.INSTANCE.dailyActivity.removeMeal(selectedMeal);
+            }
+            catch(Exception e){
+                System.out.println("error deleting meal");
+            }
+        }
+        //update table
+        populateDietTable();
+    }
+
+    public void openAddDietItem(javafx.event.ActionEvent actionEvent) throws IOException{
+
+        if (dietTable.getSelectionModel().getSelectedItem() != null) {
+
+            selectedMeal = dietTable.getSelectionModel().getSelectedItem();
+        }
+
+        root = FXMLLoader.load(Objects.requireNonNull(getClass().getClassLoader().getResource("FXML/AddDietItemPage.fxml")));
+        stage = (Stage)((Node)actionEvent.getSource()).getScene().getWindow();
+        scene = new Scene(root);
+        stage.setScene(scene);
+        stage.show();
 
     }
 
-    public void selectItemType() {
-        setItemType.getItems().addAll("Food", "Drink");
+    public void logout(ActionEvent actionEvent) throws IOException {
+        int logoutOpt = JOptionPane.showConfirmDialog(null,"Are you sure you want to Log out?");
+        if(logoutOpt==JOptionPane.YES_OPTION){
+            BaseController.Instance.Switch(actionEvent,"FXML/LoginPage.fxml");
+        }
     }
-
 }

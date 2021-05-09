@@ -15,7 +15,8 @@ import java.io.IOException;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 
-public class UserLoginController {
+public class UserLoginController extends BaseController {
+    public static final UserLoginController Instance= new UserLoginController();
     private static Button logbtn,createacc;
     private static TextField pass,user;
     private Parent root;
@@ -31,24 +32,27 @@ public class UserLoginController {
     //passwordStatusLabel shows if password is incorrect
     @FXML  TextField usernameTF;
     @FXML  PasswordField passwordTF;
-    @FXML  Label passwordStatusLabel;
+    //@FXML  Label passwordStatusLabel;
     @FXML  TextField emailTF;
     @FXML  TextField heightTF;
     @FXML  TextField weightTF;
     @FXML Button loginbtn;
     @FXML Button signupbtn;
     @FXML Button sign;
+    @FXML Button forgotbtn;
+    Button forgbtn;
     public void initialize() {
 
         user=usernameTextField;
         pass=passwordTextField;
         logbtn=loginbtn;
+        forgbtn=forgotbtn;
         //createacc=signup;
         logbtn.setStyle("-fx-background-color:#FA526C");
 
     }
     public void openSignUpPage(javafx.event.ActionEvent actionEvent) throws IOException {
-        root = FXMLLoader.load(getClass().getResource("CreateAccountPage.fxml"));
+        root = FXMLLoader.load(getClass().getResource("FXML/CreateAccountPage.fxml"));
         stage = (Stage)((Node)actionEvent.getSource()).getScene().getWindow();
         scene = new Scene(root);
         stage.setScene(scene);
@@ -56,7 +60,7 @@ public class UserLoginController {
     }
 
     public void openLoginPage(javafx.event.ActionEvent actionEvent) throws IOException {
-        root = FXMLLoader.load(getClass().getResource("LoginPage.fxml"));
+        root = FXMLLoader.load(getClass().getResource("FXML/LoginPage.fxml"));
         stage = (Stage)((Node)actionEvent.getSource()).getScene().getWindow();
         scene = new Scene(root);
         stage.setScene(scene);
@@ -64,18 +68,18 @@ public class UserLoginController {
     }
 
 
-public void login(javafx.event.ActionEvent actionEvent) throws IOException {
-    passwordTextField.setStyle("-fx-text-fill:white");
-    String userdb=null;
-    String passdb=null;
-    User.INSTANCE.setUsername(usernameTextField.getText());
-    User.INSTANCE.setPassword(passwordTextField.getText());
-    String SQL_QUERY="select userid,username,password,realname,weight,height,age,email from Users where username=? and password=?";
-    try{
-        PreparedStatement pst = DBsession.INSTANCE.OpenConnection().prepareStatement(SQL_QUERY);
-        pst.setString(1, usernameTextField.getText());
-        pst.setString(2, passwordTextField.getText());
-        ResultSet rs=pst.executeQuery();
+    public void login(javafx.event.ActionEvent actionEvent) throws IOException {
+        passwordTextField.setStyle("-fx-text-fill:white");
+        String userdb=null;
+        String passdb=null;
+        User.INSTANCE.setUsername(usernameTextField.getText());
+        User.INSTANCE.setPassword(passwordTextField.getText());
+        String SQL_QUERY="select userid,username,password,realname,weight,height,age,email from Users where username=? and password=?";
+        try{
+            PreparedStatement pst = DBsession.INSTANCE.OpenConnection().prepareStatement(SQL_QUERY);
+            pst.setString(1, usernameTextField.getText());
+            pst.setString(2, passwordTextField.getText());
+            ResultSet rs=pst.executeQuery();
             while(rs.next()) {
                 userdb=rs.getString("username");
                 passdb=rs.getString("password");
@@ -85,12 +89,8 @@ public void login(javafx.event.ActionEvent actionEvent) throws IOException {
                     User.INSTANCE.setRealName(rs.getString("realname"));
                     User.INSTANCE.setEmail(rs.getString("email"));
                     User.INSTANCE.setHeight(Double.parseDouble(rs.getString("height")));
-                    User.INSTANCE.setWeight(Integer.parseInt(rs.getString("weight")));
-                    root = FXMLLoader.load(getClass().getResource("HomePage.fxml"));
-                    stage = (Stage)((Node)actionEvent.getSource()).getScene().getWindow();
-                    scene = new Scene(root);
-                    stage.setScene(scene);
-                    stage.show();
+                    User.INSTANCE.setWeight(Double.parseDouble(rs.getString("weight")));
+                    BaseController.Instance.Switch(actionEvent, "FXML/HomePage.fxml");
 
                 } else {
                     String s=null;
@@ -99,9 +99,9 @@ public void login(javafx.event.ActionEvent actionEvent) throws IOException {
                     thread.start();
                 }
             }
-        DBsession.INSTANCE.OpenConnection().close();
-    }catch(Exception e){ System.out.println(e);}
-}
+            DBsession.INSTANCE.OpenConnection().close();
+        }catch(Exception e){ System.out.println(e+"0");}
+    }
 
     //https://riptutorial.com/javafx/example/7291/updating-the-ui-using-platform-runlater
     Thread thread = new Thread(new Runnable() {
@@ -117,6 +117,7 @@ public void login(javafx.event.ActionEvent actionEvent) throws IOException {
             while (true) {
                 try {
                     Thread.sleep(3000);
+                    thread.interrupt();
                 } catch (InterruptedException ex) {
                 }
                 // UI update is run on the Application thread
@@ -138,6 +139,7 @@ public void login(javafx.event.ActionEvent actionEvent) throws IOException {
 
         if (email.matches(EMAIL_PATTERN)) {
             try {
+                thread.stop();
                 PreparedStatement pst = DBsession.INSTANCE.OpenConnection().prepareStatement(SQL_INSERT);
                 pst.setString(1, usnm);
                 pst.setString(2, pass);
@@ -150,30 +152,50 @@ public void login(javafx.event.ActionEvent actionEvent) throws IOException {
                     thread.start();
                     DBsession.INSTANCE.OpenConnection().close();
                 } else {
-                    thread.start();
-                    pst.executeUpdate();
                     User.INSTANCE.setUsername(usernameTF.getText());
                     User.INSTANCE.setPassword(passwordTF.getText());
-                    root = FXMLLoader.load(getClass().getResource("HomePage.fxml"));
-                    stage = (Stage)((Node)event.getSource()).getScene().getWindow();
-                    scene = new Scene(root);
-                    stage.setScene(scene);
-                    stage.show();
-
+                    User.INSTANCE.setHeight(Double.parseDouble(heightTF.getText()));
+                    User.INSTANCE.setWeight(Double.parseDouble(weightTF.getText()));
+                    pst.executeUpdate();
                 }
+                userid();
+                BaseController.Instance.Switch(event,"FXML/HomePage.fxml");
 
                 DBsession.INSTANCE.OpenConnection().close();
             } catch (Exception e) {
-                System.out.println(e);
+                System.out.println(e+"1");
             }
         }else{
-            createacc.setStyle("-fx-background-color:transparent;-fx-text-fill: red");
-            createacc.setText("Wrong Email address");
+            loginbtn.setStyle("-fx-background-color:transparent;-fx-text-fill: red");
+            loginbtn.setText("Wrong Email address");
+
             thread.start();
 
         }
     }
 
+    public void userid(){
+
+        String SQL="select userid,realname,age,email from Users where username=? and password=?";
+        try{
+            PreparedStatement pst1 = DBsession.INSTANCE.OpenConnection().prepareStatement(SQL);
+            pst1.setString(1, User.INSTANCE.getUsername());
+            pst1.setString(2, User.INSTANCE.getPassword());
+            ResultSet rs=pst1.executeQuery();
+            while(rs.next()) {
+                User.INSTANCE.setUserid(Integer.parseInt(rs.getString("userid")));
+                User.INSTANCE.setRealName(rs.getString("realname"));
+                if(rs.getString("age")!=null) {
+                    User.INSTANCE.setAge(Integer.parseInt(rs.getString("age")));
+                }else{
+                    User.INSTANCE.setAge(0);
+                }
+                User.INSTANCE.setEmail(rs.getString("email"));
+            }
+            DBsession.INSTANCE.OpenConnection().close();
+        }catch(Exception e){ System.out.println(e+"2");}
+
+    }
 
     public Integer CheckCredentials(){
         int counter=0;
@@ -187,7 +209,26 @@ public void login(javafx.event.ActionEvent actionEvent) throws IOException {
                     counter++;
                 }else{}
             }
-        }catch(Exception e){ System.out.println(e);}
+        }catch(Exception e){ System.out.println(e+"3");}
         return counter;
+    }
+
+    public void forgotpassword(){
+        String email,password;
+        String SQL_QUERY="select email,password from Users where username=?";
+        try{
+            PreparedStatement pst = DBsession.INSTANCE.OpenConnection().prepareStatement(SQL_QUERY);
+            pst.setString(1, usernameTextField.getText());
+            ResultSet rs=pst.executeQuery();
+            while(rs.next()) {
+            email=rs.getString("email");
+            password=rs.getString("password");
+                SendMail.sendPassword(email,email,password);
+                loginbtn.setStyle("-fx-background-color:transparent;-fx-text-fill: red");
+                loginbtn.setText("Email has been sent");
+                thread.start();
+            }
+            DBsession.INSTANCE.OpenConnection().close();
+        }catch(Exception e){ System.out.println(e+"0");}
     }
 }

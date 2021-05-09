@@ -10,6 +10,7 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
 
 import javax.mail.MessagingException;
+import javax.swing.*;
 import java.io.IOException;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -32,12 +33,13 @@ public class EditGroupPageController extends BaseController {
     TextField EditGroupName;
 
     @FXML
-    ComboBox addMemberMail;
+    TextField addMemberMail;
 
+    //This is the combox box to remove member
     @FXML
     ComboBox removeMemberMail;
     @FXML
-    TextField GroupMessage;
+    Label GroupMessage;
 
     static Group selectedGroup = null;
 
@@ -64,7 +66,6 @@ public class EditGroupPageController extends BaseController {
                 groupName = results.getString("groupname");
                 EditGroupName.setText(groupName);
                 String username = results.getString("username");
-                addMemberMail.getItems().add(username);
                 removeMemberMail.getItems().add(username);
                 //System.out.println(username);
                 //System.out.println(groupName);
@@ -78,22 +79,24 @@ public class EditGroupPageController extends BaseController {
 
 
 
-
+    public void updateMessage(String message, String title){
+        JOptionPane.showMessageDialog(null, message, title,JOptionPane.INFORMATION_MESSAGE);
+    }
 
 
     public void EditAddMember(ActionEvent actionEvent) throws SQLException, IOException, MessagingException {
         String editGroupName = EditGroupName.getText();
+        String addMember = addMemberMail.getText();
         boolean inGroup=false;
         int editGroupId, editUserId;
         String editPassword, editAdmin;
 
         try {
-            if (editGroupName.isEmpty() || addMemberMail.getValue()==null) {
+            if (editGroupName.isEmpty() || addMember.isEmpty()) {
                 System.out.println("Please fill in group name and add member details.");
                 GroupMessage.setOpacity(1);
                 GroupMessage.setText("Please fill in group name and  add member details");
             } else {
-                String addMember = addMemberMail.getValue().toString();
                 if (GroupsPageController.userExist(addMember)){
                     System.out.println(addMember + " exists");
                     System.out.println("User and group Exist");
@@ -132,6 +135,7 @@ public class EditGroupPageController extends BaseController {
                                         pst.executeUpdate();
                                         GroupMessage.setOpacity(1);
                                         GroupMessage.setText("Email invitation has been sent to: " + addMember);
+                                        //updateMessage(" Email Inviation has been sent to "+ addMember, "invite sent");
                                         //Insert into group invites after mail has been sent:
                                     }
                                 }
@@ -148,7 +152,7 @@ public class EditGroupPageController extends BaseController {
                 }else{
                     GroupMessage.setOpacity(1);
                     GroupMessage.setText("User named : " + addMember + " does not exist");
-                    System.out.println(addMember + " exists");
+                    //System.out.println(addMember + " not exists");
                 }
 
             }
@@ -173,8 +177,8 @@ public class EditGroupPageController extends BaseController {
                 GroupMessage.setOpacity(1);
                 GroupMessage.setText("Please fill in group name and  add member details");
             } else {
-                String memberEmail = (String) removeMemberMail.getValue();
-                if (GroupsPageController.userExist(memberEmail)) {
+                String memberUserName = (String) removeMemberMail.getValue();
+                if (GroupsPageController.usernameExist(memberUserName)) {
                     if (GroupsPageController.groupExist(editGroupName)) {
                         String Adminquery = "SELECT groupadmin FROM groups WHERE groupname =?";
                         PreparedStatement checkAdmin = DBsession.INSTANCE.OpenConnection().prepareStatement(Adminquery);
@@ -186,15 +190,17 @@ public class EditGroupPageController extends BaseController {
                             System.out.println(resultAdmin);
                             System.out.println("Query working");
                             if (resultAdmin.contentEquals(User.INSTANCE.getUsername())) {
+                                //If user is admin:
 
                                 System.out.println("You are admin");
                                 //Remove member
-                                String removeQuery = "SELECT groups.groupid, Users.userid FROM groups INNER JOIN groupsmember ON groupsmember.groupid=groups.groupid INNER JOIN Users ON Users.userid = groupsmember.userid  WHERE groups.groupname=? AND Users.email=?";
+                                String removeQuery = "SELECT groups.groupid, Users.userid, Users.email FROM groups INNER JOIN groupsmember ON groupsmember.groupid=groups.groupid INNER JOIN Users ON Users.userid = groupsmember.userid  WHERE groups.groupname=? AND Users.username=?";
                                 PreparedStatement removeStatement = DBsession.INSTANCE.OpenConnection().prepareStatement(removeQuery);
                                 removeStatement.setString(1, editGroupName);
-                                removeStatement.setString(2, memberEmail);
+                                removeStatement.setString(2, memberUserName);
                                 ResultSet queryResult = removeStatement.executeQuery();
                                 while (queryResult.next()) {
+                                    String membersMail= queryResult.getString("email");
                                     int groupId = queryResult.getInt("groupid");
                                     System.out.println(groupId);
                                     int userId = queryResult.getInt("userid");
@@ -206,7 +212,7 @@ public class EditGroupPageController extends BaseController {
                                     deleteStatement.setInt(2, userId);
                                     deleteStatement.executeUpdate();
                                     GroupMessage.setOpacity(1);
-                                    GroupMessage.setText(memberEmail + " has been deleted from the group");
+                                    GroupMessage.setText(memberUserName + " has been deleted from the group");
                                     root = FXMLLoader.load(getClass().getResource("FXML/GroupsPage.fxml"));
                                     stage = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
                                     scene = new Scene(root);
@@ -216,22 +222,26 @@ public class EditGroupPageController extends BaseController {
                                     String removeInvite = "DELETE FROM group_invites WHERE group_id=? AND group_member=?";
                                     PreparedStatement deleteInvite = DBsession.INSTANCE.OpenConnection().prepareStatement(removeInvite);
                                     deleteInvite.setInt(1, groupId);
-                                    deleteInvite.setString(2, memberEmail);
+                                    deleteInvite.setString(2, membersMail);
                                     deleteInvite.executeUpdate();
                                     System.out.println("Invite has been deleted. User cannot join the group");
                                 }
                             } else {
+                                //If you are not admin but are trying to remove yourself from the group.
                                 GroupMessage.setOpacity(1);
+                                GroupMessage.setStyle("-fx-background-color:rgba(0,0,0,0);-fx-text-fill: #ff0000");
                                 GroupMessage.setText("Can't remove member because you are not admin");
                             }
 
                         }
                     }else{
                         GroupMessage.setOpacity(1);
+                        GroupMessage.setStyle("-fx-background-color:rgba(0,0,0,0);-fx-text-fill: #ff0000");
                         GroupMessage.setText("Group typed does not exist");
                     }
                 }else{
                     GroupMessage.setOpacity(1);
+                    GroupMessage.setStyle("-fx-background-color:rgba(0,0,0,0);-fx-text-fill: #ff0000");
                     GroupMessage.setText("User typed does not exist");
 
                 }

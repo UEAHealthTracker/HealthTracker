@@ -6,6 +6,8 @@ public class Group {
     private String groupPassword;
     private String memberName;
 
+    public final static Group Instance= new Group();
+
     public Group(String groupName, String groupAdmin, String groupPassword){
         this.groupName=groupName;
         this.groupAdmin=groupAdmin;
@@ -22,6 +24,9 @@ public class Group {
 
     }
 
+    public Group() {
+
+    }
 
 
     public String getGroupName() {

@@ -17,7 +17,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-public class EditGroupController extends BaseController {
+public class EditGroupPageController extends BaseController {
     private ObservableList<Group> data;
     @FXML
     TableView<Group> groupView;
@@ -35,131 +35,65 @@ public class EditGroupController extends BaseController {
     ComboBox addMemberMail;
 
     @FXML
-    TextField removeMemberMail;
+    ComboBox removeMemberMail;
     @FXML
     TextField GroupMessage;
 
     static Group selectedGroup = null;
-    ArrayList membersName= getGroupMember();
+
+    GroupsPageController groupsDetail = new GroupsPageController();
+    //String groupName= groupsDetail.getGroupForEdit();
+
+    //ArrayList allMembers = groupsDetail.getGroupMember();
+
+    public EditGroupPageController() throws IOException {
+    }
+
+    //ArrayList membersName= getGroupMember();
     public void initialize() throws IOException {
-
         userLabel.setText("Hello " + User.INSTANCE.getUsername());
-        EditGroupName.setText(getGroupForEdit());
-        for(int i=0; i<membersName.size(); i++){
-            System.out.println(membersName.get(i));
-            addMemberMail.setVisibleRowCount(membersName.size());
-            addMemberMail.setValue(membersName.get(i));
-        }
-
-
-
-
-    }
-
-    public void populateGroupTables() {
-
-        data = FXCollections.observableArrayList();
-        try{
-            //Getting all the groups the user is part of.
-            String queryTest = "SELECT groups.groupname, groups.groupid, groups.groupadmin, groups.groupPassword FROM groups INNER JOIN groupsmember ON groupsmember.groupid=groups.groupid INNER JOIN Users ON Users.userid = groupsmember.userid  WHERE groupsmember.userid=?";
-            try{
-                PreparedStatement pst= DBsession.INSTANCE.OpenConnection().prepareStatement(queryTest);
-                pst.setInt(1,User.INSTANCE.getUserid());
-                ResultSet rs = pst.executeQuery();
-                while(rs.next()){
-                    //System.out.println(rs.getString(1));
-                    int groupIds= Integer.parseInt(rs.getString("groupid"));
-                    //System.out.println(groupIds);
-                    //Get all the members of all the groups, the user is in:
-                    String memberQuery= "SELECT Users.username FROM Users INNER JOIN groupsmember ON groupsmember.userid= Users.userid WHERE groupsmember.groupid=?";
-                    PreparedStatement pst2= DBsession.INSTANCE.OpenConnection().prepareStatement(memberQuery);
-                    pst2.setInt(1, groupIds);
-                    ResultSet rs2 = pst2.executeQuery();
-                    ArrayList members = new ArrayList();
-                    while(rs2.next()){
-                        members.add(rs2.getString("username"));
-
-
-
-                    }
-                    data.add(new Group(rs.getString("groupname"), rs.getString("groupadmin"), rs.getString("groupPassword"), members));
-                    groupname.setCellValueFactory(new PropertyValueFactory<>("groupName"));
-                    groupMembers.setCellValueFactory(new PropertyValueFactory<>("groupMembers"));
-                    //groupMembers.setCellValueFactory(new PropertyValueFactory<>("memberName"));
-                    //groupMembers.setCellFactory(new PropertyValueFactory<>());
-
-
-
-                    groupView.setItems(data);
-
-                    DBsession.INSTANCE.OpenConnection().close();
-                }
-
-            }catch(SQLException e){
-                e.printStackTrace();
-
+        String initialiseQuery = "SELECT groups.groupname, Users.username FROM groups INNER JOIN groupsmember ON groupsmember.groupid=groups.groupid INNER JOIN Users ON Users.userid = groupsmember.userid  WHERE groups.groupname=?";
+        try {
+            PreparedStatement sel = DBsession.INSTANCE.OpenConnection().prepareStatement(initialiseQuery);
+            System.out.println(Group.Instance.getGroupName());
+            // sel.setInt(1,Integer.parseInt(String.valueOf(User.INSTANCE.getUserid())));
+            sel.setString(1, (Group.Instance.getGroupName()));
+            ResultSet results = sel.executeQuery();
+            String groupName ="";
+            while(results.next()){
+                groupName = results.getString("groupname");
+                EditGroupName.setText(groupName);
+                String username = results.getString("username");
+                addMemberMail.getItems().add(username);
+                removeMemberMail.getItems().add(username);
+                //System.out.println(username);
+                //System.out.println(groupName);
             }
-        }catch (Exception e){
-            //e.printStackTrace();
-        }
-    }
-
-    public String getGroupForEdit() throws IOException {
-        String getGroupName=null;
-        if (groupView.getSelectionModel().getSelectedItem() != null) {
-            selectedGroup = groupView.getSelectionModel().getSelectedItem();
-            getGroupName = selectedGroup.getGroupName();
-        }
-        return getGroupName;
-    }
-    public ArrayList getGroupMember(){
-        ArrayList groupMembers = new ArrayList<>();
-        String memberName= null;
-        if (groupView.getSelectionModel().getSelectedItem() != null) {
-            selectedGroup = groupView.getSelectionModel().getSelectedItem();
-            memberName= selectedGroup.getGroupMembers();
-            //StringTokenizer tokenizer = new StringTokenizer(memberName, ",");
-            groupMembers = new ArrayList<>(Arrays.asList(memberName.split(",")));
-            //int size = selectedGroup.getGroupMembers();
-            //System.out.println(size);
-
-            //System.out.println(memberName);
-        /*
-        for(int i=0; i< groupMembers.size(); i++){
-            System.out.println(groupMembers.get(i));
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
         }
 
-         */
-        }
-        return groupMembers;
     }
-    public void mainEditGroup(ActionEvent actionEvent) throws IOException {
-        System.out.println("Heyy!");
-        /*
-        root = FXMLLoader.load(getClass().getResource("FXML/EditGroupPage.fxml"));
-        stage = (Stage)((Node)actionEvent.getSource()).getScene().getWindow();
-        scene = new Scene(root);
-        stage.setScene(scene);
-        stage.show();
 
-         */
-    }
+
+
+
+
 
 
     public void EditAddMember(ActionEvent actionEvent) throws SQLException, IOException, MessagingException {
         String editGroupName = EditGroupName.getText();
         boolean inGroup=false;
-        String addMember = addMemberMail.getValue().toString();
         int editGroupId, editUserId;
         String editPassword, editAdmin;
 
         try {
-            if (editGroupName.isEmpty() || addMember.isEmpty()) {
+            if (editGroupName.isEmpty() || addMemberMail.getValue()==null) {
                 System.out.println("Please fill in group name and add member details.");
                 GroupMessage.setOpacity(1);
                 GroupMessage.setText("Please fill in group name and  add member details");
             } else {
-
+                String addMember = addMemberMail.getValue().toString();
                 if (GroupsPageController.userExist(addMember)){
                     System.out.println(addMember + " exists");
                     System.out.println("User and group Exist");
@@ -229,16 +163,17 @@ public class EditGroupController extends BaseController {
 
     public void removeMember(ActionEvent actionEvent) throws SQLException {
         String editGroupName = EditGroupName.getText();
-        String memberEmail = removeMemberMail.getText();
+
         String resultAdmin;
         boolean isInInGroup=false;
         //Check if the user is admin of the group
         try {
-            if (editGroupName.isEmpty() || memberEmail.isEmpty()) {
+            if (editGroupName.isEmpty() || removeMemberMail.getValue()==null) {
                 System.out.println("Please fill in group name and add member details.");
                 GroupMessage.setOpacity(1);
                 GroupMessage.setText("Please fill in group name and  add member details");
             } else {
+                String memberEmail = (String) removeMemberMail.getValue();
                 if (GroupsPageController.userExist(memberEmail)) {
                     if (GroupsPageController.groupExist(editGroupName)) {
                         String Adminquery = "SELECT groupadmin FROM groups WHERE groupname =?";

@@ -11,14 +11,14 @@
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/15.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="GroupsPageController">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/15.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="EditGroupPageController">
    <left>
       <AnchorPane prefHeight="400.0" prefWidth="200.0" style="-fx-background-color: #c7a4ff;" BorderPane.alignment="CENTER">
          <children>
             <Label fx:id="userLabel" alignment="TOP_CENTER" contentDisplay="CENTER" text="Hello &lt;User&gt;" textAlignment="CENTER" textFill="WHITE">
                <font>
                   <Font name="Segoe UI Semilight" size="24.0" />
-               </font>
+               </font>abena
                <padding>
                   <Insets bottom="10.0" left="25.0" right="25.0" top="10.0" />
                </padding>
@@ -68,7 +68,6 @@
                   <Font name="Segoe UI Semilight" size="12.0" />
                </font>
             </Button>
-            <TextField fx:id="removeMemberMail" layoutX="122.0" layoutY="184.0" prefWidth="150.0" promptText="Type email" style="-fx-background-color: #ffffff;" />
             <Button layoutX="123.0" layoutY="209.0" mnemonicParsing="false" onAction="#removeMember" prefWidth="150.0" style="-fx-background-color: #aa80ff;" text="Remove member" textFill="WHITE">
                <font>
                   <Font name="Segoe UI Semilight" size="12.0" />
@@ -76,6 +75,7 @@
             </Button>
             <TextField fx:id="GroupMessage" layoutX="22.0" layoutY="287.0" opacity="0.0" prefHeight="63.0" prefWidth="360.0" promptText="Edit name" style="-fx-background-color: #ffffff;" />
             <ComboBox fx:id="addMemberMail" layoutX="122.0" layoutY="107.0" prefWidth="150.0" />
+            <ComboBox fx:id="removeMemberMail" layoutX="122.0" layoutY="184.0" prefWidth="150.0" />
          </children>
       </AnchorPane>
    </right>

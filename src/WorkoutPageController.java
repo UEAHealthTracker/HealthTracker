@@ -113,13 +113,16 @@ public class WorkoutPageController extends BaseController {
 
     public void populateTable(){
         workouts = FXCollections.observableArrayList();
+        System.out.println("Here");
         String SQL_SELECT=" Select workout.workoutid as WorkoutID, workout.calories as Calories, workout.duration as Duration, workout.workouttype as WorkoutType FROM workout JOIN day ON day.workoutid=workout.workoutid JOIN Users ON day.userid=Users.userid and Users.userid=?";
         try {
             PreparedStatement seltb = DBsession.INSTANCE.OpenConnection().prepareStatement(SQL_SELECT);
             seltb.setInt(1,User.INSTANCE.getUserid());
             ResultSet wid = seltb.executeQuery();
+            System.out.println(wid);
             while(wid.next()){
-                workouts.add(new Workout(Integer.parseInt(wid.getString("WorkoutID")), Integer.parseInt( wid.getString("Calories")),Integer.parseInt( wid.getString("Duration")), wid.getString("WorkoutType")));
+                System.out.println(wid);
+                workouts.add(new Workout(wid.getInt("WorkoutID"), wid.getInt("Calories"), wid.getInt("Duration"), wid.getString("WorkoutType")));
             }
             workoutid.setCellValueFactory(new PropertyValueFactory<>("workoutid"));
             caloriesBurned.setCellValueFactory(new PropertyValueFactory<>("caloriesBurned"));

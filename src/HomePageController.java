@@ -86,13 +86,13 @@ public class HomePageController extends BaseController {
                 long days = ChronoUnit.DAYS.between(now, ed);
                 if (days > 0) {
                     status = "Active";
-                    data.add(new Goal(Integer.parseInt(rs.getString("goalid")), rs.getString("goalname"), ed.toString(), status, rs.getString("total")+"/"+items,sd.toString(),rs.getString("code")));
+                    data.add(new Goal(rs.getInt("goalid"), rs.getString("goalname"), ed.toString(), status, rs.getString("total")+"/"+items,sd.toString(),rs.getString("code")));
                 } else {
                     goalsmet++;
                     status = "Complete";
                     getgroupnames(rs.getString("goalname"));
-                    data.add(new Goal(Integer.parseInt(rs.getString("goalid")), rs.getString("goalname"), ed.toString(), status, rs.getString("total")+"/"+items,sd.toString(),rs.getString("code")));
-                    completeGoals.add(new Goal(Integer.parseInt(rs.getString("goalid")), rs.getString("goalname"), ed.toString(), status, rs.getString("total")+"/"+items,sd.toString(),rs.getString("code")));
+                    data.add(new Goal(rs.getInt("goalid"), rs.getString("goalname"), ed.toString(), status, rs.getString("total")+"/"+items,sd.toString(),rs.getString("code")));
+                    completeGoals.add(new Goal(rs.getInt("goalid"), rs.getString("goalname"), ed.toString(), status, rs.getString("total")+"/"+items,sd.toString(),rs.getString("code")));
                     for(String item:groupnames){
                         getgroupmembers(item,User.INSTANCE.getUserid());
                     }
@@ -108,6 +108,7 @@ public class HomePageController extends BaseController {
             DBsession.INSTANCE.OpenConnection().close();
         } catch (Exception e) {
             System.out.println(e);
+            e.printStackTrace();
         }
     }
 
@@ -148,6 +149,7 @@ public class HomePageController extends BaseController {
     }
 
     public void openAddGoalPage(javafx.event.ActionEvent actionEvent) throws IOException {
+        System.out.println("Here");
         BaseController.Instance.Switch(actionEvent,"FXML/AddWeightGoal.fxml");
     }
     @FXML

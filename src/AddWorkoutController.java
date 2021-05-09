@@ -92,7 +92,7 @@ public class AddWorkoutController  extends BaseController{
             sel.setInt(2, Integer.parseInt(durationTF.getText()));
             ResultSet wid= sel.executeQuery();
             while(wid.next()) {
-                Workout.Instance.setWorkoutid(Integer.parseInt(wid.getString("workoutid")));
+                Workout.Instance.setWorkoutid(wid.getInt("workoutid"));
             }
             DBsession.INSTANCE.OpenConnection().close();
 

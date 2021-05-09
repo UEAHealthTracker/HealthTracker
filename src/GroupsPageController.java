@@ -129,13 +129,15 @@ public class GroupsPageController extends BaseController {
                             System.out.println("Group has been created. The name of the Group is " + newGroup.getGroupName());
                             System.out.println("Group admin is " +groupAdmin);
                             System.out.println("The group password is " + newGroup.getGroupPassword());
+                            DBsession.INSTANCE.OpenConnection().close();
                             //Insert the admin as a member in the groupsmember group:
                             String getGroupId= "SELECT groupid FROM groups WHERE groupname =?";
                             PreparedStatement groupIdStatement = DBsession.INSTANCE.OpenConnection().prepareStatement(getGroupId);
                             groupIdStatement.setString(1,nameOfGroup);
                             ResultSet idSet = groupIdStatement.executeQuery();
+                            DBsession.INSTANCE.OpenConnection().close();
                             while(idSet.next()) {
-                                int groupId = Integer.parseInt(idSet.getString("groupid"));
+                                int groupId = idSet.getInt("groupid");
                                 String insertAdminAsMember = "INSERT INTO groupsmember(groupid, userid) VALUES(?,?)";
                                 PreparedStatement insertMemberStatement = DBsession.INSTANCE.OpenConnection().prepareStatement(insertAdminAsMember);
                                 insertMemberStatement.setInt(1, groupId);
@@ -143,6 +145,7 @@ public class GroupsPageController extends BaseController {
                                 insertMemberStatement.executeUpdate();
 
                             }
+                            DBsession.INSTANCE.OpenConnection().close();
 
                             //Add the  invite details into the database.
                             AddInvite(groupAdmin, groupMail, nameOfGroup);
@@ -158,6 +161,7 @@ public class GroupsPageController extends BaseController {
                             System.out.println("Mail has not been sent)");
                         }
                     } catch (Exception e) {
+                        e.printStackTrace();
                         System.out.println(e);
 
                     }
@@ -506,8 +510,9 @@ public class GroupsPageController extends BaseController {
 
                     groupView.setItems(data);
 
-                    DBsession.INSTANCE.OpenConnection().close();
+
                 }
+                DBsession.INSTANCE.OpenConnection().close();
 
             }catch(SQLException e){
                 e.printStackTrace();
@@ -537,6 +542,7 @@ public class GroupsPageController extends BaseController {
             }
         } catch (Exception e) {
             System.out.println(e);
+            e.printStackTrace();
         }
         return counter;
     }
@@ -555,6 +561,7 @@ public class GroupsPageController extends BaseController {
 
                 }
             }
+            DBsession.INSTANCE.OpenConnection().close();
         }catch (SQLException e) {
             e.printStackTrace();
         }
@@ -573,8 +580,9 @@ public class GroupsPageController extends BaseController {
 
                 }
             }
+            DBsession.INSTANCE.OpenConnection().close();
         }catch (SQLException e){
-
+            e.printStackTrace();
         }
         //System.out.println(groupExist);
         return groupExist;
@@ -595,6 +603,7 @@ public class GroupsPageController extends BaseController {
                     //System.out.println(databaseGroups);
                 }
             }
+            DBsession.INSTANCE.OpenConnection().close();
         }catch (SQLException e){
             e.printStackTrace();
 
@@ -623,6 +632,7 @@ public class GroupsPageController extends BaseController {
                     System.out.println("You can join group called:" + databaseGroup);
                 }
             }
+            DBsession.INSTANCE.OpenConnection().close();
         }catch (SQLException e){
             e.printStackTrace();
         }
@@ -646,6 +656,7 @@ public class GroupsPageController extends BaseController {
                     userIsAlreadyInGroup = true;
                 }
             }
+            DBsession.INSTANCE.OpenConnection().close();
         }catch (SQLException e){
             e.printStackTrace();
         }

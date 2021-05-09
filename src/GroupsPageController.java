@@ -412,7 +412,15 @@ public class GroupsPageController extends BaseController {
                             //Delete it from the group.
                             groupView.getItems().removeAll(selectedGroup);
                         }else if(response==1){
-
+                            ArrayList groupMembersList = new ArrayList();
+                            groupMembersList=  getGroupMember();
+                            for(int i=0; i<groupMembersList.size(); i++){
+                                System.out.println(groupMembersList.get(i));
+                            }
+                            /*
+                            String newAdmin = (String)JOptionPane.showInputDialog(null, "Select New Admin",
+                                    "Choosing New Admin", JOptionPane.QUESTION_MESSAGE, groupMembers, options[2]);
+                             */
                         }
 
 

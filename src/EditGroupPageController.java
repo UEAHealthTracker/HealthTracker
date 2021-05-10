@@ -259,4 +259,13 @@ public class EditGroupPageController extends BaseController {
         deleteAlert.show();
     }
 
+    public int moreEditOptions(){
+        String[] finalResponse = {"Group name", "Group password", "Group Admin"};
+        int response= JOptionPane.showOptionDialog(null, "Choose what to edit. Change", "Additional edit options", JOptionPane.DEFAULT_OPTION,
+                JOptionPane.INFORMATION_MESSAGE, null, finalResponse, finalResponse[0]);
+        System.out.println(response);
+        return response;
+    }
+
+
 }

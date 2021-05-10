@@ -29,6 +29,7 @@ import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Iterator;
+import java.util.Random;
 
 public class HomePageController extends BaseController {
     ArrayList<String> email=new ArrayList<>();
@@ -49,11 +50,13 @@ public class HomePageController extends BaseController {
     @FXML Button share;
     @FXML Button logout;
     @FXML  ImageView imshare;
+    @FXML  Label goalSuggest;
 
     public void initialize() throws MessagingException {
         userLabel.setText("Hello "+User.INSTANCE.getUsername());
         Check();
         populateGoalsTable();
+        suggestGoal();
         if(goalsmet>0) {
             msglbl.setVisible(true);
             share.setVisible(true);
@@ -65,6 +68,7 @@ public class HomePageController extends BaseController {
             imshare.setVisible(false);
         }
     }
+
 
 
     //add data to goal table
@@ -238,4 +242,23 @@ public class HomePageController extends BaseController {
             BaseController.Instance.Switch(actionEvent,"FXML/LoginPage.fxml");
         }
     }
+    public void suggestGoal(){
+        ArrayList <String> goalNames = new ArrayList<>();
+        Random randomNum = new Random();
+        int randNum = randomNum.nextInt(13);
+        String SQL_QUERY="SELECT goalname From Goal ";
+        try{
+            PreparedStatement pst = DBsession.INSTANCE.OpenConnection().prepareStatement(SQL_QUERY);
+            ResultSet rs=pst.executeQuery();
+            while(rs.next()) {
+                goalNames.add(rs.getString("goalname"));
+
+            }
+            DBsession.INSTANCE.OpenConnection().close();
+            goalSuggest.setText("New Goal Suggestion: "+ goalNames.get(randNum));
+        }catch(Exception e){System.out.println(e);}
+
+    }
+
+    
 }

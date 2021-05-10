@@ -17,6 +17,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 public class EditGroupPageController extends BaseController {
     private ObservableList<Group> data;
@@ -133,8 +134,7 @@ public class EditGroupPageController extends BaseController {
                                         pst.setString(3, editAdmin);
                                         pst.setString(4, addMember);
                                         pst.executeUpdate();
-                                        GroupMessage.setOpacity(1);
-                                        GroupMessage.setText("Email invitation has been sent to: " + addMember);
+                                        JOptionPane.showMessageDialog(null, "Email invitation has been sent to: " + addMember, "Successful member invite!", JOptionPane.INFORMATION_MESSAGE);
                                         //updateMessage(" Email Inviation has been sent to "+ addMember, "invite sent");
                                         //Insert into group invites after mail has been sent:
                                     }
@@ -211,8 +211,7 @@ public class EditGroupPageController extends BaseController {
                                     deleteStatement.setInt(1, groupId);
                                     deleteStatement.setInt(2, userId);
                                     deleteStatement.executeUpdate();
-                                    GroupMessage.setOpacity(1);
-                                    GroupMessage.setText(memberUserName + " has been deleted from the group");
+                                    JOptionPane.showMessageDialog(null, memberUserName + " has been deleted from the group", "Successful delete member", JOptionPane.INFORMATION_MESSAGE);
                                     root = FXMLLoader.load(getClass().getResource("FXML/GroupsPage.fxml"));
                                     stage = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
                                     scene = new Scene(root);
@@ -251,5 +250,112 @@ public class EditGroupPageController extends BaseController {
 
         }
     }
+
+    public void pageInfo(){
+        Alert deleteAlert =  new Alert(Alert.AlertType.INFORMATION," To Invite Member: Fill group name and member email and click invite member button\n"  +
+                "To Delete Member: Type group name, select member from list and click remove member  \n" + "Click add button for more functionalities including change group name, password, and/or admin \n" +
+                 "   ",ButtonType.OK);
+        deleteAlert.show();
+    }
+
+    public int moreEditOptions() throws SQLException {
+        int response = 10;
+        String SQL_QUERY = "SELECT  groupadmin FROM groups WHERE groupname=?";
+        PreparedStatement pst = DBsession.INSTANCE.OpenConnection().prepareStatement(SQL_QUERY);
+        pst.setString(1, EditGroupName.getText());
+        ResultSet result = pst.executeQuery();
+        while (result.next()) {
+            String groupAdmin = result.getString("groupadmin");
+            System.out.println("Admin is: " + groupAdmin);
+            System.out.println("Username is: " + User.INSTANCE.getUsername());
+            if (groupAdmin.contentEquals(User.INSTANCE.getUsername())) {
+                //Check if user is admin of group.
+                String[] finalResponse = {"Group name", "Group password", "Group Admin"};
+                response = JOptionPane.showOptionDialog(null, "Choose what to edit. Change", "Additional edit options", JOptionPane.DEFAULT_OPTION,
+                        JOptionPane.INFORMATION_MESSAGE, null, finalResponse, finalResponse[0]);
+                System.out.println(response);
+
+            }else{
+                JOptionPane.showMessageDialog(null, "Uh-oh! You aren't admin and thus can't change group name, password, or admin", "Error", JOptionPane.ERROR_MESSAGE);
+            }
+        }
+        return response;
+    }
+
+    public void updateGroupName(String newGroupName) throws  SQLException {
+        boolean updateComplete = false;
+
+            if (GroupsPageController.groupExist(newGroupName) == false) {
+                String update = "UPDATE groups SET groupname =? WHERE groupname=?";
+                PreparedStatement updateStatement = DBsession.INSTANCE.OpenConnection().prepareStatement(update);
+                updateStatement.setString(1, newGroupName);
+                updateStatement.setString(2, EditGroupName.getText());
+                updateStatement.executeUpdate();
+                JOptionPane.showMessageDialog(null, "Group name has been changed to " + newGroupName, "Successful name change", JOptionPane.INFORMATION_MESSAGE);
+                DBsession.INSTANCE.OpenConnection().close();
+            } else {
+                JOptionPane.showMessageDialog(null, "Uh-oh!, name is already taken. Try again.", "Error", JOptionPane.ERROR_MESSAGE);
+
+            }
+
+
+    }
+
+    public void updateGroupPassword(String newGroupPassword) throws  SQLException{
+        String update = "UPDATE groups SET groupPassword =? WHERE groupname=?";
+        PreparedStatement updateStatement = DBsession.INSTANCE.OpenConnection().prepareStatement(update);
+        updateStatement.setString(1, newGroupPassword);
+        updateStatement.setString(2, EditGroupName.getText());
+        updateStatement.executeUpdate();
+        DBsession.INSTANCE.OpenConnection().close();
+        JOptionPane.showMessageDialog(null, "Group password has been changed to " + newGroupPassword, "Successful password change", JOptionPane.INFORMATION_MESSAGE);
+    }
+
+    public void updateGroupAdmin(String newAdmin) throws SQLException {
+        String update = "UPDATE groups SET groupadmin =? WHERE groupname=?";
+        PreparedStatement updateStatement = DBsession.INSTANCE.OpenConnection().prepareStatement(update);
+        updateStatement.setString(1, newAdmin);
+        updateStatement.setString(2, EditGroupName.getText());
+        updateStatement.executeUpdate();
+        DBsession.INSTANCE.OpenConnection().close();
+        JOptionPane.showMessageDialog(null, "Group admin has been changed to " + newAdmin, "Successful admin change", JOptionPane.INFORMATION_MESSAGE);
+    }
+
+
+    public void furtherEdits() throws SQLException {
+        int editResponse= moreEditOptions();
+        //System.out.println(editResponse);
+        switch (editResponse){
+            case 0:
+                String newGroupName = JOptionPane.showInputDialog("Type new group name");
+                updateGroupName(newGroupName);
+                break;
+            case 1:
+                String newGroupPassword = JOptionPane.showInputDialog("Type new group password");
+                updateGroupPassword(newGroupPassword);
+                break;
+            case 2:
+                //Object options = new String[10];
+                List<String> optionList = new ArrayList<String>();
+
+                //String[] options = EditGroupName.getText().getGroupMembers().split(",");
+                for(int i=0; i<removeMemberMail.getItems().size(); i++) {
+                     optionList.add((String) removeMemberMail.getItems().get(i));
+                }
+                String options[] = optionList.toArray( new String[optionList.size()]);
+                //System.out.println(options[0]);
+                //System.out.println(options[1]);
+
+                ImageIcon icon = new ImageIcon("src/img/smallgroupadd.png");
+               String newAdmin = (String)JOptionPane.showInputDialog(null, "Select New Admin",
+                        "Choosing New Admin", JOptionPane.QUESTION_MESSAGE, icon, options, options[0]);
+                //System.out.println("Potential admin: " + newAdmin.trim());
+                updateGroupAdmin(newAdmin.trim());
+                break;
+
+        }
+    }
+
+
 
 }

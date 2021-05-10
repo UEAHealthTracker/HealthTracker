@@ -167,6 +167,9 @@ public class GroupsPageController extends BaseController {
                             }
                             //Add the  invite details into the database.
                             AddInvite(groupAdmin, groupMail, nameOfGroup);
+
+                            addMessage("Group Successfully Created!","GROUP CREATED");
+
                             root = FXMLLoader.load(getClass().getResource("FXML/GroupsPage.fxml"));
                             stage = (Stage)((Node)actionEvent.getSource()).getScene().getWindow();
                             scene = new Scene(root);
@@ -194,7 +197,11 @@ public class GroupsPageController extends BaseController {
             }
         }
         DBsession.INSTANCE.OpenConnection().close();
-        }
+    }
+
+    public void addMessage(String message, String title){
+        JOptionPane.showMessageDialog(null, message, title,JOptionPane.INFORMATION_MESSAGE);
+    }
 
 //Add invite after sending the mail:
     public void AddInvite(String groupAdmin, String receipient, String groupName) throws SQLException {
@@ -246,6 +253,8 @@ public class GroupsPageController extends BaseController {
                         joinStatement.setInt(2, User.INSTANCE.getUserid());
                         joinStatement.executeUpdate();
                         System.out.println("Successfully joined the group "+ joinGroupName.getText());
+
+                        addMessage("Group Successfully Joined!","GROUP JOINED");
 
                         //Move to the groups page to show they have joined the group:
                         root = FXMLLoader.load(getClass().getResource("FXML/GroupsPage.fxml"));
@@ -384,8 +393,7 @@ public class GroupsPageController extends BaseController {
                     int groupId = result.getInt("groupid");
                     System.out.println("Username is: " +User.INSTANCE.getUsername());
                     if(groupAdmin.contentEquals(User.INSTANCE.getUsername())){
-
-                        int response = chooseDelete();
+                        int response = chooseDelete(groupId);
                         if(response == 0) {
 
                             //System.out.println(groupId);
@@ -412,8 +420,10 @@ public class GroupsPageController extends BaseController {
                             deleteStatement.executeUpdate();
 
                             DBsession.INSTANCE.OpenConnection().close();
+                            JOptionPane.showMessageDialog(null, "Group " + selectedGroup.getGroupName() + " has been deleted", "Successful delete!", JOptionPane.INFORMATION_MESSAGE);
                             //Delete it from the group.
                             groupView.getItems().removeAll(selectedGroup);
+
                         }else if(response==1){
                             //ArrayList groupMembersList = new ArrayList();
                             ImageIcon icon = new ImageIcon("src/img/smallgroupadd.png");
@@ -449,31 +459,37 @@ public class GroupsPageController extends BaseController {
                         }
                     }else{
                         System.out.println("Not admin so, im outty!");
+
                          //Once you are not admin, you just delete yourself from the group:
                         try {
-                            String removeQuery = "SELECT groups.groupid  FROM groups INNER JOIN groupsmember ON groupsmember.groupid=groups.groupid INNER JOIN Users ON Users.userid = groupsmember.userid  WHERE groups.groupname=? AND Users.username=?";
-                            PreparedStatement removeStatement = DBsession.INSTANCE.OpenConnection().prepareStatement(removeQuery);
-                            removeStatement.setString(1, selectedGroup.getGroupName());
-                            removeStatement.setString(2, User.INSTANCE.getUsername());
-                            ResultSet queryResult = removeStatement.executeQuery();
-                            while (queryResult.next()) {
-                                //Remove member:
-                                String removeMemberQuery = "DELETE FROM groupsmember WHERE groupid=? AND userid=?";
-                                PreparedStatement deleteStatement = DBsession.INSTANCE.OpenConnection().prepareStatement(removeMemberQuery);
-                                deleteStatement.setInt(1, groupId);
-                                deleteStatement.setInt(2, User.INSTANCE.getUserid());
-                                deleteStatement.executeUpdate();
-                                messageLabel.setOpacity(1);
+                            int confirmDelete = confirmDelete();
+                            System.out.println(confirmDelete);
+                            if(confirmDelete==0) {
+                                String removeQuery = "SELECT groups.groupid  FROM groups INNER JOIN groupsmember ON groupsmember.groupid=groups.groupid INNER JOIN Users ON Users.userid = groupsmember.userid  WHERE groups.groupname=? AND Users.username=?";
+                                PreparedStatement removeStatement = DBsession.INSTANCE.OpenConnection().prepareStatement(removeQuery);
+                                removeStatement.setString(1, selectedGroup.getGroupName());
+                                removeStatement.setString(2, User.INSTANCE.getUsername());
+                                ResultSet queryResult = removeStatement.executeQuery();
+                                while (queryResult.next()) {
+                                    //Remove member:
+                                    String removeMemberQuery = "DELETE FROM groupsmember WHERE groupid=? AND userid=?";
+                                    PreparedStatement deleteStatement = DBsession.INSTANCE.OpenConnection().prepareStatement(removeMemberQuery);
+                                    deleteStatement.setInt(1, groupId);
+                                    deleteStatement.setInt(2, User.INSTANCE.getUserid());
+                                    deleteStatement.executeUpdate();
+                                    messageLabel.setOpacity(1);
 
-                                messageLabel.setText(User.INSTANCE.getUsername() + " has left the group");
-                                //Delete invite to stop user from re-joining the group:
-                                String removeInvite = "DELETE FROM group_invites WHERE group_id=? AND group_member=?";
-                                PreparedStatement deleteInvite = DBsession.INSTANCE.OpenConnection().prepareStatement(removeInvite);
-                                deleteInvite.setInt(1, groupId);
-                                deleteInvite.setString(2, User.INSTANCE.getEmail());
-                                deleteInvite.executeUpdate();
-                                System.out.println("Invite has been deleted. User cannot join the group");
-                                DBsession.INSTANCE.OpenConnection().close();
+                                    messageLabel.setText(User.INSTANCE.getUsername() + " has left the group");
+                                    //Delete invite to stop user from re-joining the group:
+                                    String removeInvite = "DELETE FROM group_invites WHERE group_id=? AND group_member=?";
+                                    PreparedStatement deleteInvite = DBsession.INSTANCE.OpenConnection().prepareStatement(removeInvite);
+                                    deleteInvite.setInt(1, groupId);
+                                    deleteInvite.setString(2, User.INSTANCE.getEmail());
+                                    deleteInvite.executeUpdate();
+                                    System.out.println("Invite has been deleted. User cannot join the group");
+                                    DBsession.INSTANCE.OpenConnection().close();
+                                    JOptionPane.showMessageDialog(null, User.INSTANCE.getUsername() + " has left the group ", "Leave Group", JOptionPane.INFORMATION_MESSAGE);
+                                }
                             }
                         }catch (SQLException e){
                             e.printStackTrace();
@@ -495,12 +511,28 @@ public class GroupsPageController extends BaseController {
 
     }
 
-    public int chooseDelete(){
-        String[] finalResponse = {"Group", "Myself"};
-       int response= JOptionPane.showOptionDialog(null, "Delete group or remove myself?", "Choose response", JOptionPane.DEFAULT_OPTION,
-               JOptionPane.INFORMATION_MESSAGE, null, finalResponse, finalResponse[0]);
-        System.out.println(response);
+    public int chooseDelete(int groupId){
+        int response=10;
+        boolean isOnlyAdmin = adminOnlyMemberCheck(groupId);
+        System.out.println(isOnlyAdmin);
+        if(isOnlyAdmin==false) {
+            String[] finalResponse = {"Group", "Myself"};
+             response = JOptionPane.showOptionDialog(null, "Delete group or remove myself?", "Choose response", JOptionPane.DEFAULT_OPTION,
+                    JOptionPane.INFORMATION_MESSAGE, null, finalResponse, finalResponse[0]);
+            System.out.println(response);
+        }else{
+            String[] finalResponse = {"Delete"};
+             response = JOptionPane.showOptionDialog(null, "Click delete below if you are sure you want to delete", "Delete Group", JOptionPane.DEFAULT_OPTION,
+                    JOptionPane.INFORMATION_MESSAGE, null, finalResponse, finalResponse[0]);
+            System.out.println(response);
+        }
         return response;
+    }
+
+    public int confirmDelete(){
+        int input = JOptionPane.showConfirmDialog(null, "Are you sure you want to delete");
+        System.out.println(input);
+        return input;
     }
 
 
@@ -714,6 +746,34 @@ public  String getGroupForEdit() throws IOException {
                 "To Delete: Select a workout from the table and click delete button.\n" + "To Edit: Select a workout from the table and click edit button \n" +
                 "To Join group, Click the join button (last button on the left)\n" + "   ",ButtonType.OK);
         deleteAlert.show();
+    }
+
+    public boolean adminOnlyMemberCheck(int groupId){
+        boolean onlyAdminInGroup=false;
+        int recordCount =0;
+        try {
+            String checkMemberQuery="select groupmemberid from groupsmember where groupid= ?";
+            PreparedStatement pst2= DBsession.INSTANCE.OpenConnection().prepareStatement(checkMemberQuery);
+            pst2.setInt(1,groupId);
+            ResultSet rs2 = pst2.executeQuery();
+            while(rs2.next()){
+                recordCount++;
+
+            }
+            System.out.println(recordCount);
+            if(recordCount < 2){
+                onlyAdminInGroup= true;
+                System.out.println(onlyAdminInGroup);
+
+            }
+
+            DBsession.INSTANCE.OpenConnection().close();
+
+        }catch (SQLException e){
+            e.printStackTrace();
+        }
+        return onlyAdminInGroup;
+
     }
 }
 

@@ -53,7 +53,7 @@ public class UserPageController extends BaseController{
     }
 
     public void activityLog(ActionEvent actionEvent){
-        String SQL_QUERY = "SELECT date, workouttype, duration FROM day, workout WHERE day.date=? AND day.workoutid = workout.workoutid";
+        String SQL_QUERY = "SELECT day.date, workout.workouttype, workout.duration FROM workout join day on day.workoutid=workout.workoutid join Users on Users.userid=day.userid WHERE day.date=? AND day.workoutid = workout.workoutid AND Users.userid=?";
 
         ArrayList<String> workouts = new ArrayList<>();
         ArrayList<String> durations = new ArrayList<>();
@@ -63,6 +63,7 @@ public class UserPageController extends BaseController{
             PreparedStatement pst2= DBsession.INSTANCE.OpenConnection().prepareStatement(SQL_QUERY);
             LocalDate now = LocalDate.now();
             pst2.setString(1, now.toString());
+            pst2.setInt(2, User.INSTANCE.getUserid());
             ResultSet rs2 = pst2.executeQuery();
             while(rs2.next()) {
                 String date = rs2.getString("date");
@@ -77,12 +78,13 @@ public class UserPageController extends BaseController{
         }catch (SQLException e){
             e.printStackTrace();
         }
-        String SQL_QUERY2 = "SELECT date, itemname FROM day, dietitem, mealitem WHERE day.date=? AND day.mealid = mealitem.mealid AND mealitem.itemid = dietitem.itemid";
+        String SQL_QUERY2 = "SELECT date, itemname FROM day, dietitem, mealitem, Users WHERE day.date=? AND day.mealid = mealitem.mealid AND mealitem.itemid = dietitem.itemid AND Users.userid=?";
         try {
             //String groupQuery="select groups.groupname from groups INNER JOIN groupsmember ON groups.groupid=groupsmember.groupid where groupsmember.userid=?";
             PreparedStatement pst2= DBsession.INSTANCE.OpenConnection().prepareStatement(SQL_QUERY2);
             LocalDate now = LocalDate.now();
             pst2.setString(1, now.toString());
+            pst2.setInt(2, User.INSTANCE.getUserid());
             ResultSet rs2 = pst2.executeQuery();
             while(rs2.next()) {
                 String date = rs2.getString("date");

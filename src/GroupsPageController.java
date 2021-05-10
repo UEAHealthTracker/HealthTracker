@@ -393,8 +393,7 @@ public class GroupsPageController extends BaseController {
                     int groupId = result.getInt("groupid");
                     System.out.println("Username is: " +User.INSTANCE.getUsername());
                     if(groupAdmin.contentEquals(User.INSTANCE.getUsername())){
-
-                        int response = chooseDelete();
+                        int response = chooseDelete(groupId);
                         if(response == 0) {
 
                             //System.out.println(groupId);
@@ -421,8 +420,10 @@ public class GroupsPageController extends BaseController {
                             deleteStatement.executeUpdate();
 
                             DBsession.INSTANCE.OpenConnection().close();
+                            JOptionPane.showMessageDialog(null, "Group " + selectedGroup.getGroupName() + " has been deleted", "Successful delete!", JOptionPane.INFORMATION_MESSAGE);
                             //Delete it from the group.
                             groupView.getItems().removeAll(selectedGroup);
+
                         }else if(response==1){
                             //ArrayList groupMembersList = new ArrayList();
                             ImageIcon icon = new ImageIcon("src/img/smallgroupadd.png");
@@ -504,11 +505,21 @@ public class GroupsPageController extends BaseController {
 
     }
 
-    public int chooseDelete(){
-        String[] finalResponse = {"Group", "Myself"};
-       int response= JOptionPane.showOptionDialog(null, "Delete group or remove myself?", "Choose response", JOptionPane.DEFAULT_OPTION,
-               JOptionPane.INFORMATION_MESSAGE, null, finalResponse, finalResponse[0]);
-        System.out.println(response);
+    public int chooseDelete(int groupId){
+        int response=10;
+        boolean isOnlyAdmin = adminOnlyMemberCheck(groupId);
+        System.out.println(isOnlyAdmin);
+        if(isOnlyAdmin==false) {
+            String[] finalResponse = {"Group", "Myself"};
+             response = JOptionPane.showOptionDialog(null, "Delete group or remove myself?", "Choose response", JOptionPane.DEFAULT_OPTION,
+                    JOptionPane.INFORMATION_MESSAGE, null, finalResponse, finalResponse[0]);
+            System.out.println(response);
+        }else{
+            String[] finalResponse = {"Delete"};
+             response = JOptionPane.showOptionDialog(null, "Click delete below if you are sure you want to delete", "Delete Group", JOptionPane.DEFAULT_OPTION,
+                    JOptionPane.INFORMATION_MESSAGE, null, finalResponse, finalResponse[0]);
+            System.out.println(response);
+        }
         return response;
     }
 
@@ -723,6 +734,34 @@ public  String getGroupForEdit() throws IOException {
                 "To Delete: Select a workout from the table and click delete button.\n" + "To Edit: Select a workout from the table and click edit button \n" +
                 "To Join group, Click the join button (last button on the left)\n" + "   ",ButtonType.OK);
         deleteAlert.show();
+    }
+
+    public boolean adminOnlyMemberCheck(int groupId){
+        boolean onlyAdminInGroup=false;
+        int recordCount =0;
+        try {
+            String checkMemberQuery="select groupmemberid from groupsmember where groupid= ?";
+            PreparedStatement pst2= DBsession.INSTANCE.OpenConnection().prepareStatement(checkMemberQuery);
+            pst2.setInt(1,groupId);
+            ResultSet rs2 = pst2.executeQuery();
+            while(rs2.next()){
+                recordCount++;
+
+            }
+            System.out.println(recordCount);
+            if(recordCount < 2){
+                onlyAdminInGroup= true;
+                System.out.println(onlyAdminInGroup);
+
+            }
+
+            DBsession.INSTANCE.OpenConnection().close();
+
+        }catch (SQLException e){
+            e.printStackTrace();
+        }
+        return onlyAdminInGroup;
+
     }
 }
 

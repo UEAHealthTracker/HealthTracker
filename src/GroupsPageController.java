@@ -708,6 +708,13 @@ public  String getGroupForEdit() throws IOException {
             BaseController.Instance.Switch(actionEvent,"FXML/LoginPage.fxml");
         }
     }
+
+    public void pageInfo(){
+        Alert deleteAlert =  new Alert(Alert.AlertType.INFORMATION,"To Add: Click on the Add button below.\n"  +
+                "To Delete: Select a workout from the table and click delete button.\n" + "To Edit: Select a workout from the table and click edit button \n" +
+                "To Join group, Click the join button (last button on the left)\n" + "   ",ButtonType.OK);
+        deleteAlert.show();
+    }
 }
 
 

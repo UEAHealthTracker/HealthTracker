@@ -380,7 +380,9 @@ public class GroupsPageController extends BaseController {
                 ResultSet result = pst.executeQuery();
                 while(result.next()){
                     String groupAdmin = result.getString("groupadmin");
+                    System.out.println("Admin is: " +groupAdmin);
                     int groupId = result.getInt("groupid");
+                    System.out.println("Username is: " +User.INSTANCE.getUsername());
                     if(groupAdmin.contentEquals(User.INSTANCE.getUsername())){
 
                         int response = chooseDelete();
@@ -413,23 +415,23 @@ public class GroupsPageController extends BaseController {
                             //Delete it from the group.
                             groupView.getItems().removeAll(selectedGroup);
                         }else if(response==1){
-
                             //ArrayList groupMembersList = new ArrayList();
                             ImageIcon icon = new ImageIcon("src/img/smallgroupadd.png");
                             //groupMembersList=  getGroupMember();
                             int size =10;
                            String[] options = selectedGroup.getGroupMembers().split(",");
-                                for(int i=0; i< options.length; i++) {
-                                    System.out.println(options[i]);
-                                }
+                          /* for(int i=0; i< options.length; i++){
+                               System.out.println("The option is" + options[i].trim());
+                           }*/
                              String newAdmin = (String)JOptionPane.showInputDialog(null, "Select New Admin",
                                     "Choosing New Admin", JOptionPane.QUESTION_MESSAGE, icon, options, options[0]);
-                            System.out.println(newAdmin);
-
-                          updateAdmin(newAdmin, groupId);
+                           //System.out.println("Potential admin: " + newAdmin.trim());
+                          updateAdmin(newAdmin.trim(), groupId);
+                          //Once new Admin has been set, then you can delete group.
 
                         }
                     }else{
+                        System.out.println("Not admin so, im outty!");
                          //Once you are not admin, you just delete yourself from the group:
                         try {
                             String removeQuery = "SELECT groups.groupid  FROM groups INNER JOIN groupsmember ON groupsmember.groupid=groups.groupid INNER JOIN Users ON Users.userid = groupsmember.userid  WHERE groups.groupname=? AND Users.username=?";
@@ -471,8 +473,8 @@ public class GroupsPageController extends BaseController {
             }
         }
         //update table
-      //populateGroupTables();
-        DBsession.INSTANCE.OpenConnection().close();
+
+        populateGroupTables();
 
     }
 
@@ -486,8 +488,8 @@ public class GroupsPageController extends BaseController {
 
 
 public void updateAdmin(String newAdmin, int groupId) throws SQLException {
-    String removeQuery = "UPDATE groups SET groupadmin =? WHERE groupid=?";
-    PreparedStatement updateStatement = DBsession.INSTANCE.OpenConnection().prepareStatement(removeQuery);
+    String update = "UPDATE groups SET groupadmin =? WHERE groupid=?";
+    PreparedStatement updateStatement = DBsession.INSTANCE.OpenConnection().prepareStatement(update);
     updateStatement.setString(1, newAdmin);
     updateStatement.setInt(2, groupId);
     updateStatement.executeUpdate();

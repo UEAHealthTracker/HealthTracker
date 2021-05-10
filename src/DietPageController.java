@@ -38,24 +38,25 @@ public class DietPageController extends BaseController {
         //diet page
         ObservableList<Meal> mealData = FXCollections.observableArrayList();
 
-        /*try {
+        try {
             String SQL_QUERY = "SELECT meal.mealid AS mealid, meal.timeconsumed AS timeconsumed, GROUP_CONCAT(dietitem.itemname) AS itemname, GROUP_CONCAT(dietitem.itemtype) AS itemtype, SUM(dietitem.caloriecount) AS caloriecount " +
                     "FROM mealitem JOIN meal ON meal.mealid = mealitem.mealid JOIN dietitem ON dietitem.itemid = mealitem.itemid " +
                     "WHERE meal.userid = ? " +
-                    "GROUP BY mealitem.mealid " +
-                    "ORDER BY meal.timeconsumed";
+                    "GROUP BY mealitem.mealid";
 
             PreparedStatement pst = DBsession.INSTANCE.OpenConnection().prepareStatement(SQL_QUERY);
             pst.setInt(1, User.INSTANCE.getUserid());
             ResultSet rs = pst.executeQuery();
 
             ArrayList<DietItem> dietItems = new ArrayList<>();
-            DietItem.Type itemtype;
 
             while(rs.next()){
 
                 List<String> items = Arrays.asList(rs.getString("itemname").split("\\s*,\\s*"));
                 List<String> itemtypes = Arrays.asList(rs.getString("itemtype").split("\\s*,\\s*"));
+
+                DietItem.Type itemtype;
+                dietItems = new ArrayList<>();
 
                 for(int i = 0; i < items.size(); i++){
                     if(itemtypes.get(i).equals("food")){
@@ -67,25 +68,25 @@ public class DietPageController extends BaseController {
                     else {
                         itemtype = null;
                     }
-
                     dietItems.add(new DietItem(items.get(i), rs.getInt("caloriecount"), itemtype));
                 }
 
                 LocalTime time = rs.getTime("timeconsumed").toLocalTime().withSecond(0);
 
-                mealData.add(new Meal(Integer.parseInt(rs.getString("mealid"), dietItems, time, rs.getInt("caloriecount")));
+                mealData.add(new Meal(Integer.parseInt(rs.getString("mealid")), dietItems, time, rs.getInt("caloriecount")));
             }
             DBsession.INSTANCE.OpenConnection().close();
 
         }catch (Exception e){
             System.out.println("error retrieving data from database");
-        }*/
+        }
+
         timeConsumed.setCellValueFactory(new PropertyValueFactory<>("timeConsumed"));
         food.setCellValueFactory(new PropertyValueFactory<>("foods"));
         drink.setCellValueFactory(new PropertyValueFactory<>("drinks"));
         calorieCount.setCellValueFactory(new PropertyValueFactory<>("calorieCount"));
 
-        mealData.addAll(User.INSTANCE.dailyActivity.getMeals());
+        //mealData.addAll(User.INSTANCE.dailyActivity.getMeals());
         dietTable.setItems(mealData);
     }
 
@@ -97,11 +98,17 @@ public class DietPageController extends BaseController {
 
             //try removing meal data from database
             try{
-                /*String SQL_QUERY="DELETE FROM mealitem WHERE mealid=?;";
+                String SQL_QUERY="DELETE FROM mealitem WHERE mealid=?;";
                 PreparedStatement pst = DBsession.INSTANCE.OpenConnection().prepareStatement(SQL_QUERY);
                 pst.setInt(1, selectedMeal.getMealid());
                 pst.executeUpdate();
-                DBsession.INSTANCE.OpenConnection().close();*/
+                DBsession.INSTANCE.OpenConnection().close();
+
+                SQL_QUERY="DELETE FROM meal WHERE mealid=?;";
+                pst = DBsession.INSTANCE.OpenConnection().prepareStatement(SQL_QUERY);
+                pst.setInt(1, selectedMeal.getMealid());
+                pst.executeUpdate();
+                DBsession.INSTANCE.OpenConnection().close();
 
                 //delete meal from user's daily activity
                 User.INSTANCE.dailyActivity.removeMeal(selectedMeal);

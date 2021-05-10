@@ -19,17 +19,19 @@ import java.time.LocalDate;
 
 public class AddWorkoutController  extends BaseController{
 
-    @FXML
-    ComboBox WorkoutTypeSelector;
-    @FXML
-    TextField durationTF;
+    @FXML ComboBox WorkoutTypeSelector;
+    @FXML TextField durationTF;
     @FXML Label labelError;
     private Parent root;
     private Stage stage;
     private Scene scene;
     boolean open=false;
-    public void init(){
+
+    public void initialize(){
         userLabel.setText("Hello "+User.INSTANCE.getUsername());
+    }
+
+    public void listWorkouts(){
         if(open==false) {
             for (WorkoutType type : WorkoutType.values()) {
                 WorkoutTypeSelector.getItems().add(type.ID);
@@ -42,33 +44,37 @@ public class AddWorkoutController  extends BaseController{
         JOptionPane.showMessageDialog(null, message, title,JOptionPane.INFORMATION_MESSAGE);
     }
 
+    //add data to workout table
     public void populateWorkoutTable(ActionEvent event) throws IOException {
-        int cal=0;
 
-        String SQL_Insert="INSERT INTO workout( duration, workoutType, calories) VALUES (?,?,?)";
-        try {
-            PreparedStatement pst = DBsession.INSTANCE.OpenConnection().prepareStatement(SQL_Insert);
-            pst.setInt(1, Integer.parseInt(durationTF.getText()));
-            pst.setString(2,WorkoutTypeSelector.getSelectionModel().getSelectedItem().toString());
-            for (WorkoutType type : WorkoutType.values()) {
-                if(WorkoutTypeSelector.getSelectionModel().getSelectedItem().equals(type.ID)){
-                    cal= type.MET;
-                }
-            }
-            pst.setInt(3,cal* Integer.parseInt(durationTF.getText()));
-            int msg =   pst.executeUpdate();
-            DBsession.INSTANCE.OpenConnection().close();
-            if(msg==1){
-                addMessage("Workout Successfully Added!","WORKOUT ADDED");
-            }
-        } catch (SQLException throwables) {
-         /*   if(durationTF.equals(null)||WorkoutTypeSelector.equals(null)||durationTF.equals(null) && WorkoutTypeSelector.equals(null)){
-                labelError.setText("Edit Unsuccessful! - Check all fields are complete in the correct format");
-            }*/
-           throwables.printStackTrace();
+        if(durationTF.getText().isEmpty()||WorkoutTypeSelector.getTypeSelector().isEmpty()||durationTF.getText().isEmpty() && WorkoutTypeSelector.getTypeSelector().isEmpty()){
+            labelError.setText("Add Unsuccessful! - Check all fields are complete.");
         }
-        DateSet();
-        switchToAddworkout(event);
+        else{
+            int cal=0;
+            String SQL_Insert="INSERT INTO workout( duration, workoutType, calories) VALUES (?,?,?)";
+            try {
+                PreparedStatement pst = DBsession.INSTANCE.OpenConnection().prepareStatement(SQL_Insert);
+                pst.setInt(1, Integer.parseInt(durationTF.getText()));
+                pst.setString(2,WorkoutTypeSelector.getSelectionModel().getSelectedItem().toString());
+                for (WorkoutType type : WorkoutType.values()) {
+                    if(WorkoutTypeSelector.getSelectionModel().getSelectedItem().equals(type.ID)){
+                        cal= type.MET;
+                    }
+                }
+                pst.setInt(3,cal* Integer.parseInt(durationTF.getText()));
+                int msg =   pst.executeUpdate();
+                DBsession.INSTANCE.OpenConnection().close();
+                if(msg==1){
+                    addMessage("Workout Successfully Added!","WORKOUT ADDED");
+                }
+            } catch (SQLException throwables) {
+                throwables.printStackTrace();
+            }
+            DateSet();
+            switchToAddworkout(event);
+        }
+
     }
 
     public void switchToAddworkout(ActionEvent event) throws IOException {

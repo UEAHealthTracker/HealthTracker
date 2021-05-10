@@ -74,6 +74,14 @@
                 <NumberAxis fx:id="yAxis" side="LEFT" />
               </yAxis>
             </BarChart>
+            <Button layoutX="322.0" layoutY="10.0" mnemonicParsing="false" onAction="#pageInfo" prefHeight="38.0" prefWidth="33.0" style="-fx-background-color: transparent;" text="Page Information" textFill="TRANSPARENT" wrapText="true">
+               <graphic>
+                  <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../img/help.png" />
+                     </image>
+                  </ImageView>
+               </graphic></Button>
          </children>
       </AnchorPane>
    </right>

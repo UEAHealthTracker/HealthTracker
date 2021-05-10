@@ -122,7 +122,7 @@
                   </Label>
                </graphic>
             </Label>
-            <Button layoutX="123.0" layoutY="310.0" mnemonicParsing="false" prefWidth="150.0" style="-fx-background-color: #aa80ff;" text="Activity log" textFill="WHITE" />
+            <Button onAction="#activityLog" layoutX="123.0" layoutY="310.0" mnemonicParsing="false" prefWidth="150.0" style="-fx-background-color: #aa80ff;" text="Activity log" textFill="WHITE" />
          </children>
       </AnchorPane>
    </right>

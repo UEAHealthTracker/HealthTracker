@@ -428,6 +428,23 @@ public class GroupsPageController extends BaseController {
                            //System.out.println("Potential admin: " + newAdmin.trim());
                           updateAdmin(newAdmin.trim(), groupId);
                           //Once new Admin has been set, then you can delete group.
+                            //Remove member:
+                            String removeMemberQuery = "DELETE FROM groupsmember WHERE groupid=? AND userid=?";
+                            PreparedStatement deleteStatement = DBsession.INSTANCE.OpenConnection().prepareStatement(removeMemberQuery);
+                            deleteStatement.setInt(1, groupId);
+                            deleteStatement.setInt(2, User.INSTANCE.getUserid());
+                            deleteStatement.executeUpdate();
+                            messageLabel.setOpacity(1);
+
+                            messageLabel.setText(User.INSTANCE.getUsername() + " has left the group");
+                            //Delete invite to stop user from re-joining the group:
+                            String removeInvite = "DELETE FROM group_invites WHERE group_id=? AND group_member=?";
+                            PreparedStatement deleteInvite = DBsession.INSTANCE.OpenConnection().prepareStatement(removeInvite);
+                            deleteInvite.setInt(1, groupId);
+                            deleteInvite.setString(2, User.INSTANCE.getEmail());
+                            deleteInvite.executeUpdate();
+                            System.out.println("Invite has been deleted. User cannot join the group");
+                            DBsession.INSTANCE.OpenConnection().close();
 
                         }
                     }else{

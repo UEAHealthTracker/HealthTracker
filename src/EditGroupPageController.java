@@ -252,4 +252,11 @@ public class EditGroupPageController extends BaseController {
         }
     }
 
+    public void pageInfo(){
+        Alert deleteAlert =  new Alert(Alert.AlertType.INFORMATION," To Invite Member: Fill group name and member email and click invite member button\n"  +
+                "To Delete Member: Type group name, select member from list and click remove member  \n" + "Click add button for more functionalities including change group name, password, and/or admin \n" +
+                 "   ",ButtonType.OK);
+        deleteAlert.show();
+    }
+
 }

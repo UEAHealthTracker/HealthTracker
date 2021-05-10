@@ -76,6 +76,15 @@
             <ComboBox fx:id="removeMemberMail" layoutX="122.0" layoutY="184.0" prefWidth="150.0" />
             <TextField fx:id="addMemberMail" layoutX="122.0" layoutY="107.0" prefWidth="150.0" promptText="User email" style="-fx-background-color: #ffffff;" />
             <Label fx:id="GroupMessage" layoutY="282.0" opacity="0.0" prefHeight="68.0" prefWidth="391.0" text="Label" />
+            <Button layoutX="322.0" layoutY="9.0" mnemonicParsing="false" onAction="#pageInfo" prefHeight="38.0" prefWidth="33.0" style="-fx-background-color: transparent;" text="Page Information" textFill="TRANSPARENT" wrapText="true">
+               <graphic>
+                  <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../img/help.png" />
+                     </image>
+                  </ImageView>
+               </graphic>
+            </Button>
          </children>
       </AnchorPane>
    </right>

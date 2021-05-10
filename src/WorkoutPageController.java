@@ -219,6 +219,8 @@ public class WorkoutPageController extends BaseController {
                 "To Delete: Select a workout from the table and click delete button\n" + "To Edit: Select a workout from the table and click edit button \n" +
                 "          ",ButtonType.OK);
         deleteAlert.show();
+
+
     }
 
 }

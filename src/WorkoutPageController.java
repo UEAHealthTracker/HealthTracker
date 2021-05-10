@@ -138,16 +138,6 @@ public class WorkoutPageController extends BaseController {
     }
 
     public void onDelete(javafx.event.ActionEvent actionEvent) throws IOException{
-        /*if(workoutTableView.getSelectionModel().getSelectedItem() == null){
-            Alert deleteAlert =  new Alert(Alert.AlertType.INFORMATION,"To Add: Click on the Add button below. " +
-                    "                                 " +
-                    "To Delete: Select a workout from the table and click delete button. " +
-                    "                  " +
-                    "To Edit: Select a workout from the table and click edit button. " +
-                    " ",ButtonType.OK);
-            deleteAlert.show();
-        }*/
-       //else
            if (workoutTableView.getSelectionModel().getSelectedItem() != null) {
             Workout selectedItem = (Workout) workoutTableView.getSelectionModel().getSelectedItem();
             Workout.Instance.setWorkoutid(selectedItem.getWorkoutid());

@@ -96,6 +96,7 @@ public class EditGroupPageController extends BaseController {
             if (editGroupName.isEmpty() || addMember.isEmpty()) {
                 System.out.println("Please fill in group name and add member details.");
                 GroupMessage.setOpacity(1);
+                GroupMessage.setStyle("-fx-background-color:rgba(0,0,0,0);-fx-text-fill: #ff0000");
                 GroupMessage.setText("Please fill in group name and  add member details");
             } else {
                 if (GroupsPageController.userExist(addMember)){
@@ -141,16 +142,19 @@ public class EditGroupPageController extends BaseController {
                                 }
                             }else {
                                 GroupMessage.setOpacity(1);
+                                GroupMessage.setStyle("-fx-background-color:rgba(0,0,0,0);-fx-text-fill: #ff0000");
                                 GroupMessage.setText("Not in group called: " + editGroupName);
 
                             }
                         }
                     } else {
                         GroupMessage.setOpacity(1);
+                        GroupMessage.setStyle("-fx-background-color:rgba(0,0,0,0);-fx-text-fill: #ff0000");
                         GroupMessage.setText("Group named : " + editGroupName + " does not exist");
                     }
                 }else{
                     GroupMessage.setOpacity(1);
+                    GroupMessage.setStyle("-fx-background-color:rgba(0,0,0,0);-fx-text-fill: #ff0000");
                     GroupMessage.setText("User named : " + addMember + " does not exist");
                     //System.out.println(addMember + " not exists");
                 }
@@ -175,6 +179,7 @@ public class EditGroupPageController extends BaseController {
             if (editGroupName.isEmpty() || removeMemberMail.getValue()==null) {
                 System.out.println("Please fill in group name and add member details.");
                 GroupMessage.setOpacity(1);
+                GroupMessage.setStyle("-fx-background-color:rgba(0,0,0,0);-fx-text-fill: #ff0000");
                 GroupMessage.setText("Please fill in group name and  add member details");
             } else {
                 String memberUserName = (String) removeMemberMail.getValue();

@@ -206,8 +206,8 @@ public class WorkoutPageController extends BaseController {
     }
     public void pageInfo(){
         Alert deleteAlert =  new Alert(Alert.AlertType.INFORMATION,"To Add: Click on the Add button below.\n"  +
-                "To Delete: Select a workout from the table and click delete button\n" + "To Edit: Select a workout from the table and click edit button \n" +
-                "          ",ButtonType.OK);
+                "To Delete: Select a workout from the table and click delete button.\n" + "To Edit: Select a workout from the table and click edit button. \n" +
+                "The bar chart represents the total amount of calories burned in the last 5 days.   ",ButtonType.OK);
         deleteAlert.show();
     }
 

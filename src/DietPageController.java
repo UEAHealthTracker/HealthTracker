@@ -24,6 +24,7 @@ public class DietPageController extends BaseController {
     @FXML TableColumn<Meal, LocalTime> timeConsumed;
     @FXML TableColumn<Meal, String> food;
     @FXML TableColumn<Meal, String> drink;
+    @FXML TableColumn<Meal, String> meal;
     @FXML TableColumn<Meal, Integer> calorieCount;
     static Meal selectedMeal = null;
 
@@ -65,6 +66,9 @@ public class DietPageController extends BaseController {
                     else if(itemtypes.get(i).equals("drink")){
                         itemtype = DietItem.Type.DRINK;
                     }
+                    else if(itemtypes.get(i).equals("Meal")){
+                        itemtype = DietItem.Type.MEAL;
+                    }
                     else {
                         itemtype = null;
                     }
@@ -84,6 +88,7 @@ public class DietPageController extends BaseController {
         timeConsumed.setCellValueFactory(new PropertyValueFactory<>("timeConsumed"));
         food.setCellValueFactory(new PropertyValueFactory<>("foods"));
         drink.setCellValueFactory(new PropertyValueFactory<>("drinks"));
+        //meal.setCellValueFactory(new PropertyValueFactory<>("drinks"));
         calorieCount.setCellValueFactory(new PropertyValueFactory<>("calorieCount"));
 
         //mealData.addAll(User.INSTANCE.dailyActivity.getMeals());

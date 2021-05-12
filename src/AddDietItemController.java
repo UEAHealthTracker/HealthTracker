@@ -38,7 +38,6 @@ enum Drink{
     Red_Bull,
     Tea,
     Coffee,
-
 }
 enum MealType{
     English_breakfast,
@@ -47,7 +46,6 @@ enum MealType{
     Sandwich_and_drink,
     Roasted_lamb,
     fish_and_chips
-
 }
 
 public class AddDietItemController extends BaseController{
@@ -60,7 +58,6 @@ public class AddDietItemController extends BaseController{
     String itemname="nothing";
     ArrayList foodCustomItems = new ArrayList();
     ArrayList drinkCustomItems = new ArrayList();
-    ArrayList mealCustomItems = new ArrayList();
 
 
     public void initialize(){
@@ -105,14 +102,12 @@ public class AddDietItemController extends BaseController{
         for (MealType meal : MealType.values()) {
             setItemName.getItems().add(meal.name());
         }
-        for(int i=0; i< mealCustomItems.size(); i++) {
-            setItemName.getItems().add((String) mealCustomItems.get(i));
-        }
     }
+
 
     public void addCustomerItem(){
         String newItem = "nothing";
-        String[] options = {"Food", "Drink", "Meal"};
+        String[] options = {"Food", "Drink"};
        /* int optionChosen = (int) JOptionPane.showInputDialog(null, "Add Custom item to one of the following",
                 "Adding custom item", JOptionPane.QUESTION_MESSAGE, icon, options, options[0]);*/
          int optionChosen= JOptionPane.showOptionDialog(null, "Add custom items to one of the following:",
@@ -127,10 +122,7 @@ public class AddDietItemController extends BaseController{
                  newItem = JOptionPane.showInputDialog("Type custom drink item");
                 drinkCustomItems.add(newItem);
                  break;
-            case 2:
-                newItem = JOptionPane.showInputDialog("Type custom meal item");
-                mealCustomItems.add(newItem);
-                break;
+
 
         }
 

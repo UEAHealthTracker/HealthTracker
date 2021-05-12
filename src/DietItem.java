@@ -44,7 +44,7 @@ public class DietItem {
             this.type = Type.DRINK;
         }
         else if(type.equalsIgnoreCase("MEAL")){
-            this.type = Type.DRINK;
+            this.type = Type.MEAL;
         }
     }
 

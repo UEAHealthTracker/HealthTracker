@@ -7,17 +7,61 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 
+import javax.swing.*;
 import java.sql.*;
+import java.util.ArrayList;
 import java.util.Locale;
 import java.util.Objects;
+
+enum Food{
+    Bread,
+    Rice,
+    Pasta,
+    Lasagne,
+    Biscuit,
+    Potatoes,
+    Orange,
+    FrostFlakes,
+    Vegetables,
+    Chicken_kurry,
+    sausages
+}
+enum Drink{
+    Coke,
+    Fanta,
+    Malt,
+    Water,
+    Juice,
+    Pepsi,
+    Vimto,
+    Alcohol,
+    Red_Bull,
+    Tea,
+    Coffee,
+
+}
+enum MealType{
+    English_breakfast,
+    Mac_and_cheese_with_chicken,
+    Roast_potatoes_and_chicken,
+    Sandwich_and_drink,
+    Roasted_lamb,
+    fish_and_chips
+
+}
 
 public class AddDietItemController extends BaseController{
 
     @FXML ComboBox<String> setItemType;
-    @FXML TextField setItemName;
+    @FXML ComboBox<String> setItemName;
     @FXML TextField setCalorieCount;
     @FXML Label errorMessage;
     Meal selectedMeal;
+    String itemname="nothing";
+    ArrayList foodCustomItems = new ArrayList();
+    ArrayList drinkCustomItems = new ArrayList();
+    ArrayList mealCustomItems = new ArrayList();
+
 
     public void initialize(){
         userLabel.setText("Hello "+User.INSTANCE.getUsername());
@@ -25,7 +69,72 @@ public class AddDietItemController extends BaseController{
     }
 
     public void selectItemType() {
-        setItemType.getItems().addAll("Food", "Drink");
+        if(setItemType.getItems().isEmpty()) {
+            setItemType.getItems().addAll("Food", "Drink", "Meal");
+        }
+        if(setItemType.getValue().contentEquals("Food")){
+            listFood();
+
+        }else if(setItemType.getValue().contentEquals("Drink")){
+            listDrink();
+        }else if(setItemType.getValue().contentEquals("Meal")){
+            listMeal();
+        }
+    }
+    public void listFood(){
+       setItemName.getItems().clear();
+            for (Food food : Food.values()) {
+                setItemName.getItems().add(food.name());
+            }
+            for(int i=0; i< foodCustomItems.size(); i++) {
+                setItemName.getItems().add((String) foodCustomItems.get(i));
+            }
+    }
+    public void listDrink(){
+        setItemName.getItems().clear();
+        for (Drink drink : Drink.values()) {
+            setItemName.getItems().add(drink.name());
+        }
+        for(int i=0; i< drinkCustomItems.size(); i++) {
+            setItemName.getItems().add((String) drinkCustomItems.get(i));
+        }
+    }
+
+    public void listMeal(){
+        setItemName.getItems().clear();
+        for (MealType meal : MealType.values()) {
+            setItemName.getItems().add(meal.name());
+        }
+        for(int i=0; i< mealCustomItems.size(); i++) {
+            setItemName.getItems().add((String) mealCustomItems.get(i));
+        }
+    }
+
+    public void addCustomerItem(){
+        String newItem = "nothing";
+        String[] options = {"Food", "Drink", "Meal"};
+       /* int optionChosen = (int) JOptionPane.showInputDialog(null, "Add Custom item to one of the following",
+                "Adding custom item", JOptionPane.QUESTION_MESSAGE, icon, options, options[0]);*/
+         int optionChosen= JOptionPane.showOptionDialog(null, "Add custom items to one of the following:",
+                "Adding custom items",
+                JOptionPane.DEFAULT_OPTION, JOptionPane.INFORMATION_MESSAGE, null, options, options[0]);
+        switch(optionChosen){
+            case 0 :
+                 newItem = JOptionPane.showInputDialog("Type custom food item");
+                foodCustomItems.add(newItem);
+                break;
+            case 1:
+                 newItem = JOptionPane.showInputDialog("Type custom drink item");
+                drinkCustomItems.add(newItem);
+                 break;
+            case 2:
+                newItem = JOptionPane.showInputDialog("Type custom meal item");
+                mealCustomItems.add(newItem);
+                break;
+
+        }
+
+
     }
 
     public Meal addMeal(){
@@ -64,17 +173,21 @@ public class AddDietItemController extends BaseController{
         }
 
         DietItem itemToAdd;
-        DietItem.Type itemType;
+        DietItem.Type itemType= null;
 
         try{
             if (setItemType.getValue().equals("Food")) {
                 itemType = DietItem.Type.FOOD;
             }
-            else {
+            else  if (setItemType.getValue().equals("Drink")) {
                 itemType = DietItem.Type.DRINK;
             }
+            else  if (setItemType.getValue().equals("Meal"))  {
+                itemType = DietItem.Type.MEAL;
+            }
 
-            itemToAdd = new DietItem(setItemName.getText(), Integer.parseInt(setCalorieCount.getText()), itemType);
+
+            itemToAdd = new DietItem(itemname, Integer.parseInt(setCalorieCount.getText()), itemType);
             selectedMeal.addDietItem(itemToAdd);
 
             try{
@@ -82,7 +195,7 @@ public class AddDietItemController extends BaseController{
                 Connection connection = DBsession.INSTANCE.OpenConnection();
                 PreparedStatement pst = connection.prepareStatement(SQL_QUERY, Statement.RETURN_GENERATED_KEYS);
                 pst.setString(1, itemType.toString().toLowerCase());
-                pst.setString(2, setItemName.getText());
+                pst.setString(2, setItemName.getValue());
                 pst.setInt(3, Integer.parseInt(setCalorieCount.getText()));
                 pst.executeUpdate();
 

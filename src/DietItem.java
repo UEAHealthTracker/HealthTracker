@@ -6,7 +6,8 @@ public class DietItem {
 
     public enum Type{
         FOOD,
-        DRINK
+        DRINK,
+        MEAL
     }
 
     public DietItem(String name, int calorieCount, Type type){
@@ -40,6 +41,9 @@ public class DietItem {
             this.type = Type.FOOD;
         }
         else if(type.equalsIgnoreCase("DRINK")){
+            this.type = Type.DRINK;
+        }
+        else if(type.equalsIgnoreCase("MEAL")){
             this.type = Type.DRINK;
         }
     }

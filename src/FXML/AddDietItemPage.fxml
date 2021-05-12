@@ -63,13 +63,19 @@
                </padding>
             </Label>
             <ComboBox fx:id="setItemType" layoutX="123.0" layoutY="100.0" onMouseClicked="#selectItemType" prefWidth="150.0" promptText="Item type" style="-fx-background-color: #ffffff;" />
-            <TextField fx:id="setItemName" layoutX="123.0" layoutY="150.0" promptText="Item name" style="-fx-background-color: #ffffff;" />
             <TextField fx:id="setCalorieCount" layoutX="123.0" layoutY="200.0" promptText="Calorie count" style="-fx-background-color: #ffffff;" />
             <Label fx:id="errorMessage" layoutX="123.0" layoutY="250.0" textFill="RED">
                <font>
                   <Font name="Segoe UI Semilight" size="12.0" />
                </font>
             </Label>
+            <ComboBox fx:id="setItemName" layoutX="122.0" layoutY="150.0" onMouseClicked="#selectItemType" prefWidth="150.0" promptText="Item name" style="-fx-background-color: #ffffff;" />
+            <ImageView fitHeight="30.0" fitWidth="30.0" layoutX="276.0" layoutY="148.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../img/add_box.png" />
+               </image>
+            </ImageView>
+            <Button graphicTextGap="0.0" layoutX="273.0" layoutY="148.0" mnemonicParsing="false" onAction="#addCustomerItem" opacity="0.0" prefHeight="30.0" prefWidth="35.0" />
          </children>
       </AnchorPane>
    </right>

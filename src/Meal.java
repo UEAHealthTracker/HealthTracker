@@ -5,13 +5,22 @@ import java.util.ArrayList;
 public class Meal {
 
     private int mealid;
-    private final ArrayList<DietItem> items = new ArrayList<>();
-    private final LocalTime timeConsumed = LocalTime.now();;
+    private final ArrayList<DietItem> items;
+    private final LocalTime timeConsumed;
     private int calorieCount;
 
     public Meal() {
         this.mealid = -1;
+        this.items = new ArrayList<>();
+        this.timeConsumed = LocalTime.now();
         this.calorieCount = 0;
+    }
+
+    public Meal(int mealid, ArrayList<DietItem> items, LocalTime time, int calorieCount){
+        this.mealid = mealid;
+        this.items = items;
+        this.timeConsumed = time;
+        this.calorieCount = calorieCount;
     }
 
     public void setMealid(int mealid){

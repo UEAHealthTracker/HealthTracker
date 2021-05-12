@@ -7,10 +7,8 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.Time;
+import java.sql.*;
+import java.util.Locale;
 import java.util.Objects;
 
 public class AddDietItemController extends BaseController{
@@ -35,15 +33,19 @@ public class AddDietItemController extends BaseController{
         Meal newMeal = new Meal();
 
         try {
-            /*String SQL_QUERY = "INSERT INTO meal (timeconsumed, userid) VALUES ('?', ?)";
+            String SQL_QUERY = "INSERT INTO meal (timeconsumed, userid) VALUES (?, ?)";
             Connection connection = DBsession.INSTANCE.OpenConnection();
-            PreparedStatement pst = connection.prepareStatement(SQL_QUERY);
+            PreparedStatement pst = connection.prepareStatement(SQL_QUERY, Statement.RETURN_GENERATED_KEYS);
             pst.setTime(1, Time.valueOf(newMeal.getTimeConsumed()));
             pst.setInt(2, User.INSTANCE.getUserid());
-            pst.executeQuery();
+            pst.executeUpdate();
 
-            ResultSet generatedKey = pst.getGeneratedKeys();
-            newMeal.setMealid(generatedKey.getInt(1));*/
+            ResultSet keys = pst.getGeneratedKeys();
+            keys.next();
+            int newKey = keys.getInt(1);
+            newMeal.setMealid(newKey);
+
+            DBsession.INSTANCE.OpenConnection().close();
 
             //add meal to user's daily activity
             User.INSTANCE.dailyActivity.addMeal(newMeal);
@@ -75,27 +77,34 @@ public class AddDietItemController extends BaseController{
             itemToAdd = new DietItem(setItemName.getText(), Integer.parseInt(setCalorieCount.getText()), itemType);
             selectedMeal.addDietItem(itemToAdd);
 
-            /*try{
+            try{
                 String SQL_QUERY = "INSERT INTO dietitem (itemtype, itemname, caloriecount) VALUES (?, ?, ?)";
                 Connection connection = DBsession.INSTANCE.OpenConnection();
-                PreparedStatement pst = connection.prepareStatement(SQL_QUERY);
-                pst.setString(1, setItemName.getText());
-                pst.setInt(2, Integer.parseInt(setCalorieCount.getText()));
-                pst.setString(3, itemType.toString());
-                pst.executeQuery();
-                ResultSet generatedKey = pst.getGeneratedKeys();
+                PreparedStatement pst = connection.prepareStatement(SQL_QUERY, Statement.RETURN_GENERATED_KEYS);
+                pst.setString(1, itemType.toString().toLowerCase());
+                pst.setString(2, setItemName.getText());
+                pst.setInt(3, Integer.parseInt(setCalorieCount.getText()));
+                pst.executeUpdate();
+
+                ResultSet keys = pst.getGeneratedKeys();
+                keys.next();
+                int newKey = keys.getInt(1);
+
                 pst.close();
 
-                SQL_QUERY = "INSERT INTO mealitem VALUES (?, ?)";
+                SQL_QUERY = "INSERT INTO mealitem (mealid, itemid) VALUES (?, ?)";
                 pst = connection.prepareStatement(SQL_QUERY);
                 pst.setInt(1, selectedMeal.getMealid());
-                pst.setInt(2, generatedKey.getInt(1));
-                pst.executeQuery();
+                pst.setInt(2, newKey);
+                pst.executeUpdate();
+
                 pst.close();
+
+                DBsession.INSTANCE.OpenConnection().close();
             }
             catch (Exception e){
                 System.out.println("error inserting into database");
-            }*/
+            }
 
             root = FXMLLoader.load(Objects.requireNonNull(getClass().getClassLoader().getResource("FXML/DietPage.fxml")));
             stage = (Stage)((Node)actionEvent.getSource()).getScene().getWindow();

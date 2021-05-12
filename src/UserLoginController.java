@@ -14,6 +14,7 @@ import javafx.stage.Stage;
 import java.io.IOException;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 
 public class UserLoginController extends BaseController {
     public static final UserLoginController Instance= new UserLoginController();
@@ -127,6 +128,44 @@ public class UserLoginController extends BaseController {
 
     });
 
+    public static boolean userExist(String mail) {
+        String emailDb;
+        boolean userExist = false;
+        try {
+            ResultSet rs = DBsession.INSTANCE.Stmt().executeQuery("select email from Users ");
+            while (rs.next()) {
+                emailDb = rs.getString("email");
+                if (emailDb.contentEquals(mail)) {
+                    userExist = true;
+
+                }
+            }
+            DBsession.INSTANCE.OpenConnection().close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return userExist;
+    }
+
+    public static boolean usernameExist(String username) {
+        String usernameDb;
+        boolean userExist = false;
+        try {
+            ResultSet rs = DBsession.INSTANCE.Stmt().executeQuery("select username from Users ");
+            while (rs.next()) {
+                usernameDb = rs.getString("username");
+                if (usernameDb.contentEquals(username)) {
+                    userExist = true;
+                }
+            }
+            DBsession.INSTANCE.OpenConnection().close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return userExist;
+    }
+
+
     public void CreateAccount(ActionEvent event){
         String usnm,pass,email;
         Integer ht;
@@ -138,32 +177,45 @@ public class UserLoginController extends BaseController {
         wt=Integer.parseInt(weightTF.getText());
 
         if (email.matches(EMAIL_PATTERN)) {
-            try {
-                thread.stop();
-                PreparedStatement pst = DBsession.INSTANCE.OpenConnection().prepareStatement(SQL_INSERT);
-                pst.setString(1, usnm);
-                pst.setString(2, pass);
-                pst.setString(3, email);
-                pst.setInt(4,ht);
-                pst.setInt(5,wt);
-                if (CheckCredentials() > 0) {
-                    loginbtn.setStyle("-fx-background-color:transparent;-fx-text-fill: red");
-                    loginbtn.setText("Username/Password already exists");
-                    thread.start();
-                    DBsession.INSTANCE.OpenConnection().close();
-                } else {
-                    User.INSTANCE.setUsername(usernameTF.getText());
-                    User.INSTANCE.setPassword(passwordTF.getText());
-                    User.INSTANCE.setHeight(Double.parseDouble(heightTF.getText()));
-                    User.INSTANCE.setWeight(Double.parseDouble(weightTF.getText()));
-                    pst.executeUpdate();
-                }
-                userid();
-                BaseController.Instance.Switch(event,"FXML/HomePage.fxml");
+            if(!userExist(email)) {
+                if(!usernameExist(usnm)) {
+                    try {
+                        thread.stop();
+                        PreparedStatement pst = DBsession.INSTANCE.OpenConnection().prepareStatement(SQL_INSERT);
+                        pst.setString(1, usnm);
+                        pst.setString(2, pass);
+                        pst.setString(3, email);
+                        pst.setInt(4, ht);
+                        pst.setInt(5, wt);
+                        if (CheckCredentials() > 0) {
+                            loginbtn.setStyle("-fx-background-color:transparent;-fx-text-fill: red");
+                            loginbtn.setText("Username/Password already exists");
+                            thread.start();
+                            DBsession.INSTANCE.OpenConnection().close();
+                        } else {
+                            User.INSTANCE.setUsername(usernameTF.getText());
+                            User.INSTANCE.setPassword(passwordTF.getText());
+                            User.INSTANCE.setHeight(Double.parseDouble(heightTF.getText()));
+                            User.INSTANCE.setWeight(Double.parseDouble(weightTF.getText()));
+                            pst.executeUpdate();
+                        }
+                        userid();
+                        BaseController.Instance.Switch(event, "FXML/HomePage.fxml");
 
-                DBsession.INSTANCE.OpenConnection().close();
-            } catch (Exception e) {
-                System.out.println(e+"1");
+                        DBsession.INSTANCE.OpenConnection().close();
+                    } catch (Exception e) {
+                        System.out.println(e + "1");
+                    }
+                }else{
+                    loginbtn.setStyle("-fx-background-color:transparent;-fx-text-fill: red");
+                    loginbtn.setText("Username is taken");
+                    thread.start();
+
+                }
+            }else{
+                loginbtn.setStyle("-fx-background-color:transparent;-fx-text-fill: red");
+                loginbtn.setText("Email is taken");
+                thread.start();
             }
         }else{
             loginbtn.setStyle("-fx-background-color:transparent;-fx-text-fill: red");

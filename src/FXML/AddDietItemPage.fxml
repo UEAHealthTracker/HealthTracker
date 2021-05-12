@@ -75,7 +75,7 @@
                   <Image url="@../img/add_box.png" />
                </image>
             </ImageView>
-            <Button graphicTextGap="0.0" layoutX="273.0" layoutY="148.0" mnemonicParsing="false" onAction="#addCustomerItem" opacity="0.0" prefHeight="30.0" prefWidth="35.0" />
+            <Button graphicTextGap="0.0" layoutX="273.0" layoutY="148.0" mnemonicParsing="false" onAction="#addCustomItem" opacity="0.0" prefHeight="30.0" prefWidth="35.0" />
          </children>
       </AnchorPane>
    </right>

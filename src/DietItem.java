@@ -6,8 +6,34 @@ public class DietItem {
 
     public enum Type{
         FOOD,
-        DRINK,
-        MEAL
+        DRINK
+    }
+
+    enum Food{
+        Bread,
+        Rice,
+        Pasta,
+        Lasagne,
+        Biscuit,
+        Potatoes,
+        Orange,
+        FrostFlakes,
+        Vegetables,
+        Chicken_kurry,
+        sausages
+    }
+    enum Drink{
+        Coke,
+        Fanta,
+        Malt,
+        Water,
+        Juice,
+        Pepsi,
+        Vimto,
+        Alcohol,
+        Red_Bull,
+        Tea,
+        Coffee,
     }
 
     public DietItem(String name, int calorieCount, Type type){
@@ -42,9 +68,6 @@ public class DietItem {
         }
         else if(type.equalsIgnoreCase("DRINK")){
             this.type = Type.DRINK;
-        }
-        else if(type.equalsIgnoreCase("MEAL")){
-            this.type = Type.MEAL;
         }
     }
 

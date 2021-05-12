@@ -10,43 +10,7 @@ import javafx.stage.Stage;
 import javax.swing.*;
 import java.sql.*;
 import java.util.ArrayList;
-import java.util.Locale;
 import java.util.Objects;
-
-enum Food{
-    Bread,
-    Rice,
-    Pasta,
-    Lasagne,
-    Biscuit,
-    Potatoes,
-    Orange,
-    FrostFlakes,
-    Vegetables,
-    Chicken_kurry,
-    sausages
-}
-enum Drink{
-    Coke,
-    Fanta,
-    Malt,
-    Water,
-    Juice,
-    Pepsi,
-    Vimto,
-    Alcohol,
-    Red_Bull,
-    Tea,
-    Coffee,
-}
-enum MealType{
-    English_breakfast,
-    Mac_and_cheese_with_chicken,
-    Roast_potatoes_and_chicken,
-    Sandwich_and_drink,
-    Roasted_lamb,
-    fish_and_chips
-}
 
 public class AddDietItemController extends BaseController{
 
@@ -55,9 +19,8 @@ public class AddDietItemController extends BaseController{
     @FXML TextField setCalorieCount;
     @FXML Label errorMessage;
     Meal selectedMeal;
-    String itemname="nothing";
-    ArrayList foodCustomItems = new ArrayList();
-    ArrayList drinkCustomItems = new ArrayList();
+    ArrayList<String> foodCustomItems = new ArrayList<>();
+    ArrayList<String> drinkCustomItems = new ArrayList<>();
 
 
     public void initialize(){
@@ -67,65 +30,54 @@ public class AddDietItemController extends BaseController{
 
     public void selectItemType() {
         if(setItemType.getItems().isEmpty()) {
-            setItemType.getItems().addAll("Food", "Drink", "Meal");
+            setItemType.getItems().addAll("Food", "Drink");
         }
         if(setItemType.getValue().contentEquals("Food")){
             listFood();
 
-        }else if(setItemType.getValue().contentEquals("Drink")){
+        }else {
             listDrink();
-        }else if(setItemType.getValue().contentEquals("Meal")){
-            listMeal();
         }
     }
     public void listFood(){
-       setItemName.getItems().clear();
-            for (Food food : Food.values()) {
-                setItemName.getItems().add(food.name());
-            }
-            for(int i=0; i< foodCustomItems.size(); i++) {
-                setItemName.getItems().add((String) foodCustomItems.get(i));
-            }
+        setItemName.getItems().clear();
+        for (DietItem.Food food : DietItem.Food.values()) {
+            setItemName.getItems().add(food.name());
+        }
+        for (String foodCustomItem : foodCustomItems) {
+            setItemName.getItems().add(foodCustomItem);
+        }
     }
+
     public void listDrink(){
         setItemName.getItems().clear();
-        for (Drink drink : Drink.values()) {
+        for (DietItem.Drink drink : DietItem.Drink.values()) {
             setItemName.getItems().add(drink.name());
         }
-        for(int i=0; i< drinkCustomItems.size(); i++) {
-            setItemName.getItems().add((String) drinkCustomItems.get(i));
+        for (String drinkCustomItem : drinkCustomItems) {
+            setItemName.getItems().add(drinkCustomItem);
         }
     }
 
-    public void listMeal(){
-        setItemName.getItems().clear();
-        for (MealType meal : MealType.values()) {
-            setItemName.getItems().add(meal.name());
-        }
-    }
-
-
-    public void addCustomerItem(){
-        String newItem = "nothing";
+    public void addCustomItem(){
+        String newItem;
         String[] options = {"Food", "Drink"};
-       /* int optionChosen = (int) JOptionPane.showInputDialog(null, "Add Custom item to one of the following",
+        /*int optionChosen = (int) JOptionPane.showInputDialog(null, "Add Custom item to one of the following",
                 "Adding custom item", JOptionPane.QUESTION_MESSAGE, icon, options, options[0]);*/
-         int optionChosen= JOptionPane.showOptionDialog(null, "Add custom items to one of the following:",
+        int optionChosen= JOptionPane.showOptionDialog(null, "Add custom items to one of the following:",
                 "Adding custom items",
                 JOptionPane.DEFAULT_OPTION, JOptionPane.INFORMATION_MESSAGE, null, options, options[0]);
         switch(optionChosen){
             case 0 :
-                 newItem = JOptionPane.showInputDialog("Type custom food item");
+                newItem = JOptionPane.showInputDialog("Type custom food item");
                 foodCustomItems.add(newItem);
                 break;
             case 1:
-                 newItem = JOptionPane.showInputDialog("Type custom drink item");
+                newItem = JOptionPane.showInputDialog("Type custom drink item");
                 drinkCustomItems.add(newItem);
-                 break;
-
+                break;
 
         }
-
 
     }
 
@@ -165,21 +117,17 @@ public class AddDietItemController extends BaseController{
         }
 
         DietItem itemToAdd;
-        DietItem.Type itemType= null;
+        DietItem.Type itemType;
 
         try{
             if (setItemType.getValue().equals("Food")) {
                 itemType = DietItem.Type.FOOD;
             }
-            else  if (setItemType.getValue().equals("Drink")) {
+            else {
                 itemType = DietItem.Type.DRINK;
             }
-            else  if (setItemType.getValue().equals("Meal"))  {
-                itemType = DietItem.Type.MEAL;
-            }
 
-
-            itemToAdd = new DietItem(itemname, Integer.parseInt(setCalorieCount.getText()), itemType);
+            itemToAdd = new DietItem(setItemName.getValue(), Integer.parseInt(setCalorieCount.getText()), itemType);
             selectedMeal.addDietItem(itemToAdd);
 
             try{
